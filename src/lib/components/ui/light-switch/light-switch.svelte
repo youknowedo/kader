@@ -4,7 +4,11 @@
 
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-	import { resetMode, setMode } from 'mode-watcher';
+	import { fullWidth } from '$lib/stores/fullWidth';
+	import { mode, resetMode, setMode } from 'mode-watcher';
+
+	let m: 'dark' | 'light' | 'system' = $mode ?? 'system';
+	$: setMode(m);
 </script>
 
 <DropdownMenu.Root>
@@ -20,8 +24,16 @@
 		</Button>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content align="end">
-		<DropdownMenu.Item on:click={() => setMode('light')}>Light</DropdownMenu.Item>
-		<DropdownMenu.Item on:click={() => setMode('dark')}>Dark</DropdownMenu.Item>
-		<DropdownMenu.Item on:click={() => resetMode()}>System</DropdownMenu.Item>
+		<DropdownMenu.RadioGroup bind:value={m}>
+			<DropdownMenu.RadioItem value="light">Light</DropdownMenu.RadioItem>
+			<DropdownMenu.RadioItem value="dark">Dark</DropdownMenu.RadioItem>
+			<DropdownMenu.RadioItem value="system">System</DropdownMenu.RadioItem>
+		</DropdownMenu.RadioGroup>
+
+		<DropdownMenu.Separator />
+
+		<DropdownMenu.CheckboxItem checked={$fullWidth} on:click={() => fullWidth.update((v) => !v)}>
+			Full width
+		</DropdownMenu.CheckboxItem>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
