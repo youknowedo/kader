@@ -5,12 +5,12 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = (event) => {
 	if (event.locals.user) redirect(302, '/dashboard');
 
-	return { ...loginServerLoad() };
+	return loginServerLoad();
 };
 
 export const actions = {
-	default: (e) => {
-		loginAction(e);
+	default: async (e) => {
+		await loginAction(e);
 
 		redirect(302, '/dashboard');
 	}

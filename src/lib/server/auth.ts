@@ -5,14 +5,14 @@ import type { User } from 'lucia';
 
 export const hasAccess = async (user: User, kaderId: string) => {
 	const relation = await db
-		.select({})
+		.select({
+			role: usersToKaders.userRole
+		})
 		.from(usersToKaders)
 		.where(and(eq(usersToKaders.kaderId, kaderId), eq(usersToKaders.userId, user.id)))
 		.limit(1);
 
-	console.log(relation);
-
-	if (relation.length === 0) return false;
+	if (relation.length === 0 || relation[0].role == 'user') return false;
 
 	return true;
 };
