@@ -5,15 +5,21 @@ export const schema = pgSchema('kader');
 
 export const kaders = schema.table('kaders', {
 	id: text('id').primaryKey(),
-	name: text('name')
+	name: text('name').notNull(),
+	school: text('school').notNull(),
+	city: text('city').notNull()
 });
 export const kadersRelations = relations(kaders, ({ many }) => ({
 	usersToKaders: many(usersToKaders)
 }));
+
+export const userRoles = schema.enum('user_roles', ['owner', 'admin', 'user']);
+
 export const usersToKaders = schema.table(
 	'users_to_kaders',
 	{
 		userId: text('user_id').notNull(),
+		userRole: userRoles('user_role').notNull(),
 		kaderId: text('kader_id')
 			.notNull()
 			.references(() => kaders.id)

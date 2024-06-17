@@ -8,6 +8,13 @@
       "when": 1718535481110,
       "tag": "0000_careful_kid_colt",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1718626125417,
+      "tag": "0001_funny_wolf_cub",
+      "breakpoints": true
     }
   ]
 }
