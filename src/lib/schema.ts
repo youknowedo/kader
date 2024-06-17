@@ -1,7 +1,8 @@
 import { relations } from 'drizzle-orm';
-import { pgSchema, primaryKey, text } from 'drizzle-orm/pg-core';
+import { integer, pgSchema, primaryKey, text } from 'drizzle-orm/pg-core';
 
 export const schema = pgSchema('kader');
+export const userRoles = schema.enum('user_roles', ['owner', 'admin', 'member']);
 
 export const kaders = schema.table('kaders', {
 	id: text('id').primaryKey(),
@@ -10,10 +11,9 @@ export const kaders = schema.table('kaders', {
 	city: text('city').notNull()
 });
 export const kadersRelations = relations(kaders, ({ many }) => ({
-	usersToKaders: many(usersToKaders)
+	users_to_kaders: many(usersToKaders),
+	subscription_plans: many(subscriptionPlans)
 }));
-
-export const userRoles = schema.enum('user_roles', ['owner', 'admin', 'member']);
 
 export const usersToKaders = schema.table(
 	'users_to_kaders',
@@ -31,6 +31,22 @@ export const usersToKaders = schema.table(
 export const usersToKadersRelations = relations(usersToKaders, ({ one }) => ({
 	kader: one(kaders, {
 		fields: [usersToKaders.kaderId],
+		references: [kaders.id]
+	})
+}));
+
+export const subscriptionPlans = schema.table('subscription_plans', {
+	id: text('id').primaryKey(),
+	kaderId: text('kader_id').notNull(),
+	name: text('name').notNull(),
+	price: integer('price').notNull(),
+	currency: text('currency').notNull(),
+	periodMonth: integer('period_month').notNull(),
+	periodDay: integer('period_day').notNull()
+});
+export const subscriptionRelations = relations(subscriptionPlans, ({ one }) => ({
+	kader: one(kaders, {
+		fields: [subscriptionPlans.kaderId],
 		references: [kaders.id]
 	})
 }));

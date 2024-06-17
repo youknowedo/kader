@@ -7,15 +7,17 @@
 	import * as Command from '../command';
 	import * as Popover from '../popover';
 
+	export let name = '';
+
 	export let items: { value: string; label: string }[];
 
 	let open = false;
-	export let defaultValue = '';
+	export let value = '';
 	export let itemName = 'kader';
 
-	export let selectedValue = `Select an ${itemName}...`;
-	$: selectedValue =
-		items.find((item) => item.value === defaultValue)?.label ?? `Select an ${itemName}...`;
+	let selectedLabel = `Select an ${itemName}...`;
+	$: selectedLabel =
+		items.find((item) => item.value === value)?.label ?? `Select an ${itemName}...`;
 
 	// We want to refocus the trigger button when the user selects
 	// an item from the list so users can continue navigating the
@@ -37,10 +39,11 @@
 			aria-expanded={open}
 			class="w-full justify-between"
 		>
-			{selectedValue}
+			{selectedLabel}
 			<ChevronsUpDown class="-mr-2 ml-2 h-4 w-4 shrink-0 opacity-50" />
 		</Button>
 	</Popover.Trigger>
+	<input hidden bind:value {name} />
 	<Popover.Content class="w-[200px] p-0">
 		<Command.Root>
 			<Command.Input placeholder="Search {itemName}..." />
@@ -50,11 +53,11 @@
 					<Command.Item
 						value={item.value}
 						onSelect={(currentValue) => {
-							defaultValue = currentValue;
+							value = currentValue;
 							closeAndFocusTrigger(ids.trigger);
 						}}
 					>
-						<Check class={cn('mr-2 h-4 w-4', defaultValue !== item.value && 'text-transparent')} />
+						<Check class={cn('mr-2 h-4 w-4', value !== item.value && 'text-transparent')} />
 						{item.label}
 					</Command.Item>
 				{/each}

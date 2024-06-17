@@ -29,7 +29,7 @@
 
 			<Combobox
 				items={data.kaders.map((kader) => ({ value: kader.id, label: kader.name }))}
-				defaultValue={$page.params.kaderId}
+				value={$page.params.kaderId}
 			/>
 
 			<div class="mb-1 mt-2">
@@ -55,6 +55,18 @@
 						: 'text-stone-500'}"
 				>
 					Members
+				</Button>
+				<Button
+					on:click={() => goto('/dashboard/' + $page.params.kaderId + '/subscriptions')}
+					size="sm"
+					variant="ghost"
+					class="w-full justify-start text-left duration-200 {$page.url.pathname.startsWith(
+						'/dashboard/' + $page.params.kaderId + '/subscriptions'
+					)
+						? ''
+						: 'text-stone-500'}"
+				>
+					Subscriptions
 				</Button>
 				<Button
 					on:click={() => goto('/dashboard/' + $page.params.kaderId + '/settings')}
@@ -135,7 +147,7 @@
 		</div>
 	</div>
 
-	<div class="px-8 py-6">
+	<div class="flex-1 px-8 py-6">
 		<slot />
 	</div>
 </div>

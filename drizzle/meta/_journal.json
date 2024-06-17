@@ -15,6 +15,20 @@
       "when": 1718626125417,
       "tag": "0001_funny_wolf_cub",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1718656167769,
+      "tag": "0002_spooky_scream",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1718657696333,
+      "tag": "0003_certain_scarlet_spider",
+      "breakpoints": true
     }
   ]
 }
