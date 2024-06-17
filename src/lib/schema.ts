@@ -13,7 +13,7 @@ export const kadersRelations = relations(kaders, ({ many }) => ({
 	usersToKaders: many(usersToKaders)
 }));
 
-export const userRoles = schema.enum('user_roles', ['owner', 'admin', 'user']);
+export const userRoles = schema.enum('user_roles', ['owner', 'admin', 'member']);
 
 export const usersToKaders = schema.table(
 	'users_to_kaders',

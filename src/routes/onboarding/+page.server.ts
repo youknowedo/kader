@@ -18,7 +18,7 @@ export const load: PageServerLoad = async (event) => {
 
 	await db.insert(usersToKaders).values({
 		userId: event.locals.user.id,
-		userRole: 'user',
+		userRole: 'member',
 		kaderId: inviteId
 	});
 

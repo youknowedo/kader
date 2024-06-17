@@ -12,7 +12,7 @@ export const hasAccess = async (user: User, kaderId: string) => {
 		.where(and(eq(usersToKaders.kaderId, kaderId), eq(usersToKaders.userId, user.id)))
 		.limit(1);
 
-	if (relation.length === 0 || relation[0].role == 'user') return false;
+	if (relation.length === 0 || relation[0].role == 'member') return false;
 
 	return true;
 };
