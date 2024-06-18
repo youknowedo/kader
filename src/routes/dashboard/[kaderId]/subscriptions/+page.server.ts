@@ -7,7 +7,13 @@ import { generateIdFromEntropySize } from 'lucia';
 import { superValidate, type Infer, type SuperValidated } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import type { Actions, PageServerLoad } from './$types';
-import { createFormSchema, editFormSchema, type EditFormSchema } from './schema';
+import {
+	createFormSchema,
+	deleteFormSchema,
+	editFormSchema,
+	type DeleteFormSchema,
+	type EditFormSchema
+} from './schema';
 
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) redirect(302, '/login');
@@ -30,14 +36,18 @@ export const load: PageServerLoad = async (event) => {
 		.orderBy(subscriptionPlans.id);
 
 	const subscriptions: (Infer<EditFormSchema> & {
-		form: SuperValidated<Infer<EditFormSchema>, unknown, Infer<EditFormSchema>>;
+		editForm: SuperValidated<Infer<EditFormSchema>, unknown, Infer<EditFormSchema>>;
+		deleteForm: SuperValidated<Infer<DeleteFormSchema>, unknown, Infer<DeleteFormSchema>>;
 	})[] = [];
 
 	for (const sub of s) {
-		const form = await superValidate(zod(editFormSchema), {
-			id: sub.id
+		const editForm = await superValidate(zod(editFormSchema), {
+			id: 'edit-' + sub.id
 		});
-		subscriptions.push({ ...sub, form });
+		const deleteForm = await superValidate(zod(deleteFormSchema), {
+			id: 'delete-' + sub.id
+		});
+		subscriptions.push({ ...sub, editForm, deleteForm });
 	}
 
 	return {
@@ -106,5 +116,24 @@ export const actions: Actions = {
 				periodDay
 			})
 			.where(eq(subscriptionPlans.id, id));
+	},
+	delete: async (event) => {
+		if (!event.locals.user) throw redirect(302, '/login');
+
+		if (!(await hasAccess(event.locals.user, event.params.kaderId))) {
+			redirect(302, '/dashboard/noAccess/' + event.params.kaderId);
+		}
+
+		const form = await superValidate(event, zod(deleteFormSchema));
+		if (!form.valid) {
+			return {
+				status: 400,
+				form
+			};
+		}
+
+		const { id } = form.data;
+
+		await db.delete(subscriptionPlans).where(eq(subscriptionPlans.id, id));
 	}
 };

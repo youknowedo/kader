@@ -16,7 +16,8 @@
 			</Accordion.Trigger>
 			<Accordion.Content class="overflow-visible">
 				<EditForm
-					data={subscription.form}
+					data={subscription.editForm}
+					deleteData={subscription.deleteForm}
 					defaultValues={{
 						id: subscription.id,
 						name: subscription.name,

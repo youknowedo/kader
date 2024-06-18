@@ -4,51 +4,66 @@
 	import { Input } from '$lib/components/ui/input';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { editFormSchema, type EditFormSchema } from './schema';
+	import {
+		deleteFormSchema,
+		editFormSchema,
+		type DeleteFormSchema,
+		type EditFormSchema
+	} from './schema';
 
 	export let data: SuperValidated<Infer<EditFormSchema>>;
+	export let deleteData: SuperValidated<Infer<DeleteFormSchema>>;
 	export let defaultValues: Infer<EditFormSchema>;
 
-	const form = superForm(data, {
+	const editForm = superForm(data, {
 		validators: zodClient(editFormSchema),
 		resetForm: false
 	});
+	const deleteForm = superForm(deleteData, {
+		validators: zodClient(deleteFormSchema)
+	});
 
-	const { form: formData, enhance, errors } = form;
+	const { form: editFormData, enhance: editEnhance } = editForm;
+	const { form: deleteFormData, enhance: deleteEnhance } = deleteForm;
 
-	if (defaultValues) formData.set(defaultValues);
+	if (defaultValues) {
+		editFormData.set(defaultValues);
+		deleteFormData.set(defaultValues);
+	}
 </script>
 
-<form method="POST" action="?/edit" use:enhance>
-	<input hidden bind:value={$formData.id} name="id" />
-	<Form.Field {form} name="name">
+<form method="POST" action="?/delete" id={'delete-' + $editFormData.id} use:deleteEnhance>
+	<input hidden bind:value={$deleteFormData.id} name="id" />
+</form>
+<form method="POST" action="?/edit" id={'edit-' + $editFormData.id} use:editEnhance>
+	<Form.Field form={editForm} name="name">
 		<Form.Control let:attrs>
 			<Form.Label>Name</Form.Label>
-			<Input {...attrs} bind:value={$formData.name} />
+			<Input {...attrs} bind:value={$editFormData.name} />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	<div class="grid grid-cols-[3fr,2fr] gap-4">
-		<Form.Field {form} name="price">
+		<Form.Field form={editForm} name="price">
 			<Form.Control let:attrs>
 				<Form.Label>Price</Form.Label>
 
 				<Input
 					{...attrs}
 					type="number"
-					value={$formData.price}
-					on:change={(e) => ($formData.price = parseInt(e.currentTarget.value))}
+					value={$editFormData.price}
+					on:change={(e) => ($editFormData.price = parseInt(e.currentTarget.value))}
 				/>
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
-		<Form.Field {form} name="currency">
+		<Form.Field form={editForm} name="currency">
 			<Form.Control let:attrs>
 				<Form.Label>Currency</Form.Label>
 				<Combobox
 					{...attrs}
 					itemName="currency"
-					bind:value={$formData.currency}
+					bind:value={$editFormData.currency}
 					items={[
 						{
 							value: 'SEK',
@@ -62,14 +77,14 @@
 	</div>
 	<div class="grid grid-cols-[3fr,2fr] gap-4">
 		<div class="grid grid-cols-[1fr,0.5rem,1fr] gap-2">
-			<Form.Field {form} name="periodDay">
+			<Form.Field form={editForm} name="periodDay">
 				<Form.Control let:attrs>
 					<Form.Label>Period Start</Form.Label>
 					<Input
 						{...attrs}
 						type="number"
-						value={$formData.periodDay}
-						on:change={(e) => ($formData.periodDay = parseInt(e.currentTarget.value))}
+						value={$editFormData.periodDay}
+						on:change={(e) => ($editFormData.periodDay = parseInt(e.currentTarget.value))}
 						placeholder="day"
 					/>
 				</Form.Control>
@@ -81,14 +96,14 @@
 
 			<div class="-mx-4 mt-8 flex justify-center text-xl">/</div>
 
-			<Form.Field {form} name="periodMonth">
+			<Form.Field form={editForm} name="periodMonth">
 				<Form.Control let:attrs>
 					<Form.Label>&#8205;</Form.Label>
 					<Input
 						{...attrs}
 						type="number"
-						value={$formData.periodMonth}
-						on:change={(e) => ($formData.periodMonth = parseInt(e.currentTarget.value))}
+						value={$editFormData.periodMonth}
+						on:change={(e) => ($editFormData.periodMonth = parseInt(e.currentTarget.value))}
 						placeholder="month"
 					/>
 				</Form.Control>
@@ -96,7 +111,10 @@
 			</Form.Field>
 		</div>
 	</div>
-	<div class="flex justify-end">
+	<div class="flex justify-end gap-2">
+		<Form.Button variant="destructive" type="submit" form={'delete-' + $editFormData.id}>
+			Delete
+		</Form.Button>
 		<Form.Button type="submit">Edit</Form.Button>
 	</div>
 </form>
