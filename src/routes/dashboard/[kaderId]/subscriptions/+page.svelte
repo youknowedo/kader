@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as Accordion from '$lib/components/ui/accordion';
-	import CreateForm from './create-form.svelte';
+	import CreateForm from './createForm.svelte';
+	import EditForm from './editForm.svelte';
 
 	export let data;
 
@@ -13,7 +14,19 @@
 			<Accordion.Trigger>
 				{subscription.name}
 			</Accordion.Trigger>
-			<Accordion.Content class="overflow-visible">{subscription.price}</Accordion.Content>
+			<Accordion.Content class="overflow-visible">
+				<EditForm
+					data={subscription.form}
+					defaultValues={{
+						id: subscription.id,
+						name: subscription.name,
+						price: subscription.price,
+						currency: subscription.currency,
+						periodMonth: subscription.periodMonth,
+						periodDay: subscription.periodDay
+					}}
+				/>
+			</Accordion.Content>
 		</Accordion.Item>
 	{/each}
 	<Accordion.Item value="create">

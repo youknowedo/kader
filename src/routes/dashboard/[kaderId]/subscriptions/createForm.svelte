@@ -4,18 +4,16 @@
 	import { Input } from '$lib/components/ui/input';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { createSchema, type CreateSchema } from './schema';
+	import { createFormSchema, type CreateFormSchema } from './schema';
 
-	export let data: SuperValidated<Infer<CreateSchema>>;
+	export let data: SuperValidated<Infer<CreateFormSchema>>;
 
 	const form = superForm(data, {
-		validators: zodClient(createSchema)
+		validators: zodClient(createFormSchema)
 	});
 
 	const { form: formData, enhance } = form;
 </script>
-
-{$formData.currency}
 
 <form method="POST" action="?/create" use:enhance>
 	<Form.Field {form} name="name">
@@ -33,7 +31,8 @@
 				<Input
 					{...attrs}
 					type="number"
-					on:change={(e) => ($formData.periodDay = parseInt(e.currentTarget.value))}
+					value={$formData.price}
+					on:change={(e) => ($formData.price = parseInt(e.currentTarget.value))}
 				/>
 			</Form.Control>
 			<Form.FieldErrors />
@@ -64,6 +63,7 @@
 					<Input
 						{...attrs}
 						type="number"
+						value={$formData.periodDay}
 						on:change={(e) => ($formData.periodDay = parseInt(e.currentTarget.value))}
 						placeholder="day"
 					/>
@@ -82,6 +82,7 @@
 					<Input
 						{...attrs}
 						type="number"
+						value={$formData.periodMonth}
 						on:change={(e) => ($formData.periodMonth = parseInt(e.currentTarget.value))}
 						placeholder="month"
 					/>
@@ -91,6 +92,6 @@
 		</div>
 	</div>
 	<div class="flex justify-end">
-		<Form.Button>Create</Form.Button>
+		<Form.Button type="submit">Create</Form.Button>
 	</div>
 </form>
