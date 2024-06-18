@@ -1,14 +1,14 @@
 import { kaders, usersToKaders } from '$lib/schema';
 import { redirect } from '@sveltejs/kit';
 import { db } from '@youknowedo/shared/server';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
 		const kader = (await db.select().from(kaders).where(eq(kaders.id, event.params.kaderId)))[0];
 
-		if (!kader) return { valid: false };
+		if (!kader) return { valid: false, message: 'Kader not found' };
 
 		const relation = (
 			await db
@@ -16,10 +16,16 @@ export const load: PageServerLoad = async (event) => {
 					role: usersToKaders.userRole
 				})
 				.from(usersToKaders)
-				.where(eq(usersToKaders.kaderId, event.params.kaderId))
+				.where(
+					and(
+						eq(usersToKaders.kaderId, event.params.kaderId),
+						eq(usersToKaders.userId, event.locals.user.id)
+					)
+				)
 		)[0];
 
-		if (relation) return { valid: false };
+		console.log(relation);
+		if (relation) return { valid: false, message: 'You are already a member of this kader' };
 
 		await db.insert(usersToKaders).values({
 			userId: event.locals.user.id,

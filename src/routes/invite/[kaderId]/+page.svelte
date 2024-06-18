@@ -12,4 +12,5 @@
 	<Button variant="secondary" href="/login">Log In</Button>
 {:else}
 	<h1>Invalid invite link</h1>
+	<p>{data.message}</p>
 {/if}

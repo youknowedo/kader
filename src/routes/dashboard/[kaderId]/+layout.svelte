@@ -94,6 +94,7 @@
 						<Dialog.Description></Dialog.Description>
 					</Dialog.Header>
 
+					<!-- TODO: Create timed qr codes -->
 					<QR data="{$page.url.origin}/invite/{$page.params.kaderId}" />
 
 					<Dialog.Footer>

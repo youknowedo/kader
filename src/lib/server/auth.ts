@@ -3,7 +3,7 @@ import { db } from '@youknowedo/shared/server';
 import { and, eq } from 'drizzle-orm';
 import type { User } from 'lucia';
 
-export const hasAccess = async (user: User, kaderId: string) => {
+export const accessRole = async (user: User, kaderId: string) => {
 	const relation = await db
 		.select({
 			role: usersToKaders.userRole
@@ -12,7 +12,7 @@ export const hasAccess = async (user: User, kaderId: string) => {
 		.where(and(eq(usersToKaders.kaderId, kaderId), eq(usersToKaders.userId, user.id)))
 		.limit(1);
 
-	if (relation.length === 0 || relation[0].role == 'member') return false;
+	if (relation.length === 0) return null;
 
-	return true;
+	return relation[0].role;
 };

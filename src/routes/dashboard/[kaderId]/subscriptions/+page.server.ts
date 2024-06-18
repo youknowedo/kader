@@ -1,5 +1,5 @@
 import { subscriptionPlans } from '$lib/schema';
-import { hasAccess } from '$lib/server/auth';
+import { accessRole } from '$lib/server/auth';
 import { redirect } from '@sveltejs/kit';
 import { db } from '@youknowedo/shared/server';
 import { eq } from 'drizzle-orm';
@@ -18,9 +18,9 @@ import {
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) redirect(302, '/login');
 
-	if (!(await hasAccess(event.locals.user, event.params.kaderId))) {
-		redirect(302, '/dashboard/noAccess/' + event.params.kaderId);
-	}
+	const role = await accessRole(event.locals.user, event.params.kaderId);
+	if (!role) throw redirect(302, '/dashboard/noAccess/' + event.params.kaderId);
+	else if (role == 'member') throw redirect(302, '/app/' + event.params.kaderId);
 
 	const s = await db
 		.select({
@@ -60,9 +60,9 @@ export const actions: Actions = {
 	create: async (event) => {
 		if (!event.locals.user) throw redirect(302, '/login');
 
-		if (!(await hasAccess(event.locals.user, event.params.kaderId))) {
-			redirect(302, '/dashboard/noAccess/' + event.params.kaderId);
-		}
+		const role = await accessRole(event.locals.user, event.params.kaderId);
+		if (!role) throw redirect(302, '/dashboard/noAccess/' + event.params.kaderId);
+		else if (role == 'member') throw redirect(302, '/app/' + event.params.kaderId);
 
 		const form = await superValidate(event, zod(createFormSchema));
 		if (!form.valid) {
@@ -89,9 +89,9 @@ export const actions: Actions = {
 	edit: async (event) => {
 		if (!event.locals.user) throw redirect(302, '/login');
 
-		if (!(await hasAccess(event.locals.user, event.params.kaderId))) {
-			redirect(302, '/dashboard/noAccess/' + event.params.kaderId);
-		}
+		const role = await accessRole(event.locals.user, event.params.kaderId);
+		if (!role) throw redirect(302, '/dashboard/noAccess/' + event.params.kaderId);
+		else if (role == 'member') throw redirect(302, '/app/' + event.params.kaderId);
 
 		const form = await superValidate(event, zod(editFormSchema));
 		if (!form.valid) {
@@ -120,9 +120,9 @@ export const actions: Actions = {
 	delete: async (event) => {
 		if (!event.locals.user) throw redirect(302, '/login');
 
-		if (!(await hasAccess(event.locals.user, event.params.kaderId))) {
-			redirect(302, '/dashboard/noAccess/' + event.params.kaderId);
-		}
+		const role = await accessRole(event.locals.user, event.params.kaderId);
+		if (!role) throw redirect(302, '/dashboard/noAccess/' + event.params.kaderId);
+		else if (role == 'member') throw redirect(302, '/app/' + event.params.kaderId);
 
 		const form = await superValidate(event, zod(deleteFormSchema));
 		if (!form.valid) {

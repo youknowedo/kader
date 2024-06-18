@@ -1,5 +1,4 @@
 import { kaders, usersToKaders } from '$lib/schema';
-import { accessRole } from '$lib/server/auth';
 import { redirect } from '@sveltejs/kit';
 import { db } from '@youknowedo/shared/server';
 import { eq, inArray } from 'drizzle-orm';
@@ -15,12 +14,7 @@ export const load: LayoutServerLoad = async (event) => {
 		.from(usersToKaders)
 		.where(eq(usersToKaders.userId, event.locals.user.id));
 
-	// TODO: Create join page where you can search kaders and join them
-	if (relations.length === 0) redirect(302, '/app/join');
-
-	const role = await accessRole(event.locals.user, event.params.kaderId);
-	// TODO: Create join page where you can ask to join a kader
-	if (!role) throw redirect(302, '/app/' + event.params.kaderId + '/join');
+	if (relations.length === 0) redirect(302, '/onboarding');
 
 	const userKaders = await db
 		.select({

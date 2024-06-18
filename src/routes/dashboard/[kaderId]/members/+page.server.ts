@@ -1,5 +1,5 @@
 import { usersToKaders } from '$lib/schema';
-import { hasAccess } from '$lib/server/auth';
+import { accessRole } from '$lib/server/auth';
 import { redirect } from '@sveltejs/kit';
 import { db, users } from '@youknowedo/shared/server';
 import { eq, inArray } from 'drizzle-orm';
@@ -9,9 +9,9 @@ import type { User } from './data';
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) throw redirect(302, '/login');
 
-	if (!(await hasAccess(event.locals.user, event.params.kaderId))) {
-		throw redirect(302, '/dashboard/noAccess/' + event.params.kaderId);
-	}
+	const role = await accessRole(event.locals.user, event.params.kaderId);
+	if (!role) throw redirect(302, '/dashboard/noAccess/' + event.params.kaderId);
+	else if (role == 'member') throw redirect(302, '/app/' + event.params.kaderId);
 
 	const relations = await db
 		.select()
