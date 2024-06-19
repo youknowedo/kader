@@ -14,6 +14,13 @@
 
 	export let data;
 
+	const navItems = [
+		{ label: 'Overview', href: '/dashboard/{}' },
+		{ label: 'Members', href: '/dashboard/{}/members' },
+		{ label: 'Subscriptions', href: '/dashboard/{}/subscriptions' },
+		{ label: 'Settings', href: '/dashboard/{}/settings' }
+	];
+
 	let copied = false;
 	const qrData = createQrSvgDataUrl({
 		data: $page.url.origin + '/invite/' + $page.params.kaderId
@@ -33,90 +40,60 @@
 			/>
 
 			<div class="mb-1 mt-2">
-				<Button
-					on:click={() => goto('/dashboard')}
-					size="sm"
-					variant="ghost"
-					class="w-full justify-start text-left duration-200 {$page.url.pathname ==
-					'/dashboard/' + $page.params.kaderId
-						? ''
-						: 'text-stone-500'}"
-				>
-					Overview
-				</Button>
-				<Button
-					on:click={() => goto('/dashboard/' + $page.params.kaderId + '/members')}
-					size="sm"
-					variant="ghost"
-					class="w-full justify-start text-left duration-200 {$page.url.pathname.startsWith(
-						'/dashboard/' + $page.params.kaderId + '/members'
-					)
-						? ''
-						: 'text-stone-500'}"
-				>
-					Members
-				</Button>
-				<Button
-					on:click={() => goto('/dashboard/' + $page.params.kaderId + '/subscriptions')}
-					size="sm"
-					variant="ghost"
-					class="w-full justify-start text-left duration-200 {$page.url.pathname.startsWith(
-						'/dashboard/' + $page.params.kaderId + '/subscriptions'
-					)
-						? ''
-						: 'text-stone-500'}"
-				>
-					Subscriptions
-				</Button>
-				<Button
-					on:click={() => goto('/dashboard/' + $page.params.kaderId + '/settings')}
-					size="sm"
-					variant="ghost"
-					class="w-full justify-start text-left duration-200 {$page.url.pathname.startsWith(
-						'/dashboard/' + $page.params.kaderId + '/settings'
-					)
-						? ''
-						: 'text-stone-500'}"
-				>
-					Settings
-				</Button>
+				{#each navItems as item}
+					<Button
+						href={item.href.replace('{}', $page.params.kaderId)}
+						size="sm"
+						variant="ghost"
+						class="w-full justify-start text-left duration-200 {$page.url.pathname == item.href
+							? ''
+							: 'text-stone-500'}"
+					>
+						{item.label}
+					</Button>
+				{/each}
 			</div>
 		</div>
 
 		<div class="flex flex-col gap-4">
-			<Dialog.Root>
-				<Dialog.Trigger class="w-full {buttonVariants({ variant: 'secondary', size: 'sm' })}">
-					Invite Users
-				</Dialog.Trigger>
-				<Dialog.Content class="sm:max-w-[425px]">
-					<Dialog.Header>
-						<Dialog.Title>Invite Users</Dialog.Title>
-						<Dialog.Description></Dialog.Description>
-					</Dialog.Header>
+			<div class="flex flex-col gap-2">
+				<Button href={'/dashboard/' + $page.params.kaderId + '/qr'} variant="secondary">
+					Scan QR
+				</Button>
+				<Dialog.Root>
+					<Dialog.Trigger class="w-full {buttonVariants({})}">Invite Users</Dialog.Trigger>
+					<Dialog.Content class="sm:max-w-[425px]">
+						<Dialog.Header>
+							<Dialog.Title>Invite Users</Dialog.Title>
+							<Dialog.Description></Dialog.Description>
+						</Dialog.Header>
 
-					<!-- TODO: Create timed qr codes -->
-					<QR data="{$page.url.origin}/invite/{$page.params.kaderId}" />
+						<!-- TODO: Create timed qr codes -->
+						<QR data="{$page.url.origin}/invite/{$page.params.kaderId}" />
 
-					<Dialog.Footer>
-						<Button
-							variant="outline"
-							on:click={() => {
-								navigator.clipboard.writeText($page.url.origin + '/invite/' + $page.params.kaderId);
-								copied = true;
-								setTimeout(() => (copied = false), 20000);
-							}}
-						>
-							{#if copied}
-								<Check class="-mb-0.5 mr-1 h-4 w-4" />
-								Copied
-							{:else}
-								Copy URL
-							{/if}
-						</Button>
-						<Button href={qrData} download="KaderQR.svg">Download SVG</Button>
-					</Dialog.Footer>
-				</Dialog.Content>
-			</Dialog.Root>
+						<Dialog.Footer>
+							<Button
+								variant="outline"
+								on:click={() => {
+									navigator.clipboard.writeText(
+										$page.url.origin + '/invite/' + $page.params.kaderId
+									);
+									copied = true;
+									setTimeout(() => (copied = false), 20000);
+								}}
+							>
+								{#if copied}
+									<Check class="-mb-0.5 mr-1 h-4 w-4" />
+									Copied
+								{:else}
+									Copy URL
+								{/if}
+							</Button>
+							<Button href={qrData} download="KaderQR.svg">Download SVG</Button>
+						</Dialog.Footer>
+					</Dialog.Content>
+				</Dialog.Root>
+			</div>
 
 			<div class="flex justify-between px-4">
 				<DropdownMenu.Root>
