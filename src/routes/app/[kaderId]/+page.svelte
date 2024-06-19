@@ -1,20 +1,31 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import QR from '@svelte-put/qr/svg/QR.svelte';
+	import QRCode from 'qrcode';
 	import type { GetResponseData } from '../../api/totp/+server.js';
 
-	export let data;
+	let qrEl: HTMLCanvasElement | undefined = undefined;
 
-	let otp = data.otp;
+	let otp: GetResponseData;
+	if (browser) {
+		fetch('/api/totp').then(async (res) => {
+			otp = await res.json();
+		});
+	}
 
-	if (browser)
-		setTimeout(async () => {
-			const data: GetResponseData = await fetch('/api/totp').then((res) => res.json());
+	const generateQR = async () => {
+		if (!qrEl) return;
 
-			otp = data;
-		}, data.otp.secondsLeft * 1000);
+		const data: GetResponseData = await fetch('/api/totp').then((res) => res.json());
+		otp = data;
+		QRCode.toCanvas(qrEl, 'sample text', function (error) {
+			if (error) console.error(error);
+			console.log('success!');
+		});
+
+		setTimeout(generateQR, otp.secondsLeft * 1000);
+	};
 </script>
 
 <div class="flex h-screen items-center justify-center">
-	<QR height="10rem" data={JSON.stringify(otp)} />
+	<canvas bind:this={qrEl}></canvas>
 </div>

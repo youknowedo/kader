@@ -2,7 +2,7 @@ import { decrypt, encrypt, totp } from '$lib/server/auth';
 import type { RequestHandler } from './$types';
 
 export type GetResponseData = {
-	iv: string;
+	iv: number[];
 	data: string;
 	secondsLeft: number;
 };
@@ -22,6 +22,7 @@ export const GET: RequestHandler = async ({ locals }) => {
 		otp
 	};
 	const { iv, encryptedData } = encrypt(JSON.stringify(data));
+	console.log('Encrypted data:', encryptedData);
 
 	const body: GetResponseData = {
 		iv,
@@ -32,7 +33,7 @@ export const GET: RequestHandler = async ({ locals }) => {
 };
 
 export type PostRequestData = {
-	iv: string;
+	iv: number[];
 	data: string;
 };
 export const POST: RequestHandler = async ({ request }) => {

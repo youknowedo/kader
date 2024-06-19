@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import QrScanner from 'qr-scanner';
 
 	let videoEl: HTMLVideoElement | undefined = undefined;
