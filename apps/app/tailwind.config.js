@@ -1,4 +1,4 @@
-import { tailwind } from '@kader/ui/config';
+import tailwind from '@kader/ui/tailwind';
 
 /** @type {import('tailwindcss').Config} */
 export default {

@@ -1,4 +1,4 @@
-import { postcss } from '@kader/ui/config';
+import postcss from '@kader/ui/postcss';
 
 export default {
 	...postcss
