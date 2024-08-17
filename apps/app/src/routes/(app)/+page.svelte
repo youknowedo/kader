@@ -2,9 +2,13 @@
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
 	import { Buffer } from 'buffer';
 	import * as OTPAuth from 'otpauth';
+	import QRCode from 'qrcode';
 	import { onMount } from 'svelte';
 
+	export let data;
+
 	let token: string;
+	let qr: string;
 
 	onMount(async () => {
 		let hexQrId = localStorage.getItem('qr_id');
@@ -29,17 +33,24 @@
 			secret
 		});
 
-		const generate = () => {
+		const generate = async () => {
 			token = totp.generate() ?? token;
 			let seconds = totp.period - (Math.floor(Date.now() / 1000) % totp.period);
 
-			setTimeout(generate, seconds * 1000);
+			qr = await QRCode.toDataURL(
+				JSON.stringify({
+					user: data.userId,
+					token
+				}),
+				{ errorCorrectionLevel: 'H' }
+			);
+			console.log(qr);
 
-			return token;
+			setTimeout(generate, seconds * 1000);
 		};
 
 		generate();
 	});
 </script>
 
-{token}
+<img class="h-64" src={qr} alt="" />

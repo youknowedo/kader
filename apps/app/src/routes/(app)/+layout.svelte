@@ -5,10 +5,12 @@
 	let switching = false;
 </script>
 
-<div class="flex flex-col items-center justify-center h-screen overflow-hidden">
+<div class="flex flex-col items-center justify-center h-screen pb-32 overflow-x-hidden">
 	<slot />
 
-	<div class="relative flex items-center justify-around h-20 rounded-3xl bg-background w-96 neu-up">
+	<div
+		class="absolute flex items-center justify-around h-20 bottom-12 rounded-3xl bg-background w-96 neu-up"
+	>
 		<div
 			class="absolute w-16 h-16 rounded-full bg-primary neu-r -z-10 duration-500 {$page.url.pathname.startsWith(
 				'/explore'
