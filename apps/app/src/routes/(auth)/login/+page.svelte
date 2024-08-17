@@ -25,7 +25,9 @@
 					<Input id="password" name="password" type="password" required />
 				</div>
 				<Button type="submit" class="w-full">Login</Button>
-				<Button variant="neu" class="w-full">Login with GitHub</Button>
+				<a href={PUBLIC_SERVER_URL + '/auth/github'}>
+					<Button variant="neu" class="w-full">Login with GitHub</Button>
+				</a>
 			</div>
 			<div class="mt-4 text-sm text-center">
 				Don&apos;t have an account?

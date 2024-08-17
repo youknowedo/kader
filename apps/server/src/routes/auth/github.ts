@@ -34,6 +34,7 @@ githubRoute.get("/", async (): Promise<Response> => {
 });
 
 githubRoute.get("/callback", async ({ req }): Promise<Response> => {
+    console.log("callback");
     const cookies = parseCookies(req.header("Cookie") ?? "");
     const stateCookie = cookies.get("github_oauth_state") ?? null;
 
@@ -73,7 +74,7 @@ githubRoute.get("/callback", async ({ req }): Promise<Response> => {
             return new Response(null, {
                 status: 302,
                 headers: {
-                    Location: "/",
+                    Location: process.env.APP_URL + "/",
                     "Set-Cookie": sessionCookie.serialize(),
                 },
             });
@@ -96,7 +97,7 @@ githubRoute.get("/callback", async ({ req }): Promise<Response> => {
         return new Response(null, {
             status: 302,
             headers: {
-                Location: "/",
+                Location: process.env.APP_URL + "/",
                 "Set-Cookie": sessionCookie.serialize(),
             },
         });

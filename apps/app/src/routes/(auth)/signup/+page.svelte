@@ -35,7 +35,9 @@
 					<Input id="password" name="password" type="password" />
 				</div>
 				<Button type="submit" class="w-full">Create an account</Button>
-				<Button variant="outline" class="w-full">Sign up with GitHub</Button>
+				<a href={PUBLIC_SERVER_URL + '/auth/github'}>
+					<Button variant="outline" class="w-full">Sign up with GitHub</Button>
+				</a>
 			</div>
 			<div class="mt-4 text-sm text-center">
 				Already have an account?
