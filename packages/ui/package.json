@@ -2,6 +2,7 @@
 	"name": "@kader/ui",
 	"version": "0.0.1",
 	"scripts": {
+		"dev": "bun run build --watch",
 		"build": "vite build && npm run package",
 		"preview": "vite preview",
 		"package": "svelte-kit sync && svelte-package && publint",
@@ -15,7 +16,8 @@
 		".": "./dist/index.js",
 		"./tailwind": "./tailwind.config.js",
 		"./postcss": "./postcss.config.js",
-		"./styles.css": "./src/styles.css"
+		"./styles.css": "./src/styles.css",
+		"./components": "./dist/components/index.js"
 	},
 	"files": [
 		"src",

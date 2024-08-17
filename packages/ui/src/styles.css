@@ -53,7 +53,7 @@
 		--input: 0 0% 14.9%;
 
 		--primary: 0 100% 50%;
-		--primary-foreground: 0 0% 7%;
+		--primary-foreground: 0 0% 98%;
 
 		--secondary: 0 0% 14.9%;
 		--secondary-foreground: 0 0% 98%;
@@ -79,6 +79,11 @@
 
 .neu-up {
 	filter: drop-shadow(-4px -4px 8px rgba(119, 119, 119, 0.25)) drop-shadow(4px 4px 8px black);
+}
+.neu-down,
+.hover\:neu-down:hover,
+.active\:neu-down:active {
+	filter: drop-shadow(-4px -4px 8px black) drop-shadow(4px 4px 8px rgba(119, 119, 119, 0.25));
 }
 
 .neu-r {
