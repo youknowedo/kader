@@ -42,9 +42,13 @@ emailRoute.post("/signup", async ({ req }) => {
     });
     const userId = generateIdFromEntropySize(10); // 16 characters long
 
+    const qrId = crypto.getRandomValues(new Uint8Array(20));
+    let hexQrId = Buffer.from(qrId).toString("hex");
+
     try {
         await db.insert(userTable).values({
             id: userId,
+            hexQrId: hexQrId,
             username,
             email,
             password_hash: passwordHash,

@@ -8,6 +8,13 @@
       "when": 1723904319758,
       "tag": "0000_aromatic_franklin_storm",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1723933050210,
+      "tag": "0001_secret_blob",
+      "breakpoints": true
     }
   ]
 }

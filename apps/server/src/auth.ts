@@ -12,6 +12,7 @@ export const lucia = new Lucia(adapter, {
     getUserAttributes: (attributes) => {
         return {
             email: attributes.email,
+            hexQrId: attributes.hexQrId,
             githubId: attributes.github_id,
             username: attributes.username,
         };
@@ -27,6 +28,7 @@ declare module "lucia" {
     interface Register {
         Lucia: typeof lucia;
         DatabaseUserAttributes: {
+            hexQrId: string;
             email: string;
             username: string;
             github_id: number;

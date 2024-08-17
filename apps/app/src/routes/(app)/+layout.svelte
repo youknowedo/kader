@@ -5,7 +5,7 @@
 	let switching = false;
 </script>
 
-<div class="flex items-center justify-center h-screen">
+<div class="flex flex-col items-center justify-center h-screen overflow-hidden">
 	<slot />
 
 	<div class="relative flex items-center justify-around h-20 rounded-3xl bg-background w-96 neu-up">
