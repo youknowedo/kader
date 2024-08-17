@@ -1,14 +1,15 @@
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
+import { getCookie } from "hono/cookie";
 import { lucia } from "../auth";
 import { db } from "../db";
 import { userTable } from "../db/schema";
 
 export const idRoute = new Hono();
 
-idRoute.get("/", async ({ req, res }) => {
+idRoute.get("/", async (c) => {
     const { session, user } = await lucia.validateSession(
-        lucia.readSessionCookie(req.header().Cookie) ?? ""
+        getCookie(c, "auth_session") ?? ""
     );
     console.log("session", session);
     if (!session) {

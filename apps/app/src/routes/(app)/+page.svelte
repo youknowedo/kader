@@ -1,32 +1,45 @@
 <script lang="ts">
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
+	import { Buffer } from 'buffer';
+	import * as OTPAuth from 'otpauth';
 	import { onMount } from 'svelte';
 
-	let qrId: Uint8Array;
+	let token: string;
 
-	onMount(() => {
-		const qr_id = localStorage.getItem('qr_id');
-		if (!qr_id) {
-			fetch(PUBLIC_SERVER_URL + '/id')
-				.then((response) => {
-					if (response.ok) {
-						return response.text();
-					} else {
-						throw new Error('Failed to fetch QR ID');
-					}
-				})
-				.then((qr_id) => {
-					localStorage.setItem('qr_id', qr_id);
-					qrId = Uint8Array.from(Buffer.from(qr_id, 'hex'));
-					console.log(qrId);
-				})
-				.catch((error) => {
-					console.error(error);
-				});
+	onMount(async () => {
+		let hexQrId = localStorage.getItem('qr_id');
+		let qrId: Uint8Array;
+		if (!hexQrId) {
+			const res = await fetch(PUBLIC_SERVER_URL + '/id');
+			if (res.ok) {
+				hexQrId = await res.text();
+			} else {
+				throw new Error('Failed to fetch QR ID');
+			}
+
+			localStorage.setItem('qr_id', hexQrId);
+			qrId = Uint8Array.from(Buffer.from(hexQrId, 'hex'));
 		} else qrId = Uint8Array.from(Buffer.from(localStorage.getItem('qr_id')!, 'hex'));
 
-		console.log(qrId);
+		let secret = new OTPAuth.Secret({ buffer: qrId.buffer });
+		let totp = new OTPAuth.TOTP({
+			algorithm: 'SHA1',
+			digits: 6,
+			period: 30,
+			secret
+		});
+
+		const generate = () => {
+			token = totp.generate() ?? token;
+			let seconds = totp.period - (Math.floor(Date.now() / 1000) % totp.period);
+
+			setTimeout(generate, seconds * 1000);
+
+			return token;
+		};
+
+		generate();
 	});
 </script>
 
-{qrId}
+{token}
