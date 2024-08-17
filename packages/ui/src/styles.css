@@ -86,3 +86,19 @@
 		inset -4px -4px 8px rgba(255, 255, 255, 0.3),
 		inset 4px 4px 8px rgba(0, 0, 0, 0.4);
 }
+
+@keyframes elongate {
+	0% {
+		@apply w-16 ml-0;
+	}
+	50% {
+		@apply w-24 -ml-4;
+	}
+	100% {
+		@apply w-16 ml-0;
+	}
+}
+
+.elongate {
+	animation: elongate 0.5s;
+}
