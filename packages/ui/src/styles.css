@@ -19,7 +19,7 @@
 		--border: 0 0% 89.8%;
 		--input: 0 0% 89.8%;
 
-		--primary: 0 0% 7%;
+		--primary: 0 100% 50%;
 		--primary-foreground: 0 0% 98%;
 
 		--secondary: 0 0% 96.1%;
@@ -52,7 +52,7 @@
 		--border: 0 0% 14.9%;
 		--input: 0 0% 14.9%;
 
-		--primary: 0 0% 98%;
+		--primary: 0 100% 50%;
 		--primary-foreground: 0 0% 7%;
 
 		--secondary: 0 0% 14.9%;
@@ -79,4 +79,10 @@
 
 .neu-up {
 	filter: drop-shadow(-4px -4px 8px rgba(119, 119, 119, 0.25)) drop-shadow(4px 4px 8px black);
+}
+
+.neu-r {
+	box-shadow:
+		inset -4px -4px 8px rgba(255, 255, 255, 0.3),
+		inset 4px 4px 8px rgba(0, 0, 0, 0.4);
 }
