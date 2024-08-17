@@ -1,11 +1,4 @@
-import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
-
-import { drizzle } from "drizzle-orm/node-postgres";
 import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { Pool } from "pg";
-
-const pool = new Pool();
-export const db = drizzle(pool);
 
 export const userTable = pgTable("user", {
     id: text("id").primaryKey(),
@@ -25,9 +18,3 @@ export const sessionTable = pgTable("session", {
         mode: "date",
     }).notNull(),
 });
-
-export const adapter = new DrizzlePostgreSQLAdapter(
-    db,
-    sessionTable,
-    userTable
-);

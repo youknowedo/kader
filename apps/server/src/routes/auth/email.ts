@@ -3,7 +3,8 @@ import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { generateIdFromEntropySize } from "lucia";
 import { lucia } from "../../auth";
-import { db, userTable } from "../../db";
+import { db } from "../../db";
+import { userTable } from "../../db/schema";
 
 export const emailRoute = new Hono();
 
@@ -122,7 +123,7 @@ emailRoute.post("/login", async ({ req }) => {
     return new Response(null, {
         status: 302,
         headers: {
-            Location: "/",
+            Location: process.env.APP_URL + "/",
             "Set-Cookie": sessionCookie.serialize(),
         },
     });

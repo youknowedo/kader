@@ -5,7 +5,8 @@ import { Hono } from "hono";
 import { generateIdFromEntropySize } from "lucia";
 import { parseCookies, serializeCookie } from "oslo/cookie";
 import { github, lucia } from "../../auth";
-import { db, userTable } from "../../db";
+import { db } from "../../db";
+import { userTable } from "../../db/schema";
 
 interface GitHubUserResult {
     id: number;
