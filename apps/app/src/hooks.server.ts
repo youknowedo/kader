@@ -3,7 +3,6 @@ import type { Handle } from '@sveltejs/kit';
 import { type Session, type User } from 'lucia';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	console.log('hook');
 	const sessionId = event.cookies.get('auth_session');
 	if (!sessionId) {
 		event.locals.user = null;

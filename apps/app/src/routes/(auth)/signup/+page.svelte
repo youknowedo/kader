@@ -15,24 +15,24 @@
 				<div class="grid grid-cols-2 gap-4">
 					<div class="grid gap-2">
 						<Label for="first-name">First name</Label>
-						<Input id="first-name" placeholder="Max" required />
+						<Input id="first-name" name="first-name" placeholder="Max" required />
 					</div>
 					<div class="grid gap-2">
 						<Label for="last-name">Last name</Label>
-						<Input id="last-name" placeholder="Robinson" required />
+						<Input id="last-name" name="last-name" placeholder="Robinson" required />
 					</div>
 				</div>
 				<div class="grid gap-2">
 					<Label for="username">Username</Label>
-					<Input id="username" placeholder="moot" required />
+					<Input id="username" name="username" placeholder="moot" required />
 				</div>
 				<div class="grid gap-2">
 					<Label for="email">Email</Label>
-					<Input id="email" type="email" placeholder="m@example.com" required />
+					<Input id="email" name="email" type="email" placeholder="m@example.com" required />
 				</div>
 				<div class="grid gap-2">
 					<Label for="password">Password</Label>
-					<Input id="password" type="password" />
+					<Input id="password" name="password" type="password" />
 				</div>
 				<Button type="submit" class="w-full">Create an account</Button>
 				<Button variant="outline" class="w-full">Sign up with GitHub</Button>

@@ -55,7 +55,7 @@ emailRoute.post("/signup", async ({ req }) => {
         return new Response(null, {
             status: 302,
             headers: {
-                Location: "/",
+                Location: process.env.APP_URL + "/",
                 "Set-Cookie": sessionCookie.serialize(),
             },
         });
