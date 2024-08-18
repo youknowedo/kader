@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { PUBLIC_SERVER_URL } from '$env/static/public';
+
 	const onMobile = () => {
 		let check = false;
 		const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
@@ -15,11 +17,13 @@
 </script>
 
 {#if onMobile()}
-	<label for="cameraFileInput">
-		<span class="btn">Open camera</span>
+	<form action="{PUBLIC_SERVER_URL}/profile/picture" method="post">
+		<label for="cameraFileInput">
+			<span class="btn">Open camera</span>
 
-		<input id="cameraFileInput" type="file" accept="image/*" capture="user" />
-	</label>
+			<input class="hidden" name="pfp" type="file" accept="image/*" capture="user" />
+		</label>
+	</form>
 {:else}
 	<p>
 		Profile picture upload only available on mobile. Please login on your phone and continue from
@@ -28,4 +32,4 @@
 {/if}
 
 <!-- displays the picture uploaded from the native camera -->
-<img id="pictureFromCamera" />
+<img id="pictureFromCamera" alt="" />
