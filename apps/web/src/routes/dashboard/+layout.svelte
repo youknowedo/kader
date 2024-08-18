@@ -1,24 +1,12 @@
 <script lang="ts">
-	import LineChart from 'lucide-svelte/icons/chart-line';
 	import Home from 'lucide-svelte/icons/house';
-	import Package from 'lucide-svelte/icons/package';
-	import Package2 from 'lucide-svelte/icons/package-2';
 	import PanelLeft from 'lucide-svelte/icons/panel-left';
-	import Search from 'lucide-svelte/icons/search';
 	import Settings from 'lucide-svelte/icons/settings';
-	import ShoppingCart from 'lucide-svelte/icons/shopping-cart';
-	import UsersRound from 'lucide-svelte/icons/users-round';
 
 	import { page } from '$app/stores';
 	import { Breadcrumb, Button, DropdownMenu, Input, Sheet, Tooltip } from '@kader/ui/components';
 
-	const menuItems = [
-		{ icon: Home, name: 'Dashboard', href: '/dashboard' },
-		{ icon: ShoppingCart, name: 'Orders', href: '/dashboard/orders' },
-		{ icon: Package, name: 'Products', href: '/dashboard/products' },
-		{ icon: UsersRound, name: 'Customers', href: '/dashboard/customers' },
-		{ icon: LineChart, name: 'Settings', href: '/dashboard/settings' }
-	];
+	const menuItems = [{ icon: Home, name: 'Dashboard', href: '/dashboard' }];
 
 	const breadcrumbs = $page.url.pathname
 		.split('/')
@@ -43,7 +31,7 @@
 				href="##"
 				class="flex items-center justify-center gap-2 text-lg font-semibold rounded-full bg-primary text-primary-foreground group h-9 w-9 shrink-0 md:h-8 md:w-8 md:text-base"
 			>
-				<Package2 class="w-4 h-4 transition-all group-hover:scale-110" />
+				<img class="w-4 h-4 transition-all group-hover:scale-110" src="/logo.svg" alt="" />
 				<span class="sr-only">Acme Inc</span>
 			</a>
 			{#each menuItems as { icon, name, href }}
@@ -70,8 +58,11 @@
 			<Tooltip.Root>
 				<Tooltip.Trigger asChild let:builder>
 					<a
-						href="##"
-						class="flex items-center justify-center transition-colors rounded-lg text-muted-foreground hover:text-foreground h-9 w-9 md:h-8 md:w-8"
+						href="/dashboard/settings"
+						class="flex items-center justify-center transition-colors rounded-lg text-muted-foreground hover:text-foreground h-9 w-9 md:h-8 md:w-8 {$page
+							.url.pathname === '/dashboard/settings'
+							? 'bg-accent text-accent-foreground'
+							: 'text-muted-foreground'}}"
 						use:builder.action
 						{...builder}
 					>
@@ -85,7 +76,7 @@
 	</aside>
 	<div class="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
 		<header
-			class="sticky top-0 z-30 flex items-center gap-4 px-4 border-b bg-background h-14 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6"
+			class="sticky top-0 z-30 flex items-center justify-between gap-4 px-4 border-b bg-background h-14 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6"
 		>
 			<Sheet.Root>
 				<Sheet.Trigger asChild let:builder>
@@ -95,44 +86,31 @@
 					</Button>
 				</Sheet.Trigger>
 				<Sheet.Content side="left" class="sm:max-w-xs">
-					<nav class="grid gap-6 text-lg font-medium">
+					<nav class="flex flex-col justify-between h-full">
+						<div class="grid gap-6 text-lg font-medium">
+							<a
+								href="##"
+								class="flex items-center justify-center w-10 h-10 gap-2 text-lg font-semibold rounded-full bg-primary text-primary-foreground group shrink-0 md:text-base"
+							>
+								<img class="w-5 h-5 transition-all group-hover:scale-110" src="/logo.svg" alt="" />
+								<span class="sr-only">Acme Inc</span>
+							</a>
+							{#each menuItems as { icon, name, href }}
+								<a
+									{href}
+									class="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
+								>
+									<svelte:component this={icon} class="w-5 h-5" />
+									{name}
+								</a>
+							{/each}
+						</div>
+
 						<a
-							href="##"
-							class="flex items-center justify-center w-10 h-10 gap-2 text-lg font-semibold rounded-full bg-primary text-primary-foreground group shrink-0 md:text-base"
-						>
-							<Package2 class="w-5 h-5 transition-all group-hover:scale-110" />
-							<span class="sr-only">Acme Inc</span>
-						</a>
-						<a
-							href="##"
+							href="/dahsboard/settings"
 							class="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
 						>
-							<Home class="w-5 h-5" />
-							Dashboard
-						</a>
-						<a href="##" class="text-foreground flex items-center gap-4 px-2.5">
-							<ShoppingCart class="w-5 h-5" />
-							Orders
-						</a>
-						<a
-							href="##"
-							class="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
-						>
-							<Package class="w-5 h-5" />
-							Products
-						</a>
-						<a
-							href="##"
-							class="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
-						>
-							<UsersRound class="w-5 h-5" />
-							Customers
-						</a>
-						<a
-							href="##"
-							class="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
-						>
-							<LineChart class="w-5 h-5" />
+							<Settings class="w-5 h-5" />
 							Settings
 						</a>
 					</nav>
@@ -150,14 +128,6 @@
 					{/each}
 				</Breadcrumb.List>
 			</Breadcrumb.Root>
-			<div class="relative flex-1 ml-auto md:grow-0">
-				<Search class="text-muted-foreground absolute left-2.5 top-2.5 h-4 w-4" />
-				<Input
-					type="search"
-					placeholder="Search..."
-					class="bg-background w-full rounded-lg pl-8 md:w-[200px] lg:w-[336px]"
-				/>
-			</div>
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger asChild let:builder>
 					<Button
