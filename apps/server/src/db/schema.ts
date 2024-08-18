@@ -1,11 +1,21 @@
-import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+    boolean,
+    integer,
+    pgTable,
+    text,
+    timestamp,
+} from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("user", {
     id: text("id").primaryKey(),
-    hexQrId: text("qr_id").unique(),
+    hex_qr_id: text("qr_id").unique(),
+    github_id: integer("github_id").unique(),
+
+    completed_profile: boolean("completed_profile").notNull().default(false),
+    full_name: text("full_name"),
+
     username: text("username").unique().notNull(),
     email: text("email").unique().notNull(),
-    github_id: integer("github_id").unique(),
     password_hash: text("password_hash"),
 });
 

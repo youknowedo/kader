@@ -17,18 +17,18 @@ idRoute.get("/", async (c) => {
         });
     }
 
-    if (!user.hexQrId) {
+    if (!user.hex_qr_id) {
         // Add a new QR ID to the user
         const qrId = crypto.getRandomValues(new Uint8Array(20));
-        user.hexQrId = Buffer.from(qrId).toString("hex");
+        user.hex_qr_id = Buffer.from(qrId).toString("hex");
 
         await db
             .update(userTable)
             .set({
-                hexQrId: user.hexQrId,
+                hex_qr_id: user.hex_qr_id,
             })
             .where(eq(userTable.id, user.id));
     }
 
-    return new Response(user.hexQrId);
+    return new Response(user.hex_qr_id);
 });

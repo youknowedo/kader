@@ -1,0 +1,1 @@
+ALTER TABLE "user" ADD COLUMN "completed_profile" boolean DEFAULT false NOT NULL;

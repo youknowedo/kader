@@ -12,18 +12,18 @@
 	onMount(async () => {
 		if (!$user) return;
 
-		let hexQrId = localStorage.getItem('qr_id');
+		let hex_qr_id = localStorage.getItem('qr_id');
 		let qrId: Uint8Array;
-		if (!hexQrId) {
+		if (!hex_qr_id) {
 			const res = await fetch(PUBLIC_SERVER_URL + '/id');
 			if (res.ok) {
-				hexQrId = await res.text();
+				hex_qr_id = await res.text();
 			} else {
 				throw new Error('Failed to fetch QR ID');
 			}
 
-			localStorage.setItem('qr_id', hexQrId);
-			qrId = Uint8Array.from(Buffer.from(hexQrId, 'hex'));
+			localStorage.setItem('qr_id', hex_qr_id);
+			qrId = Uint8Array.from(Buffer.from(hex_qr_id, 'hex'));
 		} else qrId = Uint8Array.from(Buffer.from(localStorage.getItem('qr_id')!, 'hex'));
 
 		let secret = new OTPAuth.Secret({ buffer: qrId.buffer });

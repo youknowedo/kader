@@ -81,11 +81,11 @@ githubRoute.get("/callback", async ({ req }): Promise<Response> => {
 
         const userId = generateIdFromEntropySize(10); // 16 characters long
         const qrId = crypto.getRandomValues(new Uint8Array(20));
-        let hexQrId = Buffer.from(qrId).toString("hex");
+        let hex_qr_id = Buffer.from(qrId).toString("hex");
 
         await db.insert(userTable).values({
             id: userId,
-            hexQrId: hexQrId,
+            hex_qr_id: hex_qr_id,
             email: githubUserResult.email,
             username: githubUserResult.login,
             github_id: githubUserResult.id,

@@ -1,8 +1,14 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
-	import { Button } from '@kader/ui/components';
+	import { user } from '$lib/stores';
+	import { Button, Input, Label, Separator } from '@kader/ui/components';
+	import { redirect } from '@sveltejs/kit';
+	import { stringify } from 'postcss';
 
 	let pfp: string | null = null;
+	let fullName: string | null = null;
 
 	const onMobile = () => {
 		let check = false;
@@ -19,24 +25,39 @@
 	};
 </script>
 
+{JSON.stringify($user)}
+
 <!-- {#if onMobile()} -->
 <form
 	class="flex flex-col h-screen py-12 m-auto max-w-80"
-	action="{PUBLIC_SERVER_URL}/profile/picture"
+	action="{PUBLIC_SERVER_URL}/profile"
 	method="post"
 	enctype="multipart/form-data"
 >
-	<label for="picture" class="flex-1 neu-up">
-		{#if pfp}
-			<img src={pfp} alt="Profile" class="w-40 h-40 m-auto rounded-full" />
-		{:else}
-			<div
-				class="flex items-center justify-center w-40 h-40 m-auto text-center rounded-full bg-background"
-			>
-				Choose a picture
-			</div>
-		{/if}
-	</label>
+	<div class="flex-1">
+		<label for="picture" class=" neu-up">
+			{#if pfp}
+				<img src={pfp} alt="Profile" class="w-40 h-40 m-auto rounded-full" />
+			{:else}
+				<div
+					class="flex items-center justify-center w-40 h-40 m-auto text-center rounded-full bg-background"
+				>
+					Choose a picture
+				</div>
+			{/if}
+		</label>
+
+		<Separator class="box-content w-64 h-0.5 mx-auto my-12 rounded-full bg-background" />
+
+		<Label for="full_name">Full Name</Label>
+		<Input
+			id="full_name"
+			name="full_name"
+			placeholder="Max Verstappen"
+			bind:value={fullName}
+			required
+		/>
+	</div>
 
 	<input
 		on:change={(e) => {
@@ -55,11 +76,16 @@
 		type="file"
 		accept="image/*"
 		capture="user"
+		required
 	/>
 
-	<Button class="box-border w-full h-20 text-2xl rounded-3xl neu-r neu-up" type="submit"
-		>Send</Button
+	<Button
+		disabled={!pfp || fullName == ''}
+		class="box-border w-full h-20 text-2xl rounded-3xl neu-r neu-up"
+		type="submit"
 	>
+		Send
+	</Button>
 </form>
 <!-- {:else}
 	<p>

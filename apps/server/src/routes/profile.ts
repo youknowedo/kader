@@ -1,7 +1,10 @@
+import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { getCookie } from "hono/cookie";
 import { Client } from "minio";
 import { lucia } from "../auth";
+import { db } from "../db";
+import { userTable } from "../db/schema";
 import sharp = require("sharp");
 
 export const profileRoute = new Hono();
@@ -25,7 +28,7 @@ minio.bucketExists(process.env.MINIO_BUCKET!).then((exists) => {
     }
 }, console.error);
 
-profileRoute.post("/picture", async (c) => {
+profileRoute.post("/", async (c) => {
     const { session, user } = await lucia.validateSession(
         getCookie(c, "auth_session") ?? ""
     );
@@ -35,11 +38,18 @@ profileRoute.post("/picture", async (c) => {
         });
     }
 
-    // Update the user's profile picture
     const formData = await c.req.formData();
+
     const picture: string | Blob | null = formData.get("picture");
     if (!picture || typeof picture === "string") {
         return new Response("No picture found", {
+            status: 400,
+        });
+    }
+
+    const full_name = formData.get("full_name");
+    if (!full_name || typeof full_name !== "string") {
+        return new Response("No full name found", {
             status: 400,
         });
     }
@@ -56,6 +66,14 @@ profileRoute.post("/picture", async (c) => {
             "Content-Type": "image/webp",
         }
     );
+
+    await db
+        .update(userTable)
+        .set({
+            completed_profile: true,
+            full_name,
+        })
+        .where(eq(userTable.id, user.id));
 
     return new Response(null, {
         status: 302,

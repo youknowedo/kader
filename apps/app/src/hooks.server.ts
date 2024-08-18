@@ -28,9 +28,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 declare module 'lucia' {
 	interface User {
-		hexQrId: string;
+		hex_qr_id: string;
 		email: string;
 		username: string;
 		github_id: number;
+		completed_profile: boolean;
 	}
 }
