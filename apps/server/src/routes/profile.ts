@@ -14,10 +14,16 @@ const minio = new Client({
     useSSL: false,
 });
 
-console.log("MINIO_ENDPOINT: " + process.env.MINIO_ENDPOINT);
-console.log("MINIO_PORT: " + process.env.MINIO_PORT);
-console.log("MINIO_ACCESS_KEY: " + process.env.MINIO_ACCESS_KEY);
-console.log("MINIO_SECRET_KEY: " + process.env.MINIO_SECRET_KEY);
+minio.bucketExists(process.env.MINIO_BUCKET!).then((exists) => {
+    if (exists) {
+        console.log("Bucket " + process.env.MINIO_BUCKET + " exists.");
+    } else {
+        console.log("Bucket " + process.env.MINIO_BUCKET + " does not exist.");
+        return new Response("Bucket does not exist", {
+            status: 500,
+        });
+    }
+}, console.error);
 
 profileRoute.post("/picture", async (c) => {
     const { session, user } = await lucia.validateSession(
@@ -32,24 +38,12 @@ profileRoute.post("/picture", async (c) => {
     // Update the user's profile picture
     const formData = await c.req.formData();
     const picture: string | Blob | null = formData.get("picture");
-    formData.forEach((value, key) => console.log(key, value));
     if (!picture || typeof picture === "string") {
         return new Response("No picture found", {
             status: 400,
         });
     }
 
-    const exists = await minio.bucketExists(process.env.MINIO_BUCKET!);
-    if (exists) {
-        console.log("Bucket " + process.env.MINIO_BUCKET + " exists.");
-    } else {
-        console.log("Bucket " + process.env.MINIO_BUCKET + " does not exist.");
-        return new Response("Bucket does not exist", {
-            status: 500,
-        });
-    }
-
-    console.log("Picture: " + picture);
     const pictureBuffer = await picture.arrayBuffer();
     const buffer = await sharp(pictureBuffer).webp().toBuffer();
 
@@ -64,7 +58,7 @@ profileRoute.post("/picture", async (c) => {
     );
 
     return new Response(null, {
-        status: 200,
+        status: 302,
         headers: {
             Location: process.env.APP_URL + "/",
         },

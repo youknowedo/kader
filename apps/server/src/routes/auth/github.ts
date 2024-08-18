@@ -34,7 +34,6 @@ githubRoute.get("/", async (): Promise<Response> => {
 });
 
 githubRoute.get("/callback", async ({ req }): Promise<Response> => {
-    console.log("callback");
     const cookies = parseCookies(req.header("Cookie") ?? "");
     const stateCookie = cookies.get("github_oauth_state") ?? null;
 
@@ -102,7 +101,6 @@ githubRoute.get("/callback", async ({ req }): Promise<Response> => {
             },
         });
     } catch (e) {
-        console.log(e);
         if (e instanceof OAuth2RequestError) {
             // bad verification code, invalid credentials, etc
             return new Response(null, {

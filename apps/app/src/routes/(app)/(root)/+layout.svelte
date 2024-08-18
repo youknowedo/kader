@@ -1,0 +1,58 @@
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+
+	let switching = false;
+</script>
+
+<div class="flex flex-col items-center justify-center h-screen pb-32 overflow-x-hidden">
+	<slot />
+
+	<div
+		class="absolute flex items-center justify-around h-20 bottom-12 rounded-3xl bg-background w-80 neu-up"
+	>
+		<div
+			class="absolute w-16 h-16 rounded-full bg-primary neu-r -z-10 duration-500 {$page.url.pathname.startsWith(
+				'/explore'
+			)
+				? 'mr-[13.25rem]'
+				: $page.url.pathname.startsWith('/profile')
+					? '-mr-[13.25rem]'
+					: 'mr-0'} {switching ? 'elongate' : ''}"
+		/>
+
+		<button
+			on:click={() => {
+				switching = true;
+				setTimeout(() => {
+					switching = false;
+				}, 500);
+				goto('/explore');
+			}}
+		>
+			<img class="w-6 h-6 m-6" src="/explore.svg" alt="" />
+		</button>
+		<button
+			on:click={() => {
+				switching = true;
+				setTimeout(() => {
+					switching = false;
+				}, 500);
+				goto('/');
+			}}
+		>
+			<img class="w-6 h-6 m-6" src="/logo.svg" alt="" />
+		</button>
+		<button
+			on:click={() => {
+				switching = true;
+				setTimeout(() => {
+					switching = false;
+				}, 500);
+				goto('/profile');
+			}}
+		>
+			<img class="w-6 h-6 m-6" src="/profile.svg" alt="" />
+		</button>
+	</div>
+</div>

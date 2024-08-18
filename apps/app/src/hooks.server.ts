@@ -25,3 +25,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.session = session;
 	return resolve(event);
 };
+
+declare module 'lucia' {
+	interface User {
+		hexQrId: string;
+		email: string;
+		username: string;
+		github_id: number;
+	}
+}

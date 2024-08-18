@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
+	import { Button } from '@kader/ui/components';
+
+	let pfp: string | null = null;
 
 	const onMobile = () => {
 		let check = false;
@@ -17,12 +20,46 @@
 </script>
 
 <!-- {#if onMobile()} -->
-<form action="{PUBLIC_SERVER_URL}/profile/picture" method="post" enctype="multipart/form-data">
-	<label for="picture">
-		<span class="btn">Open camera</span>
+<form
+	class="flex flex-col h-screen py-12 m-auto max-w-80"
+	action="{PUBLIC_SERVER_URL}/profile/picture"
+	method="post"
+	enctype="multipart/form-data"
+>
+	<label for="picture" class="flex-1 neu-up">
+		{#if pfp}
+			<img src={pfp} alt="Profile" class="w-40 h-40 m-auto rounded-full" />
+		{:else}
+			<div
+				class="flex items-center justify-center w-40 h-40 m-auto text-center rounded-full bg-background"
+			>
+				Choose a picture
+			</div>
+		{/if}
 	</label>
-	<input class="hidden" id="picture" name="picture" type="file" accept="image/*" capture="user" />
-	<button type="submit">Send</button>
+
+	<input
+		on:change={(e) => {
+			var file = e.currentTarget.files?.[0];
+			if (!file) return;
+
+			var reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onloadend = function () {
+				pfp = reader.result?.toString() ?? null;
+			};
+		}}
+		class="hidden"
+		id="picture"
+		name="picture"
+		type="file"
+		accept="image/*"
+		capture="user"
+	/>
+
+	<Button class="box-border w-full h-20 text-2xl rounded-3xl neu-r neu-up" type="submit"
+		>Send</Button
+	>
 </form>
 <!-- {:else}
 	<p>
@@ -30,6 +67,3 @@
 		there.
 	</p>
 {/if} -->
-
-<!-- displays the picture uploaded from the native camera -->
-<img id="pictureFromCamera" alt="" />

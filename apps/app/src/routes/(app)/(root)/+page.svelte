@@ -1,16 +1,17 @@
 <script lang="ts">
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
+	import { user } from '$lib/stores.js';
 	import { Buffer } from 'buffer';
 	import * as OTPAuth from 'otpauth';
 	import QRCode from 'qrcode';
 	import { onMount } from 'svelte';
 
-	export let data;
-
 	let token: string;
 	let qr: string;
 
 	onMount(async () => {
+		if (!$user) return;
+
 		let hexQrId = localStorage.getItem('qr_id');
 		let qrId: Uint8Array;
 		if (!hexQrId) {
@@ -39,12 +40,11 @@
 
 			qr = await QRCode.toDataURL(
 				JSON.stringify({
-					user: data.userId,
+					user: $user.id,
 					token
 				}),
 				{ errorCorrectionLevel: 'H' }
 			);
-			console.log(qr);
 
 			setTimeout(generate, seconds * 1000);
 		};
