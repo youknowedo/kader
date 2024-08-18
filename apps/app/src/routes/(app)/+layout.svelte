@@ -6,4 +6,6 @@
 	user.set(data.user);
 </script>
 
-<slot />
+<div class="mx-auto max-w-80">
+	<slot />
+</div>
