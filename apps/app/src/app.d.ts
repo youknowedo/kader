@@ -4,7 +4,7 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			user: import('lucia').User | null;
+			user: (import('lucia').User & { pfp: string }) | null;
 			session: import('lucia').Session | null;
 		}
 		// interface PageData {}

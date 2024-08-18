@@ -16,6 +16,7 @@ export const lucia = new Lucia(adapter, {
             github_id: attributes.github_id,
             username: attributes.username,
             completed_profile: attributes.completed_profile,
+            full_name: attributes.full_name,
         };
     },
 });
@@ -34,6 +35,7 @@ declare module "lucia" {
             username: string;
             github_id: number;
             completed_profile: boolean;
+            full_name: string;
         };
     }
 }

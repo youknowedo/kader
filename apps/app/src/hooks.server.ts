@@ -19,9 +19,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 			'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
 		}
 	});
-	const { session, user }: { user: User; session: Session } = await validateResponse.json();
+	const { session, user, pfp }: { user: User; session: Session; pfp: string } =
+		await validateResponse.json();
 
-	event.locals.user = user;
+	event.locals.user = { ...user, pfp };
 	event.locals.session = session;
 	return resolve(event);
 };
@@ -33,5 +34,6 @@ declare module 'lucia' {
 		username: string;
 		github_id: number;
 		completed_profile: boolean;
+		full_name: string;
 	}
 }

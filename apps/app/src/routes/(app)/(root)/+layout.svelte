@@ -5,7 +5,7 @@
 	let switching = false;
 </script>
 
-<div class="flex flex-col items-center justify-center h-screen pb-32 overflow-x-hidden">
+<div class="flex flex-col items-center h-screen pt-12 pb-32 overflow-x-hidden">
 	<slot />
 
 	<div

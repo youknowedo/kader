@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { lucia } from "../../auth";
+import { minio } from "../../storage";
 
 export const validateRoute = new Hono();
 
@@ -26,7 +27,7 @@ validateRoute.post("/session", async ({ req, res }) => {
             },
         });
     }
-    if (!session) {
+    if (!session || !user) {
         const sessionCookie = lucia.createBlankSessionCookie();
         return new Response(responseData, {
             status: 200,
@@ -36,5 +37,12 @@ validateRoute.post("/session", async ({ req, res }) => {
         });
     }
 
-    return new Response(JSON.stringify({ session, user }));
+    const pfp = await minio.presignedUrl(
+        "GET",
+        process.env.MINIO_BUCKET!,
+        user.id + ".webp",
+        24 * 60 * 60
+    );
+
+    return new Response(JSON.stringify({ session, user, pfp }));
 });

@@ -1,32 +1,13 @@
 import { eq } from "drizzle-orm";
 import { Hono } from "hono";
 import { getCookie } from "hono/cookie";
-import { Client } from "minio";
 import { lucia } from "../auth";
 import { db } from "../db";
 import { userTable } from "../db/schema";
+import { minio } from "../storage";
 import sharp = require("sharp");
 
 export const profileRoute = new Hono();
-
-const minio = new Client({
-    endPoint: process.env.MINIO_ENDPOINT!,
-    port: +(process.env.MINIO_PORT ?? 9000),
-    accessKey: process.env.MINIO_ACCESS_KEY!,
-    secretKey: process.env.MINIO_SECRET_KEY!,
-    useSSL: false,
-});
-
-minio.bucketExists(process.env.MINIO_BUCKET!).then((exists) => {
-    if (exists) {
-        console.log("Bucket " + process.env.MINIO_BUCKET + " exists.");
-    } else {
-        console.log("Bucket " + process.env.MINIO_BUCKET + " does not exist.");
-        return new Response("Bucket does not exist", {
-            status: 500,
-        });
-    }
-}, console.error);
 
 profileRoute.post("/", async (c) => {
     const { session, user } = await lucia.validateSession(
