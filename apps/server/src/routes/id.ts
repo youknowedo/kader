@@ -11,7 +11,6 @@ idRoute.get("/", async (c) => {
     const { session, user } = await lucia.validateSession(
         getCookie(c, "auth_session") ?? ""
     );
-    console.log("session", session);
     if (!session) {
         return new Response(null, {
             status: 400,

@@ -16,20 +16,20 @@
 	};
 </script>
 
-{#if onMobile()}
-	<form action="{PUBLIC_SERVER_URL}/profile/picture" method="post">
-		<label for="cameraFileInput">
-			<span class="btn">Open camera</span>
-
-			<input class="hidden" name="pfp" type="file" accept="image/*" capture="user" />
-		</label>
-	</form>
-{:else}
+<!-- {#if onMobile()} -->
+<form action="{PUBLIC_SERVER_URL}/profile/picture" method="post" enctype="multipart/form-data">
+	<label for="picture">
+		<span class="btn">Open camera</span>
+	</label>
+	<input class="hidden" id="picture" name="picture" type="file" accept="image/*" capture="user" />
+	<button type="submit">Send</button>
+</form>
+<!-- {:else}
 	<p>
 		Profile picture upload only available on mobile. Please login on your phone and continue from
 		there.
 	</p>
-{/if}
+{/if} -->
 
 <!-- displays the picture uploaded from the native camera -->
 <img id="pictureFromCamera" alt="" />
