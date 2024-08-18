@@ -32,7 +32,6 @@ declare module 'lucia' {
 		hex_qr_id: string;
 		email: string;
 		username: string;
-		github_id: number;
 		completed_profile: boolean;
 		full_name: string;
 	}

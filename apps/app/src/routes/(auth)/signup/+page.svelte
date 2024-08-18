@@ -12,16 +12,6 @@
 	<Card.Content>
 		<form action="{PUBLIC_SERVER_URL}/auth/email/signup" method="post">
 			<div class="grid gap-4">
-				<div class="grid grid-cols-2 gap-4">
-					<div class="grid gap-2">
-						<Label for="first-name">First name</Label>
-						<Input id="first-name" name="first-name" placeholder="Max" required />
-					</div>
-					<div class="grid gap-2">
-						<Label for="last-name">Last name</Label>
-						<Input id="last-name" name="last-name" placeholder="Robinson" required />
-					</div>
-				</div>
 				<div class="grid gap-2">
 					<Label for="username">Username</Label>
 					<Input id="username" name="username" placeholder="moot" required />
@@ -35,9 +25,6 @@
 					<Input id="password" name="password" type="password" />
 				</div>
 				<Button type="submit" class="w-full">Create an account</Button>
-				<a href={PUBLIC_SERVER_URL + '/auth/github'}>
-					<Button variant="outline" class="w-full">Sign up with GitHub</Button>
-				</a>
 			</div>
 			<div class="mt-4 text-sm text-center">
 				Already have an account?
