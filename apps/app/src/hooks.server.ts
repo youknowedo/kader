@@ -22,7 +22,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const { session, user, pfp }: { user: User; session: Session; pfp: string } =
 		await validateResponse.json();
 
-	event.locals.user = { ...user, pfp };
+	event.locals.user = user && { ...user, pfp };
 	event.locals.session = session;
 	return resolve(event);
 };
@@ -34,5 +34,7 @@ declare module 'lucia' {
 		username: string;
 		completed_profile: boolean;
 		full_name: string;
+		role: 'admin' | 'vendor' | 'user';
+		vendor_id: string | null;
 	}
 }

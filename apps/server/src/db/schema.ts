@@ -1,16 +1,14 @@
 import { relations } from "drizzle-orm";
-import {
-    boolean,
-    integer,
-    pgTable,
-    text,
-    timestamp,
-} from "drizzle-orm/pg-core";
+import { boolean, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+
+export const roleEnum = pgEnum("role", ["admin", "vendor", "user"]);
 
 export const userTable = pgTable("user", {
     id: text("id").primaryKey(),
     hex_qr_id: text("qr_id").unique(),
     vendor_id: text("vendor_id"),
+
+    role: roleEnum("role").notNull().default("user"),
 
     completed_profile: boolean("completed_profile").notNull().default(false),
     full_name: text("full_name"),

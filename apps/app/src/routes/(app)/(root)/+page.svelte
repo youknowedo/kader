@@ -12,7 +12,6 @@
 	export let data;
 
 	let token: string;
-	let completedProfile = true;
 	let qr: string;
 
 	onMount(async () => {
@@ -27,8 +26,7 @@
 			});
 			if (res.ok) {
 				const data = await res.json();
-				completedProfile = data.completedProfile;
-				if (data.completedProfile) hex_qr_id = data.qr;
+				if (data.qr) hex_qr_id = data.qr;
 				else return;
 			} else {
 				throw new Error('Failed to fetch QR ID');
@@ -68,7 +66,7 @@
 </script>
 
 <div class="flex flex-col items-center justify-center">
-	{#if !completedProfile}
+	{#if !$user?.completed_profile}
 		<button class="text-left" on:click={() => goto('/completeProfile')}>
 			<Alert.Root class="mb-12 -mt-6">
 				<CircleAlert class="w-4 h-4" />

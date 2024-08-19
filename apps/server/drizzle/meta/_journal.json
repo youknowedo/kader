@@ -43,6 +43,20 @@
       "when": 1724021976476,
       "tag": "0005_parallel_doomsday",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1724062704182,
+      "tag": "0006_bizarre_nocturne",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1724064248590,
+      "tag": "0007_steady_squirrel_girl",
+      "breakpoints": true
     }
   ]
 }

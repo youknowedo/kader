@@ -25,8 +25,6 @@
 	};
 </script>
 
-{JSON.stringify($user)}
-
 <!-- {#if onMobile()} -->
 <form
 	class="flex flex-col h-screen py-12 m-auto max-w-80"

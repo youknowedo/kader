@@ -15,6 +15,8 @@ export const lucia = new Lucia(adapter, {
             username: attributes.username,
             completed_profile: attributes.completed_profile,
             full_name: attributes.full_name,
+            role: attributes.role,
+            vendor_id: attributes.vendor_id,
         };
     },
 });
@@ -28,6 +30,8 @@ declare module "lucia" {
             username: string;
             completed_profile: boolean;
             full_name: string;
+            role: "admin" | "vendor" | "user";
+            vendor_id: string | null;
         };
     }
 }

@@ -2,11 +2,28 @@
 	import Home from 'lucide-svelte/icons/house';
 	import PanelLeft from 'lucide-svelte/icons/panel-left';
 	import Settings from 'lucide-svelte/icons/settings';
+	import Store from 'lucide-svelte/icons/store';
 
+	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { Breadcrumb, Button, DropdownMenu, Input, Sheet, Tooltip } from '@kader/ui/components';
+	import { PUBLIC_SERVER_URL } from '$env/static/public';
+	import { user } from '$lib/stores.js';
+	import { Breadcrumb, Button, DropdownMenu, Sheet, Tooltip } from '@kader/ui/components';
 
-	const menuItems = [{ icon: Home, name: 'Dashboard', href: '/dashboard' }];
+	export let data;
+
+	user.set(data.user);
+
+	const menuItems: {
+		icon: typeof Home;
+		name: string;
+		href: string;
+		admin?: boolean;
+	}[] = [
+		{ icon: Home, name: 'Dashboard', href: '/dashboard' },
+		{ icon: Store, name: 'Vendors', href: '/dashboard/vendors', admin: true }
+	];
 
 	const breadcrumbs = $page.url.pathname
 		.split('/')
@@ -34,24 +51,26 @@
 				<img class="w-4 h-4 transition-all group-hover:scale-110" src="/logo.svg" alt="" />
 				<span class="sr-only">Acme Inc</span>
 			</a>
-			{#each menuItems as { icon, name, href }}
-				<Tooltip.Root>
-					<Tooltip.Trigger asChild let:builder>
-						<a
-							{href}
-							class="flex items-center justify-center transition-colors rounded-lg hover:text-foreground h-9 w-9 md:h-8 md:w-8 {$page
-								.url.pathname === href
-								? 'bg-accent text-accent-foreground'
-								: 'text-muted-foreground'}"
-							use:builder.action
-							{...builder}
-						>
-							<svelte:component this={icon} class="w-5 h-5" />
-							<span class="sr-only">{name}</span>
-						</a>
-					</Tooltip.Trigger>
-					<Tooltip.Content side="right">{name}</Tooltip.Content>
-				</Tooltip.Root>
+			{#each menuItems as { icon, name, href, admin }}
+				{#if !admin || $user?.role === 'admin'}
+					<Tooltip.Root>
+						<Tooltip.Trigger asChild let:builder>
+							<a
+								{href}
+								class="flex items-center justify-center transition-colors rounded-lg hover:text-foreground h-9 w-9 md:h-8 md:w-8 {$page
+									.url.pathname === href
+									? 'bg-accent text-accent-foreground'
+									: 'text-muted-foreground'}"
+								use:builder.action
+								{...builder}
+							>
+								<svelte:component this={icon} class="w-5 h-5" />
+								<span class="sr-only">{name}</span>
+							</a>
+						</Tooltip.Trigger>
+						<Tooltip.Content side="right">{name}</Tooltip.Content>
+					</Tooltip.Root>
+				{/if}
 			{/each}
 		</nav>
 		<nav class="flex flex-col items-center gap-4 px-2 mt-auto sm:py-5">
@@ -95,14 +114,16 @@
 								<img class="w-5 h-5 transition-all group-hover:scale-110" src="/logo.svg" alt="" />
 								<span class="sr-only">Acme Inc</span>
 							</a>
-							{#each menuItems as { icon, name, href }}
-								<a
-									{href}
-									class="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
-								>
-									<svelte:component this={icon} class="w-5 h-5" />
-									{name}
-								</a>
+							{#each menuItems as { icon, name, href, admin }}
+								{#if !admin || $user?.role === 'admin'}
+									<a
+										{href}
+										class="text-muted-foreground hover:text-foreground flex items-center gap-4 px-2.5"
+									>
+										<svelte:component this={icon} class="w-5 h-5" />
+										{name}
+									</a>
+								{/if}
 							{/each}
 						</div>
 
@@ -137,7 +158,7 @@
 						builders={[builder]}
 					>
 						<img
-							src="/images/placeholder-user.jpg"
+							src={$user?.pfp}
 							width={36}
 							height={36}
 							alt="Avatar"
@@ -150,8 +171,19 @@
 					<DropdownMenu.Separator />
 					<DropdownMenu.Item>Settings</DropdownMenu.Item>
 					<DropdownMenu.Item>Support</DropdownMenu.Item>
+
 					<DropdownMenu.Separator />
-					<DropdownMenu.Item>Logout</DropdownMenu.Item>
+
+					<form
+						action="{PUBLIC_SERVER_URL}/auth/logout"
+						method="post"
+						use:enhance={() => () => goto('/')}
+					>
+						<input type="hidden" name="session_id" value={data.session?.id} />
+						<button class="w-full">
+							<DropdownMenu.Item>Logout</DropdownMenu.Item>
+						</button>
+					</form>
 				</DropdownMenu.Content>
 			</DropdownMenu.Root>
 		</header>

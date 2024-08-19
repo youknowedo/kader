@@ -127,7 +127,9 @@ emailRoute.post("/login", async ({ req }) => {
     return new Response(null, {
         status: 302,
         headers: {
-            Location: process.env.APP_URL + "/",
+            Location:
+                (formData.get("callback_url") as string) ??
+                process.env.APP_URL + "/",
             "Set-Cookie": sessionCookie.serialize(),
         },
     });
