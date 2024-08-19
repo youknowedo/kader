@@ -7,4 +7,5 @@ export { Root as Input } from './ui/input/index.js';
 export { Root as Label } from './ui/label/index.js';
 export { Root as Separator } from './ui/separator/index.js';
 export * as Sheet from './ui/sheet/index.js';
+export * as Table from './ui/table/index.js';
 export * as Tooltip from './ui/tooltip/index.js';
