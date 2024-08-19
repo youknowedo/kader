@@ -97,6 +97,19 @@
 		<header
 			class="sticky top-0 z-30 flex items-center justify-between gap-4 px-4 border-b bg-background h-14 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6"
 		>
+			<Breadcrumb.Root class="hidden sm:flex">
+				<Breadcrumb.List>
+					{#each breadcrumbs as { path, name, isLast }, index}
+						<Breadcrumb.Item>
+							<Breadcrumb.Link href={path}>{name}</Breadcrumb.Link>
+						</Breadcrumb.Item>
+						{#if !isLast}
+							<Breadcrumb.Separator />
+						{/if}
+					{/each}
+				</Breadcrumb.List>
+			</Breadcrumb.Root>
+
 			<Sheet.Root>
 				<Sheet.Trigger asChild let:builder>
 					<Button builders={[builder]} size="icon" variant="outline" class="sm:hidden">
@@ -137,18 +150,7 @@
 					</nav>
 				</Sheet.Content>
 			</Sheet.Root>
-			<Breadcrumb.Root class="hidden md:flex">
-				<Breadcrumb.List>
-					{#each breadcrumbs as { path, name, isLast }, index}
-						<Breadcrumb.Item>
-							<Breadcrumb.Link href={path}>{name}</Breadcrumb.Link>
-						</Breadcrumb.Item>
-						{#if !isLast}
-							<Breadcrumb.Separator />
-						{/if}
-					{/each}
-				</Breadcrumb.List>
-			</Breadcrumb.Root>
+
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger asChild let:builder>
 					<Button
@@ -174,11 +176,7 @@
 
 					<DropdownMenu.Separator />
 
-					<form
-						action="{PUBLIC_SERVER_URL}/auth/logout"
-						method="post"
-						use:enhance={() => () => goto('/')}
-					>
+					<form action="{PUBLIC_SERVER_URL}/auth/logout" method="post">
 						<input type="hidden" name="session_id" value={data.session?.id} />
 						<button class="w-full">
 							<DropdownMenu.Item>Logout</DropdownMenu.Item>
@@ -188,7 +186,7 @@
 			</DropdownMenu.Root>
 		</header>
 
-		<main>
+		<main class="px-6">
 			<slot />
 		</main>
 	</div>

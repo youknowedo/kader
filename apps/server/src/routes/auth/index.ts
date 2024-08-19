@@ -27,10 +27,13 @@ authRoute.post("/logout", async (c) => {
 
     await lucia.invalidateSession(session?.id);
     return new Response(null, {
-        status: 200,
+        status: 302,
         headers: {
             "Set-Cookie": lucia.createBlankSessionCookie().serialize(),
-            Location: (c.req.header()["Origin"] ?? process.env.APP_URL) + "/",
+            Location:
+                (formData.get("redirect") ??
+                    c.req.header("Origin") ??
+                    process.env.APP_URL) + "/",
         },
     });
 });

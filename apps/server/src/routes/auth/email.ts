@@ -65,7 +65,7 @@ emailRoute.post("/signup", async ({ req }) => {
         });
     } catch {
         // db error, email taken, etc
-        return new Response("Email already used", {
+        return new Response("Email/Username already used", {
             status: 400,
         });
     }
@@ -128,8 +128,9 @@ emailRoute.post("/login", async ({ req }) => {
         status: 302,
         headers: {
             Location:
-                (formData.get("callback_url") as string) ??
-                process.env.APP_URL + "/",
+                (formData.get("redirect") ??
+                    req.header("Origin") ??
+                    process.env.APP_URL) + "/",
             "Set-Cookie": sessionCookie.serialize(),
         },
     });

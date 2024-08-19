@@ -59,7 +59,10 @@ profileRoute.post("/", async (c) => {
     return new Response(null, {
         status: 302,
         headers: {
-            Location: process.env.APP_URL + "/",
+            Location:
+                (formData.get("redirect") ??
+                    c.req.header("Origin") ??
+                    process.env.APP_URL) + "/",
         },
     });
 });

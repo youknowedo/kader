@@ -27,7 +27,6 @@ idRoute.post("/", async (c) => {
             }
         );
     }
-    console.log(user.hex_qr_id);
 
     if (!user.hex_qr_id) {
         // Add a new QR ID to the user

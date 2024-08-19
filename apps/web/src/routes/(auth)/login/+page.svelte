@@ -13,8 +13,7 @@
 	</Card.Header>
 	<Card.Content>
 		<form action="{PUBLIC_SERVER_URL}/auth/email/login" method="post">
-			<input type="hidden" name="callback_url" value={$page.url.origin + '/dashboard'} />
-
+			<input type="hidden" name="redirect" value="{$page.url.origin}/dashboard" />
 			<div class="grid gap-4">
 				<div class="grid gap-2">
 					<Label for="email">Email</Label>

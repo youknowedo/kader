@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
 	import { Button, Card, Input, Label } from '@kader/ui/components';
 </script>
@@ -11,6 +12,7 @@
 	</Card.Header>
 	<Card.Content>
 		<form action="{PUBLIC_SERVER_URL}/auth/email/signup" method="post">
+			<input type="hidden" name="redirect" value="{$page.url.origin}/dashboard" />
 			<div class="grid gap-4">
 				<div class="grid gap-2">
 					<Label for="username">Username</Label>
