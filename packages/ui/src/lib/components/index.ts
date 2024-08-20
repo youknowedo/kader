@@ -2,6 +2,7 @@ export * as Alert from './ui/alert/index.js';
 export * as Breadcrumb from './ui/breadcrumb/index.js';
 export { Root as Button } from './ui/button/index.js';
 export * as Card from './ui/card/index.js';
+export { Root as Checkbox } from './ui/checkbox/index.js';
 export * as DropdownMenu from './ui/dropdown-menu/index.js';
 export { Root as Input } from './ui/input/index.js';
 export { Root as Label } from './ui/label/index.js';
