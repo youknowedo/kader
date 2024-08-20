@@ -58,3 +58,33 @@ vendorRoute.post("/numOfUsers", async (c) => {
 
     return new Response(JSON.stringify(users.length));
 });
+
+type UsersData = {
+    sessionId: string;
+    vendorId: string;
+};
+
+vendorRoute.post("/users", async (c) => {
+    const data: UsersData = await c.req.json();
+
+    const { session, user } = await lucia.validateSession(data.sessionId);
+    if (!session) {
+        console.log("no session");
+        return new Response(null, {
+            status: 400,
+        });
+    }
+
+    if (user.role !== "admin") {
+        return new Response(null, {
+            status: 403,
+        });
+    }
+
+    const users = await db
+        .select()
+        .from(userTable)
+        .where(eq(userTable.vendor_id, data.vendorId));
+
+    return new Response(JSON.stringify(users));
+});

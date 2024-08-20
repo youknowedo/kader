@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { Button, DropdownMenu, Input, Table } from '@kader/ui/components';
+	import type { User } from 'lucia';
 	import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
 	import { createRender, createTable, Render, Subscribe } from 'svelte-headless-table';
@@ -12,11 +13,10 @@
 		addTableFilter
 	} from 'svelte-headless-table/plugins';
 	import { readable } from 'svelte/store';
-	import type { Vendor } from '../../../app';
 	import DataTableCheckbox from './data-table-checkbox.svelte';
 	import DataTableUserNum from './data-table-user-num.svelte';
 
-	export let data: Vendor[];
+	export let data: User[];
 
 	const table = createTable(readable(data), {
 		page: addPagination(),
@@ -55,26 +55,14 @@
 			}
 		}),
 		table.column({
-			accessor: 'name',
+			accessor: 'full_name',
 			header: 'Name',
+			cell: ({ value }) => value ?? 'N/A'
+		}),
+		table.column({
+			accessor: 'email',
+			header: 'Email',
 			cell: ({ value }) => value
-		}),
-		table.column({
-			accessor: 'description',
-			header: 'Description',
-			cell: ({ value }) => value
-		}),
-		table.column({
-			accessor: 'owner',
-			header: 'Owner',
-			cell: ({ value }) => value.full_name
-		}),
-		table.column({
-			accessor: ({ id, numOfUsers }) => ({ id, numOfUsers }),
-			header: 'Number of Users',
-			cell: ({ value: { id, numOfUsers } }) => {
-				return createRender(DataTableUserNum, { id, numOfUsers });
-			}
 		})
 	]);
 
@@ -131,7 +119,7 @@
 										<div class="pl-1 -mb-1">
 											<Render of={cell.render()} />
 										</div>
-									{:else if cell.id === 'name'}
+									{:else if cell.id === 'full_name' || cell.id === 'email'}
 										<Button class="-mx-4" variant="ghost" on:click={props.sort.toggle}>
 											<Render of={cell.render()} />
 											<ArrowUpDown class={'ml-2 h-4 w-4'} />
