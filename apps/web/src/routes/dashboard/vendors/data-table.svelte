@@ -11,91 +11,11 @@
 		addTableFilter
 	} from 'svelte-headless-table/plugins';
 	import { readable } from 'svelte/store';
+	import type { Vendor } from '../../../app';
 	import DataTableActions from './data-table-actions.svelte';
 	import DataTableCheckbox from './data-table-checkbox.svelte';
 
-	type Payment = {
-		id: string;
-		amount: number;
-		status: 'pending' | 'processing' | 'success' | 'failed';
-		email: string;
-	};
-
-	const data: Payment[] = [
-		{
-			id: 'm5gr84i9',
-			amount: 316,
-			status: 'success',
-			email: 'ken99@yahoo.com'
-		},
-		{
-			id: 'm5gr84i9',
-			amount: 316,
-			status: 'success',
-			email: 'ken99@yahoo.com'
-		},
-		{
-			id: 'm5gr84i9',
-			amount: 316,
-			status: 'success',
-			email: 'ken99@yahoo.com'
-		},
-		{
-			id: 'm5gr84i9',
-			amount: 316,
-			status: 'success',
-			email: 'ken99@yahoo.com'
-		},
-		{
-			id: 'm5gr84i9',
-			amount: 316,
-			status: 'success',
-			email: 'ken99@yahoo.com'
-		},
-		{
-			id: 'm5gr84i9',
-			amount: 316,
-			status: 'success',
-			email: 'ken99@yahoo.com'
-		},
-		{
-			id: 'm5gr84i9',
-			amount: 316,
-			status: 'success',
-			email: 'ken99@yahoo.com'
-		},
-		{
-			id: 'm5gr84i9',
-			amount: 316,
-			status: 'success',
-			email: 'ken99@yahoo.com'
-		},
-		{
-			id: 'm5gr84i9',
-			amount: 316,
-			status: 'success',
-			email: 'ken99@yahoo.com'
-		},
-		{
-			id: 'm5gr84i9',
-			amount: 316,
-			status: 'success',
-			email: 'ken99@yahoo.com'
-		},
-		{
-			id: 'm5gr84i9',
-			amount: 316,
-			status: 'success',
-			email: 'ken99@yahoo.com'
-		},
-		{
-			id: 'm5gr84i9',
-			amount: 316,
-			status: 'success',
-			email: 'ken99@yahoo.com'
-		}
-		// ...
-	];
+	export let data: Vendor[];
 
 	const table = createTable(readable(data), {
 		page: addPagination(),
@@ -134,36 +54,19 @@
 			}
 		}),
 		table.column({
-			accessor: 'status',
-			header: 'Status',
-			plugins: {
-				filter: {
-					exclude: true
-				}
-			}
+			accessor: 'name',
+			header: 'Name',
+			cell: ({ value }) => value
 		}),
 		table.column({
-			accessor: 'email',
-			header: 'Email'
+			accessor: 'description',
+			header: 'Description',
+			cell: ({ value }) => value
 		}),
 		table.column({
-			accessor: 'amount',
-			header: 'Amount',
-			cell: ({ value }) => {
-				const formatted = new Intl.NumberFormat('en-US', {
-					style: 'currency',
-					currency: 'USD'
-				}).format(+value);
-				return formatted;
-			},
-			plugins: {
-				sort: {
-					disable: true
-				},
-				filter: {
-					exclude: true
-				}
-			}
+			accessor: 'owner',
+			header: 'Owner',
+			cell: ({ value }) => value
 		}),
 		table.column({
 			accessor: ({ id }) => id,

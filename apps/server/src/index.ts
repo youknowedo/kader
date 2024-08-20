@@ -3,6 +3,7 @@ import { cors } from "hono/cors";
 import { authRoute } from "./routes/auth";
 import { idRoute } from "./routes/id";
 import { profileRoute } from "./routes/profile";
+import { vendorRoute } from "./routes/vendor";
 
 const app = new Hono();
 
@@ -13,6 +14,9 @@ app.get("/", (c) => {
 app.use(cors())
     .route("/auth", authRoute)
     .route("id", idRoute)
-    .route("/profile", profileRoute);
+    .route("/profile", profileRoute)
+    .route("/vendor", vendorRoute);
+
+console.log(app.routes);
 
 export default app;

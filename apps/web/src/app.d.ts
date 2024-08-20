@@ -13,4 +13,11 @@ declare global {
 	}
 }
 
-export {};
+type Vendor = {
+	id: string;
+	name: string;
+	description: string;
+	owner: string;
+};
+
+export { Vendor };

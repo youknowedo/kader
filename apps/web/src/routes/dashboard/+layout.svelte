@@ -25,7 +25,7 @@
 		{ icon: Store, name: 'Vendors', href: '/dashboard/vendors', admin: true }
 	];
 
-	const breadcrumbs = $page.url.pathname
+	$: breadcrumbs = $page.url.pathname
 		.split('/')
 		.slice(1)
 		.map((path, index) => {
