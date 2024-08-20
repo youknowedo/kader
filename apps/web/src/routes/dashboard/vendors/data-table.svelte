@@ -12,7 +12,6 @@
 	} from 'svelte-headless-table/plugins';
 	import { readable } from 'svelte/store';
 	import type { Vendor } from '../../../app';
-	import DataTableActions from './data-table-actions.svelte';
 	import DataTableCheckbox from './data-table-checkbox.svelte';
 
 	export let data: Vendor[];
@@ -66,14 +65,12 @@
 		table.column({
 			accessor: 'owner',
 			header: 'Owner',
-			cell: ({ value }) => value
+			cell: ({ value }) => value.full_name
 		}),
 		table.column({
-			accessor: ({ id }) => id,
-			header: '',
-			cell: ({ value }) => {
-				return createRender(DataTableActions, { id: value });
-			}
+			accessor: 'numOfUsers',
+			header: 'Number of Users',
+			cell: ({ value }) => value
 		})
 	]);
 
