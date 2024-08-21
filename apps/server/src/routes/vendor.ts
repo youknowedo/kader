@@ -7,6 +7,30 @@ import { userTable, vendorTable } from "../db/schema";
 
 export const vendorRoute = new Hono();
 
+type GetVendorData = {
+    sessionId: string;
+    vendorId: string;
+};
+
+vendorRoute.post("/get", async (c) => {
+    const data: GetVendorData = await c.req.json();
+
+    const { session } = await lucia.validateSession(data.sessionId);
+    if (!session) {
+        console.log("no session");
+        return new Response(null, {
+            status: 400,
+        });
+    }
+
+    const vendor = await db
+        .select()
+        .from(vendorTable)
+        .where(eq(vendorTable.id, data.vendorId));
+
+    return new Response(JSON.stringify(vendor[0]));
+});
+
 vendorRoute.post("/all", async (c) => {
     const sessionId = await c.req.text();
 

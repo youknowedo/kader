@@ -1,0 +1,80 @@
+<script lang="ts">
+	import { Button, Command, Popover } from '@kader/ui/components';
+	import { cn } from '@kader/ui/utils';
+	import Check from 'lucide-svelte/icons/check';
+	import ChevronsUpDown from 'lucide-svelte/icons/chevrons-up-down';
+	import { tick } from 'svelte';
+
+	const frameworks = [
+		{
+			value: 'sveltekit',
+			label: 'SvelteKit'
+		},
+		{
+			value: 'next.js',
+			label: 'Next.js'
+		},
+		{
+			value: 'nuxt.js',
+			label: 'Nuxt.js'
+		},
+		{
+			value: 'remix',
+			label: 'Remix'
+		},
+		{
+			value: 'astro',
+			label: 'Astro'
+		}
+	];
+
+	let open = false;
+	let value = '';
+
+	$: selectedValue = frameworks.find((f) => f.value === value)?.label ?? 'Select a framework...';
+
+	// We want to refocus the trigger button when the user selects
+	// an item from the list so users can continue navigating the
+	// rest of the form with the keyboard.
+	function closeAndFocusTrigger(triggerId: string) {
+		open = false;
+		tick().then(() => {
+			document.getElementById(triggerId)?.focus();
+		});
+	}
+</script>
+
+<Popover.Root bind:open let:ids>
+	<Popover.Trigger asChild let:builder>
+		<Button
+			builders={[builder]}
+			variant="outline"
+			role="combobox"
+			aria-expanded={open}
+			class="w-[200px] justify-between"
+		>
+			{selectedValue}
+			<ChevronsUpDown class="w-4 h-4 ml-2 opacity-50 shrink-0" />
+		</Button>
+	</Popover.Trigger>
+	<Popover.Content class="w-[200px] p-0">
+		<Command.Root>
+			<Command.Input placeholder="Search framework..." />
+			<Command.Empty>No framework found.</Command.Empty>
+			<Command.Group>
+				{#each frameworks as framework}
+					<Command.Item
+						value={framework.value}
+						onSelect={(currentValue) => {
+							value = currentValue;
+							closeAndFocusTrigger(ids.trigger);
+						}}
+					>
+						<Check class={cn('mr-2 h-4 w-4', value !== framework.value && 'text-transparent')} />
+						{framework.label}
+					</Command.Item>
+				{/each}
+			</Command.Group>
+		</Command.Root>
+	</Popover.Content>
+</Popover.Root>

@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { Button, DropdownMenu, Input, Table } from '@kader/ui/components';
+	import { Button, DropdownMenu, Input, Label, Sheet, Table } from '@kader/ui/components';
 	import type { User } from 'lucia';
 	import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
+	import Plus from 'lucide-svelte/icons/plus';
 	import { createRender, createTable, Render, Subscribe } from 'svelte-headless-table';
 	import {
 		addHiddenColumns,
@@ -15,6 +16,7 @@
 	import { readable } from 'svelte/store';
 	import DataTableCheckbox from './data-table-checkbox.svelte';
 	import DataTableUserNum from './data-table-user-num.svelte';
+	import UserSelect from './user-select.svelte';
 
 	export let data: User[];
 
@@ -82,28 +84,63 @@
 		.filter(([, hide]) => !hide)
 		.map(([id]) => id);
 
-	const hidableCols = ['status', 'email', 'amount'];
+	const hidableCols = ['full_name', 'email'];
 </script>
 
-<div class="flex items-center py-4">
+<div class="flex items-center justify-between py-4">
 	<Input class="max-w-sm" placeholder="Filter emails..." type="text" bind:value={$filterValue} />
 
-	<DropdownMenu.Root>
-		<DropdownMenu.Trigger asChild let:builder>
-			<Button variant="outline" class="ml-auto" builders={[builder]}>
-				Columns <ChevronDown class="w-4 h-4 ml-2" />
-			</Button>
-		</DropdownMenu.Trigger>
-		<DropdownMenu.Content>
-			{#each flatColumns as col}
-				{#if hidableCols.includes(col.id)}
-					<DropdownMenu.CheckboxItem bind:checked={hideForId[col.id]}>
-						{col.header}
-					</DropdownMenu.CheckboxItem>
-				{/if}
-			{/each}
-		</DropdownMenu.Content>
-	</DropdownMenu.Root>
+	<div class="flex gap-2">
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger asChild let:builder>
+				<Button variant="outline" class="ml-auto" builders={[builder]}>
+					Columns <ChevronDown class="w-4 h-4 ml-2" />
+				</Button>
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Content>
+				{#each flatColumns as col}
+					{#if hidableCols.includes(col.id)}
+						<DropdownMenu.CheckboxItem bind:checked={hideForId[col.id]}>
+							{col.header}
+						</DropdownMenu.CheckboxItem>
+					{/if}
+				{/each}
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
+
+		<Sheet.Root>
+			<Sheet.Trigger asChild let:builder>
+				<Button builders={[builder]} variant="outline">
+					<Plus />
+					Add
+				</Button>
+			</Sheet.Trigger>
+			<Sheet.Content side="right">
+				<div class="flex flex-col justify-between h-full">
+					<div>
+						<Sheet.Header>
+							<Sheet.Title>Edit profile</Sheet.Title>
+							<Sheet.Description>
+								Make changes to your profile here. Click save when you're done.
+							</Sheet.Description>
+						</Sheet.Header>
+						<div class="grid gap-4 py-4">
+							<div class="grid items-center grid-cols-4 gap-4">
+								<Label for="user" class="text-right">User</Label>
+								<UserSelect />
+							</div>
+						</div>
+					</div>
+
+					<Sheet.Footer>
+						<Sheet.Close asChild let:builder>
+							<Button builders={[builder]} type="submit">Save changes</Button>
+						</Sheet.Close>
+					</Sheet.Footer>
+				</div>
+			</Sheet.Content>
+		</Sheet.Root>
+	</div>
 </div>
 
 <div class="border rounded-md">

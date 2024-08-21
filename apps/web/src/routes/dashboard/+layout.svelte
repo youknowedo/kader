@@ -4,6 +4,7 @@
 	import Settings from 'lucide-svelte/icons/settings';
 	import Store from 'lucide-svelte/icons/store';
 
+	import { browser } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -28,16 +29,39 @@
 	$: breadcrumbs = $page.url.pathname
 		.split('/')
 		.slice(1)
-		.map((path, index) => {
-			return {
-				// path up until the current index
-				path: $page.url.pathname
-					.split('/')
-					.slice(0, index + 2)
-					.join('/'),
-				name: path.charAt(0).toUpperCase() + path.slice(1),
-				isLast: index === $page.url.pathname.split('/').length - 2
-			};
+		.map((path, index) => ({
+			// path up until the current index
+			path: $page.url.pathname
+				.split('/')
+				.slice(0, index + 2)
+				.join('/'),
+			name: path,
+			isLast: index === $page.url.pathname.split('/').length - 2
+		}));
+
+	$: browser &&
+		breadcrumbs.forEach(async (breadcrumb, i) => {
+			console.log(
+				breadcrumb.name,
+				$page.params.vendorId,
+				breadcrumb.name !== $page.params.vendorId
+			);
+			if (breadcrumb.name !== $page.params.vendorId)
+				return (breadcrumbs[i].name =
+					breadcrumb.name.charAt(0).toUpperCase() + breadcrumb.name.slice(1));
+
+			const vendorRes = await fetch(`${PUBLIC_SERVER_URL}/vendor/get`, {
+				body: JSON.stringify({
+					sessionId: data.session?.id,
+					vendorId: $page.params.vendorId
+				}),
+				method: 'post'
+			});
+
+			const vendor = await vendorRes.json();
+
+			console.log(vendor);
+			breadcrumbs[i].name = vendor.name;
 		});
 </script>
 

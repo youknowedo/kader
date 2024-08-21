@@ -17,7 +17,8 @@
 		"./tailwind": "./tailwind.config.js",
 		"./postcss": "./postcss.config.js",
 		"./styles.css": "./src/styles.css",
-		"./components": "./dist/components/index.js"
+		"./components": "./dist/components/index.js",
+		"./utils": "./dist/utils.js"
 	},
 	"files": [
 		"src",
@@ -58,7 +59,8 @@
 	"dependencies": {
 		"bits-ui": "^0.21.13",
 		"clsx": "^2.1.1",
-		"lucide-svelte": "^0.428.0",
+		"cmdk-sv": "^0.0.18",
+		"lucide-svelte": "^0.429.0",
 		"svelte-headless-table": "^0.18.2",
 		"tailwind-merge": "^2.5.2",
 		"tailwind-variants": "^0.2.1"

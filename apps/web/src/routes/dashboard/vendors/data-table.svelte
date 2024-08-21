@@ -46,12 +46,8 @@
 				});
 			},
 			plugins: {
-				sort: {
-					disable: true
-				},
-				filter: {
-					exclude: true
-				}
+				sort: { disable: true },
+				filter: { exclude: true }
 			}
 		}),
 		table.column({
@@ -62,7 +58,11 @@
 		table.column({
 			accessor: 'description',
 			header: 'Description',
-			cell: ({ value }) => value
+			cell: ({ value }) => value,
+			plugins: {
+				sort: { disable: true },
+				filter: { exclude: true }
+			}
 		}),
 		table.column({
 			accessor: 'owner',
@@ -94,7 +94,7 @@
 		.filter(([, hide]) => !hide)
 		.map(([id]) => id);
 
-	const hidableCols = ['status', 'email', 'amount'];
+	const hidableCols = ['name', 'description', 'owner', 'numOfUsers'];
 </script>
 
 <div class="flex items-center py-4">
