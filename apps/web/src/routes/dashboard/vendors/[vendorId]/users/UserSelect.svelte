@@ -1,37 +1,34 @@
 <script lang="ts">
+	import { PUBLIC_SERVER_URL } from '$env/static/public';
 	import { Button, Command, Popover } from '@kader/ui/components';
 	import { cn } from '@kader/ui/utils';
+	import type { User } from 'lucia';
 	import Check from 'lucide-svelte/icons/check';
 	import ChevronsUpDown from 'lucide-svelte/icons/chevrons-up-down';
-	import { tick } from 'svelte';
+	import { onMount, tick } from 'svelte';
 
-	const frameworks = [
-		{
-			value: 'sveltekit',
-			label: 'SvelteKit'
-		},
-		{
-			value: 'next.js',
-			label: 'Next.js'
-		},
-		{
-			value: 'nuxt.js',
-			label: 'Nuxt.js'
-		},
-		{
-			value: 'remix',
-			label: 'Remix'
-		},
-		{
-			value: 'astro',
-			label: 'Astro'
-		}
-	];
+	export let pageData;
+	export let data;
+
+	let users: { label: string; value: string }[] = [];
 
 	let open = false;
 	let value = '';
 
-	$: selectedValue = frameworks.find((f) => f.value === value)?.label ?? 'Select a framework...';
+	$: selectedValue = users.find((f) => f.value === value)?.label ?? 'Select a user...';
+
+	onMount(async () => {
+		console.log(pageData);
+		const userRes = await fetch(`${PUBLIC_SERVER_URL}/user/all`, {
+			body: pageData.session?.id,
+			method: 'POST'
+		});
+		const u: User[] = await userRes.json();
+
+		users = u
+			.filter((user) => !(data as User[]).find((u) => u.id == user.id))
+			.map((user) => ({ label: user.email, value: user.id }));
+	});
 
 	// We want to refocus the trigger button when the user selects
 	// an item from the list so users can continue navigating the
@@ -51,27 +48,27 @@
 			variant="outline"
 			role="combobox"
 			aria-expanded={open}
-			class="w-[200px] justify-between"
+			class="relative justify-between w-full"
 		>
 			{selectedValue}
 			<ChevronsUpDown class="w-4 h-4 ml-2 opacity-50 shrink-0" />
 		</Button>
 	</Popover.Trigger>
-	<Popover.Content class="w-[200px] p-0">
+	<Popover.Content class="w-full p-0">
 		<Command.Root>
-			<Command.Input placeholder="Search framework..." />
-			<Command.Empty>No framework found.</Command.Empty>
+			<Command.Input placeholder="Search user..." />
+			<Command.Empty>No user found.</Command.Empty>
 			<Command.Group>
-				{#each frameworks as framework}
+				{#each users as user}
 					<Command.Item
-						value={framework.value}
+						value={user.value}
 						onSelect={(currentValue) => {
 							value = currentValue;
 							closeAndFocusTrigger(ids.trigger);
 						}}
 					>
-						<Check class={cn('mr-2 h-4 w-4', value !== framework.value && 'text-transparent')} />
-						{framework.label}
+						<Check class={cn('mr-2 h-4 w-4', value !== user.value && 'text-transparent')} />
+						{user.label}
 					</Command.Item>
 				{/each}
 			</Command.Group>

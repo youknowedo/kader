@@ -3,7 +3,7 @@
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
 	import type { User } from 'lucia';
 	import { onMount } from 'svelte';
-	import DataTable from './data-table.svelte';
+	import DataTable from './table/DataTable.svelte';
 
 	export let data;
 
@@ -24,6 +24,6 @@
 
 {#key users}
 	<div class="container py-10 mx-auto">
-		<DataTable data={users} />
+		<DataTable data={users} pageData={data} />
 	</div>
 {/key}

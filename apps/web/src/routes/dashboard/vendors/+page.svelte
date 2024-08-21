@@ -3,7 +3,7 @@
 	import type { User } from 'lucia';
 	import { onMount } from 'svelte';
 	import type { Vendor } from '../../../app';
-	import DataTable from './data-table.svelte';
+	import DataTable from './table/DataTable.svelte';
 
 	export let data;
 	let vendors: Vendor[] = [];
