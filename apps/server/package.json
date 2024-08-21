@@ -1,7 +1,8 @@
 {
     "name": "server",
     "scripts": {
-        "start": "vercel dev",
+        "dev": "bun run --hot src/index.ts",
+        "build": "bun build src/index.ts --target bun -outdir dist",
         "deploy": "vercel",
         "generate": "drizzle-kit generate",
         "migrate": "drizzle-kit migrate"
