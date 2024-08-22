@@ -1,3 +1,4 @@
+import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import cookieParser from "cookie-parser";
 import express, {
     type Express,
@@ -5,24 +6,22 @@ import express, {
     type Request,
     type Response,
 } from "express";
-import { authRoute } from "./routes/auth";
-import { idRoute } from "./routes/id";
-import { profileRoute } from "./routes/profile";
-import { userRoute } from "./routes/user";
-import { vendorRoute } from "./routes/vendor";
+import { appRouter, createContext } from "./server";
+
+const port = process.env.PORT || 3000;
 
 const app: Express = express();
 
 app.use(express.json())
     .use(express.urlencoded({ extended: true }))
     .use(cookieParser())
-    .use("/auth", authRoute)
-    .use("id", idRoute)
-    .use("/profile", profileRoute)
-    .use("/vendor", vendorRoute)
-    .use("/user", userRoute);
-
-const port = process.env.PORT || 3000;
+    .use(
+        "/trpc",
+        createExpressMiddleware({
+            router: appRouter,
+            createContext,
+        })
+    );
 
 app.get(
     "/",
