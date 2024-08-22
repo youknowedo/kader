@@ -1,17 +1,16 @@
 import { eq } from "drizzle-orm";
-import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
-import { lucia } from "../auth";
-import { db } from "../db";
-import { userTable } from "../db/schema";
-import { minio } from "../storage";
-import sharp = require("sharp");
+import express from "express";
+import sharp from "sharp";
+import { lucia } from "../lib/auth";
+import { db } from "../lib/db";
+import { userTable } from "../lib/db/schema";
+import { minio } from "../lib/storage";
 
-export const profileRoute = new Hono();
+export const profileRoute = express.Router();
 
-profileRoute.post("/", async (c) => {
+profileRoute.post("/", async (req, res, next) => {
     const { session, user } = await lucia.validateSession(
-        getCookie(c, "auth_session") ?? ""
+        req.cookies["auth_session"] ?? ""
     );
     if (!session) {
         return new Response(null, {
@@ -19,7 +18,7 @@ profileRoute.post("/", async (c) => {
         });
     }
 
-    const formData = await c.req.formData();
+    const formData = await req.body;
 
     const picture: string | Blob | null = formData.get("picture");
     if (!picture || typeof picture === "string") {
@@ -61,7 +60,7 @@ profileRoute.post("/", async (c) => {
         headers: {
             Location:
                 (formData.get("redirect") ??
-                    c.req.header("Origin") ??
+                    req.header("Origin") ??
                     process.env.APP_URL) + "/",
         },
     });

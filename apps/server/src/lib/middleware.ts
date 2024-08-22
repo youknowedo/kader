@@ -1,5 +1,5 @@
 // src/middleware.ts
-import { Hono } from "hono";
+
 import { getCookie } from "hono/cookie";
 import { csrf } from "hono/csrf";
 import type { Session, User } from "lucia";

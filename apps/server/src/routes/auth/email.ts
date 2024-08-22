@@ -1,19 +1,21 @@
 import { hash, verify } from "@node-rs/argon2";
 import { eq } from "drizzle-orm";
-import { Hono } from "hono";
+import express from "express";
 import { generateIdFromEntropySize } from "lucia";
-import { lucia } from "../../auth";
-import { db } from "../../db";
-import { userTable } from "../../db/schema";
+import { lucia } from "../../lib/auth";
+import { db } from "../../lib/db";
+import { userTable } from "../../lib/db/schema";
 
-export const emailRoute = new Hono();
+export const emailRoute = express.Router();
 
 export function isValidEmail(email: string): boolean {
     return /.+@.+/.test(email);
 }
 
-emailRoute.post("/signup", async ({ req }) => {
-    const formData = await req.formData();
+emailRoute.post("/signup", async (req, res, next) => {
+    // express formData
+    const formData: FormData = await req.body;
+
     const username = formData.get("username");
     if (!username || typeof username !== "string") {
         return new Response("Invalid username", {
@@ -71,8 +73,10 @@ emailRoute.post("/signup", async ({ req }) => {
     }
 });
 
-emailRoute.post("/login", async ({ req }) => {
-    const formData = await req.formData();
+emailRoute.post("/login", async (req, res, next) => {
+    // express formData
+    const formData: FormData = await req.body;
+
     const email = formData.get("email");
     if (!email || typeof email !== "string") {
         return new Response("Invalid email", {

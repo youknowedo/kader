@@ -1,19 +1,18 @@
 import { eq } from "drizzle-orm";
-import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
-import { lucia } from "../auth";
-import { db } from "../db";
-import { userTable, vendorTable } from "../db/schema";
+import express from "express";
+import { lucia } from "../lib/auth";
+import { db } from "../lib/db";
+import { userTable, vendorTable } from "../lib/db/schema";
 
-export const vendorRoute = new Hono();
+export const vendorRoute = express.Router();
 
 type GetVendorData = {
     sessionId: string;
     vendorId: string;
 };
 
-vendorRoute.post("/get", async (c) => {
-    const data: GetVendorData = await c.req.json();
+vendorRoute.post("/get", async (req, res, next) => {
+    const data: GetVendorData = await JSON.parse(req.body);
 
     const { session } = await lucia.validateSession(data.sessionId);
     if (!session) {
@@ -31,8 +30,8 @@ vendorRoute.post("/get", async (c) => {
     return new Response(JSON.stringify(vendor[0]));
 });
 
-vendorRoute.post("/all", async (c) => {
-    const sessionId = await c.req.text();
+vendorRoute.post("/all", async (req, res, next) => {
+    const sessionId = await req.body;
 
     const { session, user } = await lucia.validateSession(sessionId);
     if (!session) {
@@ -58,8 +57,8 @@ type NumOfUsersData = {
     vendorId: string;
 };
 
-vendorRoute.post("/numOfUsers", async (c) => {
-    const data: NumOfUsersData = await c.req.json();
+vendorRoute.post("/numOfUsers", async (req, res, next) => {
+    const data: NumOfUsersData = await JSON.parse(req.body);
 
     const { session, user } = await lucia.validateSession(data.sessionId);
     if (!session) {
@@ -88,8 +87,8 @@ type UsersData = {
     vendorId: string;
 };
 
-vendorRoute.post("/users", async (c) => {
-    const data: UsersData = await c.req.json();
+vendorRoute.post("/users", async (req, res, next) => {
+    const data: UsersData = await JSON.parse(req.body);
 
     const { session, user } = await lucia.validateSession(data.sessionId);
     if (!session) {

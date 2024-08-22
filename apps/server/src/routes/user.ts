@@ -1,19 +1,18 @@
 import { inArray } from "drizzle-orm";
-import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
-import { lucia } from "../auth";
-import { db } from "../db";
-import { userTable, vendorTable } from "../db/schema";
+import express from "express";
+import { lucia } from "../lib/auth";
+import { db } from "../lib/db";
+import { userTable } from "../lib/db/schema";
 
-export const userRoute = new Hono();
+export const userRoute = express.Router();
 
 type SomeData = {
     sessionId: string;
     users: string[];
 };
 
-userRoute.post("/all", async (c) => {
-    const sessionId = await c.req.text();
+userRoute.post("/all", async (req, res, next) => {
+    const sessionId = await req.body;
 
     const { session, user } = await lucia.validateSession(sessionId);
     if (!session) {
@@ -34,8 +33,8 @@ userRoute.post("/all", async (c) => {
     return new Response(JSON.stringify(users));
 });
 
-userRoute.post("/some", async (c) => {
-    const data: SomeData = await c.req.json();
+userRoute.post("/some", async (req, res, next) => {
+    const data: SomeData = await JSON.parse(req.body);
 
     const { session, user } = await lucia.validateSession(data.sessionId);
     if (!session) {

@@ -1,14 +1,13 @@
 import { eq } from "drizzle-orm";
-import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
-import { lucia } from "../auth";
-import { db } from "../db";
-import { userTable } from "../db/schema";
+import express from "express";
+import { lucia } from "../lib/auth";
+import { db } from "../lib/db";
+import { userTable } from "../lib/db/schema";
 
-export const idRoute = new Hono();
+export const idRoute = express.Router();
 
-idRoute.post("/", async (c) => {
-    const sessionId = await c.req.text();
+idRoute.post("/", async (req, res, next) => {
+    const sessionId = req.body;
 
     const { session, user } = await lucia.validateSession(sessionId);
     if (!session) {

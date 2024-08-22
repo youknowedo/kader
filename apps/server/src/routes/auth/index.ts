@@ -1,15 +1,15 @@
-import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
-import { lucia } from "../../auth";
+import express from "express";
+import { lucia } from "../../lib/auth";
 import { emailRoute } from "./email";
 import { validateRoute } from "./validate";
 
-export const authRoute = new Hono();
+export const authRoute = express.Router();
 
-authRoute.route("/email", emailRoute).route("/validate", validateRoute);
+authRoute.use("/email", emailRoute).use("/validate", validateRoute);
 
-authRoute.post("/logout", async (c) => {
-    const formData = await c.req.formData();
+authRoute.post("/logout", async (req, res, next) => {
+    // express formData
+    const formData: FormData = await req.body;
 
     const session_id = formData.get("session_id");
     if (!session_id || typeof session_id !== "string") {
@@ -32,7 +32,7 @@ authRoute.post("/logout", async (c) => {
             "Set-Cookie": lucia.createBlankSessionCookie().serialize(),
             Location:
                 (formData.get("redirect") ??
-                    c.req.header("Origin") ??
+                    req.header("Origin") ??
                     process.env.APP_URL) + "/",
         },
     });

@@ -1,11 +1,12 @@
-import { Hono } from "hono";
-import { lucia } from "../../auth";
-import { minio } from "../../storage";
+import express from "express";
+import { lucia } from "../../lib/auth";
+import { minio } from "../../lib/storage";
 
-export const validateRoute = new Hono();
+export const validateRoute = express.Router();
 
-validateRoute.post("/session", async ({ req, res }) => {
-    const formData = await req.formData();
+validateRoute.post("/session", async (req, res, next) => {
+    // express formData
+    const formData: FormData = await req.body;
 
     const sessionId = formData.get("session_id");
     if (!sessionId || typeof sessionId !== "string") {
