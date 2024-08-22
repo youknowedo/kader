@@ -1,14 +1,9 @@
 import { lucia } from "../../lib/auth";
 import { procedure, router } from "../../server";
+import type { ResponseData } from "../../types";
 
-export const validate = procedure.query(
-    async ({
-        ctx,
-        input,
-    }): Promise<{
-        success: boolean;
-        error?: string;
-    }> => {
+export const queries = {
+    validate: procedure.query(async ({ ctx, input }): Promise<ResponseData> => {
         if (!ctx.sessionId)
             return {
                 success: false,
@@ -40,5 +35,5 @@ export const validate = procedure.query(
         return {
             success: true,
         };
-    }
-);
+    }),
+};

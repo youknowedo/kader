@@ -1,6 +1,4 @@
 import { router } from "../../server";
-import { validate } from "./queries";
+import { queries } from "./queries";
 
-export const session = router({
-    validate,
-});
+export const session = router({ ...queries });

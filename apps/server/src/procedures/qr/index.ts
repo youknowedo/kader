@@ -1,6 +1,6 @@
 import { router } from "../../server";
-import { getSingle } from "./queries";
+import { queries } from "./queries";
 
 export const qr = router({
-    getSingle,
+    ...queries,
 });
