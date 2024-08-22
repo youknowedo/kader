@@ -62,36 +62,60 @@ export const getMultiple = procedure
     .input(
         z.object({
             ids: z.array(z.string()).nullish(),
+            vendorId: z.string().nullish(),
         })
     )
-    .query(async ({ ctx, input }) => {
-        if (!ctx.sessionId)
-            return {
-                success: false,
-                error: "Unauthenticated",
-            };
+    .query(
+        async ({
+            ctx,
+            input,
+        }): Promise<{
+            success: boolean;
+            error?: string;
+            users?: User[];
+        }> => {
+            if (!ctx.sessionId)
+                return {
+                    success: false,
+                    error: "Unauthenticated",
+                };
 
-        const { session, user } = await lucia.validateSession(ctx.sessionId);
-        if (!session)
-            return {
-                success: false,
-                error: "Unauthenticated",
-            };
+            const { session, user } = await lucia.validateSession(
+                ctx.sessionId
+            );
+            if (!session)
+                return {
+                    success: false,
+                    error: "Unauthenticated",
+                };
 
-        if (user.role !== "admin")
-            return {
-                success: false,
-                error: "Unauthorized",
-            };
+            if (user.role !== "admin")
+                return {
+                    success: false,
+                    error: "Unauthorized",
+                };
 
-        const { ids } = input;
+            const { ids, vendorId } = input;
 
-        const userSelect = db.select().from(userTable);
-
-        return {
-            success: true,
-            users: await (ids
+            const userSelect = db.select().from(userTable);
+            const users = await (ids
                 ? userSelect.where(inArray(userTable.id, ids))
-                : userSelect),
-        };
-    });
+                : vendorId
+                  ? userSelect.where(eq(userTable.vendor_id, vendorId))
+                  : userSelect);
+
+            const pfp = await Promise.all(
+                users.map((u) =>
+                    minio.presignedGetObject(
+                        process.env.MINIO_BUCKET!,
+                        u.id + ".webp"
+                    )
+                )
+            );
+
+            return {
+                success: true,
+                users: users.map((u, i) => ({ ...u, pfp: pfp[i] })),
+            };
+        }
+    );

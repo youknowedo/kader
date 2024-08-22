@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
+	import { trpc } from '$lib/trpc';
 	import type { User } from 'lucia';
 	import { onMount } from 'svelte';
 	import DataTable from './table/DataTable.svelte';
@@ -10,15 +11,10 @@
 	let users: User[] = [];
 
 	onMount(async () => {
-		const usersRes = await fetch(`${PUBLIC_SERVER_URL}/vendor/users`, {
-			body: JSON.stringify({ sessionId: data.session?.id, vendorId: $page.params.vendorId }),
-			method: 'POST'
+		const { users: u } = await trpc(data.sessionId).user.getMultiple.query({
+			vendorId: $page.params.vendorId
 		});
-
-		if (usersRes.ok) {
-			users = await usersRes.json();
-			console.log(users);
-		}
+		users = u ?? [];
 	});
 </script>
 

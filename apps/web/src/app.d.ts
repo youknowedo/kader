@@ -18,8 +18,8 @@ declare global {
 type Vendor = {
 	id: string;
 	name: string;
-	description: string;
-	owner: User;
+	description: string | null;
+	owner: Omit<User, 'pfp'>;
 	numOfUsers: number;
 };
 

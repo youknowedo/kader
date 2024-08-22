@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
+	import { trpc } from '$lib/trpc';
 	import { Button, Command, Popover } from '@kader/ui/components';
 	import { cn } from '@kader/ui/utils';
 	import type { User } from 'lucia';
@@ -19,15 +20,12 @@
 
 	onMount(async () => {
 		console.log(pageData);
-		const userRes = await fetch(`${PUBLIC_SERVER_URL}/user/all`, {
-			body: pageData.session?.id,
-			method: 'POST'
-		});
-		const u: User[] = await userRes.json();
+		const { users: u } = await trpc(pageData.sessionId).user.getMultiple.query({});
 
-		users = u
-			.filter((user) => !(data as User[]).find((u) => u.id == user.id))
-			.map((user) => ({ label: user.email, value: user.id }));
+		users =
+			u
+				?.filter((user) => !(data as User[]).find((u) => u.id == user.id))
+				.map((user) => ({ label: user.email, value: user.id })) ?? [];
 	});
 
 	// We want to refocus the trigger button when the user selects

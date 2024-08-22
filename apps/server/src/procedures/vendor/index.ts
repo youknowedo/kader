@@ -1,6 +1,7 @@
 import { router } from "../../server";
-import { getSingle } from "./queries";
+import { getMultiple, getSingle } from "./queries";
 
 export const vendor = router({
     getSingle,
+    getMultiple,
 });

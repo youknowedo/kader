@@ -19,10 +19,8 @@
 
 	export let data: User[];
 	export let pageData: {
-		user: User & {
-			pfp: string;
-		};
-		session: Session | null;
+		user: User;
+		sessionId: string;
 	};
 
 	const table = createTable(readable(data), {
