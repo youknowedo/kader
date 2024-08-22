@@ -1,6 +1,14 @@
 {
     "name": "server",
     "module": "./src/index.ts",
+    "files": [
+        "src/server.ts"
+    ],
+    "exports": {
+        ".": {
+            "types": "./src/server.ts"
+        }
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "bun run --hot ./src/index.ts"

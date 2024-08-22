@@ -1,10 +1,10 @@
 import { verify } from "@node-rs/argon2";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { lucia } from "../lib/auth";
-import { db } from "../lib/db";
-import { userTable, vendorTable } from "../lib/db/schema";
-import { procedure } from "../server";
+import { lucia } from "../../lib/auth";
+import { db } from "../../lib/db";
+import { userTable, vendorTable } from "../../lib/db/schema";
+import { procedure } from "../../server";
 
 export const getVendor = procedure
     .input(

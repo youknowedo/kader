@@ -1,11 +1,11 @@
 import { verify } from "@node-rs/argon2";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { lucia } from "../lib/auth";
-import { db } from "../lib/db";
-import { userTable } from "../lib/db/schema";
-import { minio } from "../lib/storage";
-import { procedure } from "../server";
+import { lucia } from "../../lib/auth";
+import { db } from "../../lib/db";
+import { userTable } from "../../lib/db/schema";
+import { minio } from "../../lib/storage";
+import { procedure } from "../../server";
 
 export const updateProfile = procedure
     .input(
