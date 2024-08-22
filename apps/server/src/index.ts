@@ -6,7 +6,20 @@ import express, {
     type Request,
     type Response,
 } from "express";
-import { appRouter, createContext } from "./server";
+import { auth } from "./procedures/auth";
+import { qr } from "./procedures/qr";
+import { user } from "./procedures/user";
+import { vendor } from "./procedures/vendor";
+import { createContext, router } from "./server";
+
+export const appRouter = router({
+    auth,
+    qr,
+    user,
+    vendor,
+});
+
+export type AppRouter = typeof appRouter;
 
 const port = process.env.PORT || 3000;
 

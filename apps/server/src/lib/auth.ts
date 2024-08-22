@@ -17,6 +17,7 @@ export const lucia = new Lucia(adapter, {
             full_name: attributes.full_name,
             role: attributes.role,
             vendor_id: attributes.vendor_id,
+            pfp: null as string | null,
         };
     },
 });
@@ -25,13 +26,14 @@ declare module "lucia" {
     interface Register {
         Lucia: typeof lucia;
         DatabaseUserAttributes: {
-            hex_qr_id: string;
+            hex_qr_id: string | null;
             email: string;
             username: string;
             completed_profile: boolean;
-            full_name: string;
-            role: "admin" | "vendor" | "user";
+            full_name: string | null;
+            role: "admin" | "vendor" | "member" | "user";
             vendor_id: string | null;
+            pfp: string | null;
         };
     }
 }

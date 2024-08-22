@@ -57,6 +57,13 @@
       "when": 1724064248590,
       "tag": "0007_steady_squirrel_girl",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1724324323892,
+      "tag": "0008_open_lady_deathstrike",
+      "breakpoints": true
     }
   ]
 }

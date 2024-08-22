@@ -6,37 +6,35 @@ import { db } from "../../lib/db";
 import { userTable } from "../../lib/db/schema";
 import { procedure, router } from "../../server";
 
-export const queries = router({
-    get: procedure.query(async ({ ctx, input }) => {
-        if (!ctx.sessionId)
-            return {
-                success: false,
-                error: "Unauthenticated",
-            };
-
-        const { session, user } = await lucia.validateSession(ctx.sessionId);
-        if (!session)
-            return {
-                success: false,
-                error: "Unauthenticated",
-            };
-
-        if (!user.hex_qr_id) {
-            // Add a new QR ID to the user
-            const qrId = crypto.getRandomValues(new Uint8Array(20));
-            user.hex_qr_id = Buffer.from(qrId).toString("hex");
-
-            await db
-                .update(userTable)
-                .set({
-                    hex_qr_id: user.hex_qr_id,
-                })
-                .where(eq(userTable.id, user.id));
-        }
-
+export const getSingle = procedure.query(async ({ ctx, input }) => {
+    if (!ctx.sessionId)
         return {
-            success: true,
-            qr: user.hex_qr_id,
+            success: false,
+            error: "Unauthenticated",
         };
-    }),
+
+    const { session, user } = await lucia.validateSession(ctx.sessionId);
+    if (!session)
+        return {
+            success: false,
+            error: "Unauthenticated",
+        };
+
+    if (!user.hex_qr_id) {
+        // Add a new QR ID to the user
+        const qrId = crypto.getRandomValues(new Uint8Array(20));
+        user.hex_qr_id = Buffer.from(qrId).toString("hex");
+
+        await db
+            .update(userTable)
+            .set({
+                hex_qr_id: user.hex_qr_id,
+            })
+            .where(eq(userTable.id, user.id));
+    }
+
+    return {
+        success: true,
+        qr: user.hex_qr_id,
+    };
 });

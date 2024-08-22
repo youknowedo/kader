@@ -1,8 +1,9 @@
 import { router } from "../../server";
-import { mutations } from "./mutations";
-import { queries } from "./queries";
+import { updateProfile } from "./mutations";
+import { getMultiple, getSingle } from "./queries";
 
 export const user = router({
-    queries,
-    mutations,
+    updateProfile,
+    getSingle,
+    getMultiple,
 });

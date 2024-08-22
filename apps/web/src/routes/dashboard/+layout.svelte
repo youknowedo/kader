@@ -10,6 +10,7 @@
 	import { page } from '$app/stores';
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
 	import { user } from '$lib/stores.js';
+	import { trpc } from '$lib/trpc.js';
 	import { Breadcrumb, Button, DropdownMenu, Sheet, Tooltip } from '@kader/ui/components';
 
 	export let data;
@@ -40,6 +41,7 @@
 		}));
 
 	$: browser &&
+		data.sessionId &&
 		breadcrumbs.forEach(async (breadcrumb, i) => {
 			console.log(
 				breadcrumb.name,
@@ -50,15 +52,7 @@
 				return (breadcrumbs[i].name =
 					breadcrumb.name.charAt(0).toUpperCase() + breadcrumb.name.slice(1));
 
-			const vendorRes = await fetch(`${PUBLIC_SERVER_URL}/vendor/get`, {
-				body: JSON.stringify({
-					sessionId: data.session?.id,
-					vendorId: $page.params.vendorId
-				}),
-				method: 'post'
-			});
-
-			const vendor = await vendorRes.json();
+			const vendor = trpc(data.sessionId);
 
 			console.log(vendor);
 			breadcrumbs[i].name = vendor.name;
