@@ -11,7 +11,7 @@
 	let users: User[] = [];
 
 	onMount(async () => {
-		const { users: u } = await trpc(data.sessionId).user.getMultiple.query({
+		const { users: u } = await trpc.user.getMultiple.query({
 			vendorId: $page.params.vendorId
 		});
 		users = u ?? [];

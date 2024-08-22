@@ -2,8 +2,27 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
+	import { trpc } from '$lib/trpc';
 	import { Button, Card, Input, Label } from '@kader/ui/components';
 	import '@kader/ui/styles.css';
+
+	const onSubmit = async (
+		e: SubmitEvent & {
+			currentTarget: EventTarget & HTMLFormElement;
+		}
+	) => {
+		e.preventDefault();
+		const form = new FormData(e.currentTarget);
+		const data = Object.fromEntries(form.entries());
+
+		const { success, error } = await trpc.auth.login.mutate({
+			email: data.email.toString(),
+			password: data.password.toString()
+		});
+
+		if (success) goto('/dashboard');
+		else console.error('Failed to login', error);
+	};
 </script>
 
 <Card.Root class="max-w-sm mx-auto">
@@ -12,7 +31,7 @@
 		<Card.Description>Enter your email below to login to your account</Card.Description>
 	</Card.Header>
 	<Card.Content>
-		<form action="{PUBLIC_SERVER_URL}/auth/email/login" method="post">
+		<form on:submit={onSubmit}>
 			<input type="hidden" name="redirect" value="{$page.url.origin}/dashboard" />
 			<div class="grid gap-4">
 				<div class="grid gap-2">

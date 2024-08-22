@@ -8,14 +8,12 @@ import { minio } from "../../lib/storage";
 import { procedure, router } from "../../server";
 
 export const getSingle = procedure
-    .input(z.object({ id: z.string().nullish() }))
+    .input(z.string().nullish())
     .query(
         async ({
             ctx,
-            input,
+            input: id,
         }): Promise<{ success: boolean; error?: string; user?: User }> => {
-            const { id } = input;
-
             if (!ctx.sessionId)
                 return {
                     success: false,

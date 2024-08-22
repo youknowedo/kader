@@ -6,12 +6,11 @@
 	import type { Vendor } from '../../../app';
 	import DataTable from './table/DataTable.svelte';
 
-	export let data;
 	let vendors: Vendor[] = [];
 	let loading = true;
 
 	onMount(async () => {
-		const { vendors: v } = await trpc(data.sessionId).vendor.getMultiple.query({});
+		const { vendors: v } = await trpc.vendor.getMultiple.query();
 		vendors = v ?? [];
 	});
 </script>

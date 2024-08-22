@@ -52,11 +52,17 @@
 				return (breadcrumbs[i].name =
 					breadcrumb.name.charAt(0).toUpperCase() + breadcrumb.name.slice(1));
 
-			const vendor = trpc(data.sessionId);
+			const { vendor } = await trpc.vendor.getSingle.query($page.params.vendorId);
 
 			console.log(vendor);
-			breadcrumbs[i].name = vendor.name;
+			breadcrumbs[i].name = vendor?.name ?? 'N/A';
 		});
+
+	const logout = async () => {
+		await trpc.auth.logout.mutate();
+		user.set(null);
+		goto('/login');
+	};
 </script>
 
 <div class="flex flex-col w-full min-h-screen bg-muted/40">
@@ -194,12 +200,7 @@
 
 					<DropdownMenu.Separator />
 
-					<form action="{PUBLIC_SERVER_URL}/auth/logout" method="post">
-						<input type="hidden" name="session_id" value={data.session?.id} />
-						<button class="w-full">
-							<DropdownMenu.Item>Logout</DropdownMenu.Item>
-						</button>
-					</form>
+					<DropdownMenu.Item on:click={logout}>Logout</DropdownMenu.Item>
 				</DropdownMenu.Content>
 			</DropdownMenu.Root>
 		</header>

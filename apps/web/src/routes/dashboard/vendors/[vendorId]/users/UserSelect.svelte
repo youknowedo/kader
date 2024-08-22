@@ -20,7 +20,7 @@
 
 	onMount(async () => {
 		console.log(pageData);
-		const { users: u } = await trpc(pageData.sessionId).user.getMultiple.query({});
+		const { users: u } = await trpc.user.getMultiple.query({});
 
 		users =
 			u

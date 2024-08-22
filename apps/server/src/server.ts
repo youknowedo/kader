@@ -2,7 +2,7 @@ import { initTRPC } from "@trpc/server";
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 
 export const createContext = ({ req, res }: CreateExpressContextOptions) => {
-    return { sessionId: req.headers.authorization };
+    return { req, res, sessionId: req.cookies.auth_session };
 };
 export type Context = Awaited<ReturnType<typeof createContext>>;
 

@@ -9,10 +9,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return resolve(event);
 	}
 
-	const data = new URLSearchParams();
-	data.append('session_id', sessionId);
+	const { success } = await trpc.session.validate.query();
+	if (!success) {
+		event.locals.user = undefined;
+		event.locals.sessionId = undefined;
+		return resolve(event);
+	}
 
-	const { user } = await trpc(sessionId).user.getSingle.query({});
+	const { user } = await trpc.user.getSingle.query();
 
 	event.locals.user = user;
 	event.locals.sessionId = sessionId;

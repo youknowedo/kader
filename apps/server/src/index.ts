@@ -8,6 +8,7 @@ import express, {
 } from "express";
 import { auth } from "./procedures/auth";
 import { qr } from "./procedures/qr";
+import { session } from "./procedures/session";
 import { user } from "./procedures/user";
 import { vendor } from "./procedures/vendor";
 import { createContext, router } from "./server";
@@ -17,6 +18,7 @@ export const appRouter = router({
     qr,
     user,
     vendor,
+    session,
 });
 
 export type AppRouter = typeof appRouter;
