@@ -1,5 +1,5 @@
 {
-    "name": "server",
+    "name": "@kader/server",
     "module": "./src/index.ts",
     "files": [
         "src/server.ts"

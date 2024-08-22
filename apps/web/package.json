@@ -1,5 +1,5 @@
 {
-	"name": "web",
+	"name": "@kader/web",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
@@ -13,6 +13,7 @@
 	},
 	"devDependencies": {
 		"@kader/ui": "*",
+		"@kader/server": "*",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",

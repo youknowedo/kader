@@ -1,11 +1,9 @@
 import { initTRPC } from "@trpc/server";
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
-import { z } from "zod";
 import { auth } from "./procedures/auth";
-import { getQr } from "./procedures/qr/queries";
-import { updateProfile } from "./procedures/user/mutations";
-import { getUsers } from "./procedures/user/queries";
-import { getVendor } from "./procedures/vendor/queries";
+import { qr } from "./procedures/qr";
+import { user } from "./procedures/user";
+import { vendor } from "./procedures/vendor";
 
 export const createContext = ({ req, res }: CreateExpressContextOptions) => {
     return { sessionId: req.headers.authorization };
@@ -18,10 +16,9 @@ export const procedure = t.procedure;
 
 export const appRouter = router({
     auth,
-    getQr,
-    getUsers,
-    getVendor,
-    updateProfile,
+    qr,
+    user,
+    vendor,
 });
 
 export type AppRouter = typeof appRouter;
