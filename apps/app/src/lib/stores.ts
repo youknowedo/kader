@@ -1,4 +1,4 @@
-import type { User } from 'lucia';
+import type { User } from '@kader/shared';
 import { writable } from 'svelte/store';
 
-export const user = writable<(User & { pfp: string }) | null>(null);
+export const user = writable<User | null>(null);

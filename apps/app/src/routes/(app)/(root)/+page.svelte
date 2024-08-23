@@ -1,16 +1,35 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores.js';
 	import { trpc } from '@kader/shared/trpc';
-	import { Alert } from '@kader/ui/components';
+	import { Alert, Button } from '@kader/ui/components';
 	import { Buffer } from 'buffer';
 	import CircleAlert from 'lucide-svelte/icons/circle-alert';
 	import * as OTPAuth from 'otpauth';
+	import QrScanner from 'qr-scanner';
 	import QRCode from 'qrcode';
 	import { onMount } from 'svelte';
 
 	let token: string;
 	let qr: string;
+
+	let scanMode = false;
+	let video: HTMLVideoElement;
+	let qrScanner: QrScanner | null = null;
+
+	const switchMode = () => {
+		scanMode = !scanMode;
+		if (scanMode) {
+			qrScanner = new QrScanner(video, (result) => console.log('decoded qr code:', result), {
+				preferredCamera: 'environment'
+			});
+			qrScanner.start();
+		} else {
+			qrScanner?.destroy();
+			qrScanner = null;
+		}
+	};
 
 	onMount(async () => {
 		if (!$user) return;
@@ -69,8 +88,20 @@
 	{/if}
 
 	{#if qr}
-		<img class="h-64" src={qr} alt="" />
+		<img class="h-64 {!scanMode && $user?.role !== 'vendor' ? '' : 'hidden'}" src={qr} alt="" />
 	{:else}
 		Loading...
+	{/if}
+	<video
+		id="scanner"
+		class="w-64 {!scanMode && $user?.role !== 'vendor' ? '' : ''}"
+		bind:this={video}
+	>
+		<div class="placeholder">No cameras loaded!</div>
+		<track kind="captions" />
+	</video>
+
+	{#if $user?.vendor_id}
+		<Button on:click={switchMode}>Switch Mode</Button>
 	{/if}
 </div>

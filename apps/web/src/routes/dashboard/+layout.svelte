@@ -27,18 +27,20 @@
 		{ icon: Store, name: 'Vendors', href: '/dashboard/vendors', admin: true }
 	];
 
-	$: browser&&breadcrumbs = $page.url.pathname
-		.split('/')
-		.slice(1)
-		.map((path, index) => ({
-			// path up until the current index
-			path: $page.url.pathname
+	$: breadcrumbs = browser
+		? $page.url.pathname
 				.split('/')
-				.slice(0, index + 2)
-				.join('/'),
-			name: path,
-			isLast: index === $page.url.pathname.split('/').length - 2
-		}));
+				.slice(1)
+				.map((path, index) => ({
+					// path up until the current index
+					path: $page.url.pathname
+						.split('/')
+						.slice(0, index + 2)
+						.join('/'),
+					name: path,
+					isLast: index === $page.url.pathname.split('/').length - 2
+				}))
+		: [];
 
 	$: browser &&
 		data.sessionId &&
