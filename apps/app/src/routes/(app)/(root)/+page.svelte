@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { user } from '$lib/stores.js';
+	import { user } from '$lib/stores';
+	import type { User } from '@kader/shared';
 	import { trpc } from '@kader/shared/trpc';
 	import { Alert, Button } from '@kader/ui/components';
 	import { Buffer } from 'buffer';
@@ -18,6 +19,7 @@
 	let scanMode = false;
 	let video: HTMLVideoElement;
 	let qrScanner: QrScanner | null = null;
+	let scannedUser: User | null = null;
 
 	const switchMode = () => {
 		scanMode = !scanMode;
@@ -33,9 +35,11 @@
 						token: string;
 					} = JSON.parse(result.data);
 
-					const { user } = await trpc.qr.verify.mutate({ userId, token });
+					const { user: u } = await trpc.qr.verify.mutate({ userId, token });
 
-					if (!user) return;
+					if (!u) return;
+
+					scannedUser = u;
 				},
 				{
 					preferredCamera: 'environment'
@@ -116,12 +120,20 @@
 	{:else}
 		Loading...
 	{/if}
-	<video
-		id="scanner"
-		class="w-64 h-64 {!scanMode && $user?.role !== 'vendor' ? 'hidden' : ''}"
-		bind:this={video}
-	>
-		<div class="placeholder">No cameras loaded!</div>
-		<track kind="captions" />
-	</video>
+	<div class={!scanMode && $user?.role !== 'vendor' ? 'hidden' : ''}>
+		{#if scannedUser}
+			<div class="flex flex-col items-center justify-center">
+				<img class="w-24 h-24 rounded-full" src={scannedUser.pfp} alt="" />
+				<p class="mt-2 text-lg font-semibold">{scannedUser.full_name}</p>
+				<p class="mt-1 text-sm text-gray-500">{scannedUser.email}</p>
+
+				<Button on:click={() => (scannedUser = null)}>Back</Button>
+			</div>
+		{:else}
+			<video id="scanner" class="w-64 h-64" bind:this={video}>
+				<div class="placeholder">No cameras loaded!</div>
+				<track kind="captions" />
+			</video>
+		{/if}
+	</div>
 </div>
