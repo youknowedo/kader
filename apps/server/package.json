@@ -1,7 +1,6 @@
 {
     "name": "@kader/server",
     "module": "./src/index.ts",
-    "packageManager": "bun@1.1.22",
     "files": [
         "src/server.ts"
     ],
