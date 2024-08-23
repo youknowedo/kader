@@ -1,11 +1,10 @@
-import { env } from "bun";
 import { Lucia } from "lucia";
 import { adapter } from "./db";
 
 export const lucia = new Lucia(adapter, {
     sessionCookie: {
         attributes: {
-            secure: env.NODE_ENV === "PRODUCTION", // set `Secure` flag in HTTPS
+            secure: process.env.NODE_ENV === "PRODUCTION", // set `Secure` flag in HTTPS
         },
     },
     getUserAttributes: (attributes) => {
