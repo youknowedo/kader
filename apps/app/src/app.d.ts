@@ -1,11 +1,13 @@
+import { User } from 'lucia';
+
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			user: (import('lucia').User & { pfp: string }) | null;
-			session: import('lucia').Session | null;
+			user?: User;
+			sessionId?: string;
 		}
 		// interface PageData {}
 		// interface PageState {}
@@ -13,4 +15,12 @@ declare global {
 	}
 }
 
-export {};
+type Vendor = {
+	id: string;
+	name: string;
+	description: string | null;
+	owner: Omit<User, 'pfp'>;
+	numOfUsers: number;
+};
+
+export { Vendor };

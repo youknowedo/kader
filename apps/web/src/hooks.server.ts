@@ -20,7 +20,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	const { user } = await trpcWithSession(sessionId).user.getSingle.query();
-	console.log('User:', user);
 
 	event.locals.user = user;
 	event.locals.sessionId = sessionId;

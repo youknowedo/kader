@@ -2,14 +2,13 @@
 	import { goto } from '$app/navigation';
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
 	import { user } from '$lib/stores.js';
+	import { trpc } from '@kader/shared/trpc';
 	import { Alert } from '@kader/ui/components';
 	import { Buffer } from 'buffer';
 	import CircleAlert from 'lucide-svelte/icons/circle-alert';
 	import * as OTPAuth from 'otpauth';
 	import QRCode from 'qrcode';
 	import { onMount } from 'svelte';
-
-	export let data;
 
 	let token: string;
 	let qr: string;
@@ -20,18 +19,10 @@
 		let hex_qr_id = localStorage.getItem('qr_id');
 		let qrId: Uint8Array;
 		if (!hex_qr_id) {
-			const res = await fetch(PUBLIC_SERVER_URL + '/id', {
-				method: 'post',
-				body: data.session
-			});
-			if (res.ok) {
-				const data = await res.json();
-				if (data.qr) hex_qr_id = data.qr;
-				else return;
-			} else {
-				throw new Error('Failed to fetch QR ID');
-			}
+			const { success, error, qr } = await trpc.qr.getSingle.query();
+			if (!success) throw new Error(error);
 
+			hex_qr_id = qr ?? null;
 			if (!hex_qr_id) throw new Error('Failed to fetch QR ID');
 
 			localStorage.setItem('qr_id', hex_qr_id);

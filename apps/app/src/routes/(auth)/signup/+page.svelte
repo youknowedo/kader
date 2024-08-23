@@ -1,7 +1,24 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
+	import { trpc } from '@kader/shared/trpc';
 	import { Button, Card, Input, Label } from '@kader/ui/components';
+
+	const signup = (
+		e: SubmitEvent & {
+			currentTarget: EventTarget & HTMLFormElement;
+		}
+	) => {
+		e.preventDefault();
+
+		const formData = new FormData(e.currentTarget);
+
+		trpc.auth.signup.mutate({
+			username: formData.get('username') as string,
+			email: formData.get('email') as string,
+			password: formData.get('password') as string
+		});
+	};
 </script>
 
 <Card.Root class="max-w-sm mx-auto">
@@ -10,7 +27,7 @@
 		<Card.Description>Enter your information to create an account</Card.Description>
 	</Card.Header>
 	<Card.Content>
-		<form action="{PUBLIC_SERVER_URL}/auth/email/signup" method="post">
+		<form on:submit={signup}>
 			<div class="grid gap-4">
 				<div class="grid gap-2">
 					<Label for="username">Username</Label>
