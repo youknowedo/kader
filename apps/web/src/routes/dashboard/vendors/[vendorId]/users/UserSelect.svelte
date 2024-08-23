@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
-	import { trpc } from '$lib/trpc';
+	import { trpc } from '@kader/shared/trpc';
 	import { Button, Command, Popover } from '@kader/ui/components';
 	import { cn } from '@kader/ui/utils';
 	import type { User } from 'lucia';

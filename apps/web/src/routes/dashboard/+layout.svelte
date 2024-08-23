@@ -10,7 +10,7 @@
 	import { page } from '$app/stores';
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
 	import { user } from '$lib/stores.js';
-	import { trpc } from '$lib/trpc.js';
+	import { trpc } from '@kader/shared/trpc';
 	import { Breadcrumb, Button, DropdownMenu, Sheet, Tooltip } from '@kader/ui/components';
 
 	export let data;

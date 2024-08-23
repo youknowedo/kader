@@ -1,0 +1,19 @@
+{
+    "name": "@kader/shared",
+    "module": "src/index.ts",
+    "type": "module",
+    "files": [
+        "src"
+    ],
+    "exports": {
+        "./trpc": "./src/trpc.ts"
+    },
+    "devDependencies": {
+        "@kader/server": "*",
+        "@types/bun": "latest",
+        "@trpc/client": "^10.45.2"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0"
+    }
+}

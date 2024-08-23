@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
-	import { trpc } from '$lib/trpc';
+	import { trpc } from '@kader/shared/trpc';
 	import type { User } from 'lucia';
 	import { onMount } from 'svelte';
 	import DataTable from './table/DataTable.svelte';

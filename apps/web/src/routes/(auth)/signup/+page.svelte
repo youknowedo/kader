@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { trpc } from '$lib/trpc';
+	import { trpc } from '@kader/shared/trpc';
 	import { Button, Card, Input, Label } from '@kader/ui/components';
 
 	const onSubmit = async (
