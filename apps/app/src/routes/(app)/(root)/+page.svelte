@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores.js';
 	import { trpc } from '@kader/shared/trpc';
 	import { Alert, Button } from '@kader/ui/components';
 	import { Buffer } from 'buffer';
 	import CircleAlert from 'lucide-svelte/icons/circle-alert';
+	import QrCode from 'lucide-svelte/icons/qr-code';
+	import ScanQrCode from 'lucide-svelte/icons/scan-qr-code';
 	import * as OTPAuth from 'otpauth';
 	import QrScanner from 'qr-scanner';
 	import QRCode from 'qrcode';
@@ -21,9 +22,25 @@
 	const switchMode = () => {
 		scanMode = !scanMode;
 		if (scanMode) {
-			qrScanner = new QrScanner(video, (result) => console.log('decoded qr code:', result), {
-				preferredCamera: 'environment'
-			});
+			qrScanner = new QrScanner(
+				video,
+				async (result) => {
+					const {
+						userId,
+						token
+					}: {
+						userId: string;
+						token: string;
+					} = JSON.parse(result.data);
+
+					const { user } = await trpc.qr.verify.mutate({ userId, token });
+
+					if (!user) return;
+				},
+				{
+					preferredCamera: 'environment'
+				}
+			);
 			qrScanner.start();
 		} else {
 			qrScanner?.destroy();
@@ -61,7 +78,7 @@
 
 			qr = await QRCode.toDataURL(
 				JSON.stringify({
-					user: $user.id,
+					userId: $user.id,
 					token
 				}),
 				{ errorCorrectionLevel: 'H' }
@@ -74,7 +91,14 @@
 	});
 </script>
 
-<div class="flex flex-col items-center justify-center">
+<div class="relative flex flex-col items-center justify-center flex-1 w-full">
+	<Button on:click={switchMode} class="absolute top-0 right-0 h-12" variant="ghost" size="sm">
+		<svelte:component
+			this={!scanMode && $user?.role !== 'vendor' ? ScanQrCode : QrCode}
+			class="w-6 h-6"
+		/>
+	</Button>
+
 	{#if !$user?.completed_profile}
 		<button class="text-left" on:click={() => goto('/completeProfile')}>
 			<Alert.Root class="mb-12 -mt-6">
@@ -94,14 +118,10 @@
 	{/if}
 	<video
 		id="scanner"
-		class="w-64 {!scanMode && $user?.role !== 'vendor' ? '' : ''}"
+		class="w-64 h-64 {!scanMode && $user?.role !== 'vendor' ? 'hidden' : ''}"
 		bind:this={video}
 	>
 		<div class="placeholder">No cameras loaded!</div>
 		<track kind="captions" />
 	</video>
-
-	{#if $user?.vendor_id}
-		<Button on:click={switchMode}>Switch Mode</Button>
-	{/if}
 </div>
