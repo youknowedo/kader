@@ -1,4 +1,4 @@
-import { trpc } from '$lib/trpc';
+import { trpcWithSession } from '$lib/trpc';
 import type { Handle } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -9,14 +9,18 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return resolve(event);
 	}
 
-	const { success } = await trpc.session.validate.query();
+	const { success, error } = await trpcWithSession(sessionId).session.validate.query();
 	if (!success) {
 		event.locals.user = undefined;
 		event.locals.sessionId = undefined;
+
+		console.log('Unauthenticated');
+		console.log(error);
 		return resolve(event);
 	}
 
-	const { user } = await trpc.user.getSingle.query();
+	const { user } = await trpcWithSession(sessionId).user.getSingle.query();
+	console.log('User:', user);
 
 	event.locals.user = user;
 	event.locals.sessionId = sessionId;

@@ -18,10 +18,6 @@
 	import DataTableCheckbox from './Checkbox.svelte';
 
 	export let data: User[];
-	export let pageData: {
-		user: User;
-		sessionId: string;
-	};
 
 	const table = createTable(readable(data), {
 		page: addPagination(),
@@ -128,7 +124,7 @@
 							</Sheet.Description>
 						</Sheet.Header>
 
-						<UserSelect {pageData} {data} />
+						<UserSelect {data} />
 					</div>
 
 					<Sheet.Footer>

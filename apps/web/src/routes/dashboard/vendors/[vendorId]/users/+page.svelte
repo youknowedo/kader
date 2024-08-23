@@ -6,8 +6,6 @@
 	import { onMount } from 'svelte';
 	import DataTable from './table/DataTable.svelte';
 
-	export let data;
-
 	let users: User[] = [];
 
 	onMount(async () => {
@@ -20,6 +18,6 @@
 
 {#key users}
 	<div class="container py-10 mx-auto">
-		<DataTable data={users} pageData={data} />
+		<DataTable data={users} />
 	</div>
 {/key}

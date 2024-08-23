@@ -58,7 +58,7 @@
 		table.column({
 			accessor: 'description',
 			header: 'Description',
-			cell: ({ value }) => value,
+			cell: ({ value }) => value ?? 'N/A',
 			plugins: {
 				sort: { disable: true },
 				filter: { exclude: true }
@@ -67,7 +67,7 @@
 		table.column({
 			accessor: 'owner',
 			header: 'Owner',
-			cell: ({ value }) => value.full_name
+			cell: ({ value }) => value?.full_name ?? 'N/A'
 		}),
 		table.column({
 			accessor: ({ id, numOfUsers }) => ({ id, numOfUsers }),

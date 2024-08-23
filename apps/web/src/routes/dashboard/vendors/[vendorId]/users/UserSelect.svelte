@@ -8,7 +8,6 @@
 	import ChevronsUpDown from 'lucide-svelte/icons/chevrons-up-down';
 	import { onMount, tick } from 'svelte';
 
-	export let pageData;
 	export let data;
 
 	let users: { label: string; value: string }[] = [];
@@ -19,7 +18,6 @@
 	$: selectedValue = users.find((f) => f.value === value)?.label ?? 'Select a user...';
 
 	onMount(async () => {
-		console.log(pageData);
 		const { users: u } = await trpc.user.getMultiple.query({});
 
 		users =

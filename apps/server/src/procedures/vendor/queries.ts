@@ -106,7 +106,8 @@ export const queries = {
 
             const numOfUsers: number[] = [];
             const owners: Omit<User, "pfp">[] = [];
-            vendors.forEach(async (vendor) => {
+
+            for (const vendor of vendors) {
                 const users = await db
                     .select({})
                     .from(userTable)
@@ -118,7 +119,7 @@ export const queries = {
 
                 numOfUsers.push(users.length);
                 owners.push(owner[0]);
-            });
+            }
 
             return {
                 success: true,

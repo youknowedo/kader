@@ -43,18 +43,12 @@
 	$: browser &&
 		data.sessionId &&
 		breadcrumbs.forEach(async (breadcrumb, i) => {
-			console.log(
-				breadcrumb.name,
-				$page.params.vendorId,
-				breadcrumb.name !== $page.params.vendorId
-			);
 			if (breadcrumb.name !== $page.params.vendorId)
 				return (breadcrumbs[i].name =
 					breadcrumb.name.charAt(0).toUpperCase() + breadcrumb.name.slice(1));
 
 			const { vendor } = await trpc.vendor.getSingle.query($page.params.vendorId);
 
-			console.log(vendor);
 			breadcrumbs[i].name = vendor?.name ?? 'N/A';
 		});
 

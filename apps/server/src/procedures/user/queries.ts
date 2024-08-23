@@ -19,7 +19,7 @@ export const queries = {
                 if (!ctx.sessionId)
                     return {
                         success: false,
-                        error: "Unauthenticated",
+                        error: "Unauthenticated 1",
                     };
 
                 const { session, user } = await lucia.validateSession(
@@ -28,13 +28,19 @@ export const queries = {
                 if (!session)
                     return {
                         success: false,
-                        error: "Unauthenticated",
+                        error: "Unauthenticated 2",
                     };
 
                 if (!id)
                     return {
                         success: true,
-                        user,
+                        user: user && {
+                            ...user,
+                            pfp: await minio.presignedGetObject(
+                                process.env.MINIO_BUCKET!,
+                                user.id + ".webp"
+                            ),
+                        },
                     };
 
                 if (user.role !== "admin")
@@ -49,14 +55,16 @@ export const queries = {
                         .from(userTable)
                         .where(eq(userTable.id, id))
                 )[0];
-                const pfp = await minio.presignedGetObject(
-                    process.env.MINIO_BUCKET!,
-                    selectedUser.id + ".webp"
-                );
 
                 return {
                     success: true,
-                    user: { ...selectedUser, pfp },
+                    user: selectedUser && {
+                        ...selectedUser,
+                        pfp: await minio.presignedGetObject(
+                            process.env.MINIO_BUCKET!,
+                            selectedUser.id + ".webp"
+                        ),
+                    },
                 };
             }
         ),
@@ -114,7 +122,7 @@ export const queries = {
 
                 return {
                     success: true,
-                    users: users.map((u, i) => ({ ...u, pfp: pfp[i] })),
+                    users: users.map((u, i) => u && { ...u, pfp: pfp[i] }),
                 };
             }
         ),

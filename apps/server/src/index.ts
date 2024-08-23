@@ -1,5 +1,6 @@
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import express, {
     type Express,
     type NextFunction,
@@ -28,6 +29,22 @@ const port = process.env.PORT || 3000;
 const app: Express = express();
 
 app.use(express.json())
+    .use(
+        cors({
+            origin(requestOrigin, callback) {
+                const allowedOrigins = [
+                    process.env.APP_URL,
+                    process.env.WEB_URL,
+                ];
+                if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
+                    callback(null, true);
+                } else {
+                    callback(null, false);
+                }
+            },
+            credentials: true,
+        })
+    )
     .use(express.urlencoded({ extended: true }))
     .use(cookieParser())
     .use(
