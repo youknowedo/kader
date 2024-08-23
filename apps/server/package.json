@@ -1,18 +1,18 @@
 {
     "name": "@kader/server",
-    "module": "./src/index.ts",
+    "module": "./api/index.ts",
     "files": [
-        "src/server.ts"
+        "api/server.ts"
     ],
     "exports": {
         ".": {
-            "types": "./src/index.ts"
+            "types": "./api/index.ts"
         }
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "bun run --hot ./src/index.ts",
-        "build": "bun build ./src/index.ts --target bun --outdir dist",
+        "dev": "bun run --hot ./api/index.ts",
+        "build": "bun build ./api/index.ts --target bun --outdir dist",
         "generate": "drizzle-kit generate",
         "migrate": "drizzle-kit migrate"
     },
