@@ -12,8 +12,8 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@kader/ui": "*",
 		"@kader/shared": "*",
+		"@kader/ui": "*",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
@@ -27,6 +27,7 @@
 		"lucia": "^3.2.0",
 		"lucide-svelte": "^0.428.0",
 		"mode-watcher": "^0.4.1",
+		"otpauth": "^9.3.2",
 		"postcss": "^8.4.41",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
