@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import type { Vendor } from '@kader/shared';
 	import { Button, DropdownMenu, Input, Table } from '@kader/ui/components';
 	import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
@@ -12,7 +12,6 @@
 		addTableFilter
 	} from 'svelte-headless-table/plugins';
 	import { readable } from 'svelte/store';
-	import type { Vendor } from '../../../../app';
 	import DataTableCheckbox from './Checkbox.svelte';
 	import DataTableUserNum from './NumOfUsers.svelte';
 

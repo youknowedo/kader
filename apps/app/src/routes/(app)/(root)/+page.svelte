@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { PUBLIC_SERVER_URL } from '$env/static/public';
 	import { user } from '$lib/stores.js';
 	import { trpc } from '@kader/shared/trpc';
 	import { Alert } from '@kader/ui/components';

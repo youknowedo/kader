@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { PUBLIC_SERVER_URL } from '$env/static/public';
+	import type { Vendor } from '@kader/shared';
 	import { trpc } from '@kader/shared/trpc';
-	import type { User } from 'lucia';
 	import { onMount } from 'svelte';
-	import type { Vendor } from '../../../app';
 	import DataTable from './table/DataTable.svelte';
 
 	let vendors: Vendor[] = [];

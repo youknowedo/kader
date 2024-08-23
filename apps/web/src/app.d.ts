@@ -1,4 +1,4 @@
-import { User } from 'lucia';
+import { User } from '@kader/shared';
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
@@ -15,12 +15,4 @@ declare global {
 	}
 }
 
-type Vendor = {
-	id: string;
-	name: string;
-	description: string | null;
-	owner: Omit<User, 'pfp'>;
-	numOfUsers: number;
-};
-
-export { Vendor };
+export {};

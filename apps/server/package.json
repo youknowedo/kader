@@ -1,6 +1,7 @@
 {
     "name": "@kader/server",
     "module": "./src/index.ts",
+    "packageManager": "bun@1.1.22",
     "files": [
         "src/server.ts"
     ],
@@ -12,6 +13,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "bun run --hot ./src/index.ts",
+        "build": "bun build ./src/index.ts",
         "generate": "drizzle-kit generate",
         "migrate": "drizzle-kit migrate"
     },
@@ -33,6 +35,5 @@
         "drizzle-orm": "^0.33.0",
         "express": "^4.19.2",
         "zod": "^3.23.8"
-    },
-    "types": "./types.d.ts"
+    }
 }
