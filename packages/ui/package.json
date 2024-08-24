@@ -14,12 +14,21 @@
 		"format": "prettier --write ."
 	},
 	"exports": {
-		".": "./src/lib/index.ts",
-		"./tailwind": "./tailwind.config.js",
-		"./postcss": "./postcss.config.js",
+		".": {
+			"default": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		},
+		"./components": {
+			"default": "./dist/components/index.js",
+			"types": "./dist/components/index.d.ts"
+		},
+		"./utils": {
+			"default": "./dist/utils.js",
+			"types": "./dist/utils.d.ts"
+		},
 		"./styles.css": "./src/styles.css",
-		"./components": "./src/lib/components/index.ts",
-		"./utils": "./src/lib/utils.ts"
+		"./tailwind": "./tailwind.config.js",
+		"./postcss": "./postcss.config.js"
 	},
 	"files": [
 		"src",
