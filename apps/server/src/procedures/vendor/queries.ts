@@ -1,4 +1,3 @@
-import { verify } from "@node-rs/argon2";
 import { eq, inArray } from "drizzle-orm";
 import type { User } from "lucia";
 import { z } from "zod";

@@ -1,4 +1,4 @@
-import { hash, verify } from "@node-rs/argon2";
+import { hash } from "argon2";
 import { generateIdFromEntropySize } from "lucia";
 import { z } from "zod";
 import { lucia } from "../../lib/auth";
@@ -22,7 +22,7 @@ export const signup = procedure
             // recommended minimum parameters
             memoryCost: 19456,
             timeCost: 2,
-            outputLen: 32,
+            hashLength: 32,
             parallelism: 1,
         });
         const userId = generateIdFromEntropySize(10); // 16 characters long

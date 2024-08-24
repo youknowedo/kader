@@ -1,4 +1,4 @@
-import { verify } from "@node-rs/argon2";
+import { verify } from "argon2";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { lucia } from "../../lib/auth";
@@ -42,12 +42,7 @@ export const login = procedure
             };
         }
 
-        const validPassword = await verify(user.password_hash!, password, {
-            memoryCost: 19456,
-            timeCost: 2,
-            outputLen: 32,
-            parallelism: 1,
-        });
+        const validPassword = await verify(user.password_hash!, password, {});
         if (!validPassword) {
             return {
                 success: false,
