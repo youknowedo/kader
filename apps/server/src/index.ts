@@ -26,7 +26,7 @@ export type AppRouter = typeof appRouter;
 
 const port = process.env.PORT || 3000;
 
-const app: Express = express();
+export const app: Express = express();
 
 app.use(express.json())
     .use(
