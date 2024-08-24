@@ -1,4 +1,4 @@
-import { router } from "../../server";
-import { queries } from "./queries";
+import { router } from "../../server.js";
+import { queries } from "./queries.js";
 
 export const session = router({ ...queries });

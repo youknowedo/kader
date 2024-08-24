@@ -1,11 +1,11 @@
 import { eq, inArray } from "drizzle-orm";
 import type { User } from "lucia";
 import { z } from "zod";
-import { lucia } from "../../lib/auth";
-import { db } from "../../lib/db";
-import { userTable } from "../../lib/db/schema";
-import { minio } from "../../lib/storage";
-import { procedure } from "../../server";
+import { lucia } from "../../lib/auth.js";
+import { db } from "../../lib/db/index.js";
+import { userTable } from "../../lib/db/schema.js";
+import { minio } from "../../lib/storage.js";
+import { procedure } from "../../server.js";
 import type { ResponseData } from "../../types";
 
 export const queries = {

@@ -1,6 +1,6 @@
-import { lucia } from "../../lib/auth";
-import { procedure, router } from "../../server";
-import type { ResponseData } from "../../types";
+import { lucia } from "../../lib/auth.js";
+import { procedure, router } from "../../server.js";
+import type { ResponseData } from "../../types.js";
 
 export const queries = {
     validate: procedure.query(async ({ ctx, input }): Promise<ResponseData> => {

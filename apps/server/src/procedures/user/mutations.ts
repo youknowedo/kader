@@ -1,11 +1,11 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { lucia } from "../../lib/auth";
-import { db } from "../../lib/db";
-import { userTable } from "../../lib/db/schema";
-import { minio } from "../../lib/storage";
-import { procedure, router } from "../../server";
-import type { ResponseData } from "../../types";
+import { lucia } from "../../lib/auth.js";
+import { db } from "../../lib/db/index.js";
+import { userTable } from "../../lib/db/schema.js";
+import { minio } from "../../lib/storage.js";
+import { procedure, router } from "../../server.js";
+import type { ResponseData } from "../../types.js";
 
 export const mutations = {
     updateProfile: procedure

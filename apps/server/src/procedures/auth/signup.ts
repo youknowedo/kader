@@ -1,11 +1,11 @@
 import { hash } from "argon2";
 import { generateIdFromEntropySize } from "lucia";
 import { z } from "zod";
-import { lucia } from "../../lib/auth";
-import { db } from "../../lib/db";
-import { userTable } from "../../lib/db/schema";
-import { procedure } from "../../server";
-import type { ResponseData } from "../../types";
+import { lucia } from "../../lib/auth.js";
+import { db } from "../../lib/db/index.js";
+import { userTable } from "../../lib/db/schema.js";
+import { procedure } from "../../server.js";
+import type { ResponseData } from "../../types.js";
 
 export const signup = procedure
     .input(

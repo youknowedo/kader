@@ -7,12 +7,12 @@ import express, {
     type Request,
     type Response,
 } from "express";
-import { auth } from "./procedures/auth";
-import { qr } from "./procedures/qr";
-import { session } from "./procedures/session";
-import { user } from "./procedures/user";
-import { vendor } from "./procedures/vendor";
-import { createContext, router } from "./server";
+import { auth } from "./procedures/auth/index.js";
+import { qr } from "./procedures/qr/index.js";
+import { session } from "./procedures/session/index.js";
+import { user } from "./procedures/user/index.js";
+import { vendor } from "./procedures/vendor/index.js";
+import { createContext, router } from "./server.js";
 
 export const appRouter = router({
     auth,

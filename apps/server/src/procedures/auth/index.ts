@@ -1,7 +1,7 @@
-import { router } from "../../server";
-import { login } from "./login";
-import { logout } from "./logout";
-import { signup } from "./signup";
+import { router } from "../../server.js";
+import { login } from "./login.js";
+import { logout } from "./logout.js";
+import { signup } from "./signup.js";
 
 export const auth = router({
     signup,

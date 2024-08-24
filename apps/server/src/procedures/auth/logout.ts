@@ -1,6 +1,6 @@
-import { lucia } from "../../lib/auth";
-import { procedure } from "../../server";
-import type { ResponseData } from "../../types";
+import { lucia } from "../../lib/auth.js";
+import { procedure } from "../../server.js";
+import type { ResponseData } from "../../types.js";
 
 export const logout = procedure.mutation(
     async ({ ctx, input }): Promise<ResponseData> => {
