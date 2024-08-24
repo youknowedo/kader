@@ -13,14 +13,13 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "bun run --hot ./src/index.ts",
-        "build": "bun build ./src/index.ts --target bun --outdir dist",
-        "start": "bun run ./dist/index.js",
-        "generate": "bun x drizzle-kit generate",
-        "migrate": "bun x drizzle-kit migrate"
+        "build": "tsc --outDir dist --target esnext ./src/index.ts",
+        "start": "tsc ./dist/index.js",
+        "generate": "drizzle-kit generate",
+        "migrate": "drizzle-kit migrate"
     },
     "type": "module",
     "devDependencies": {
-        "@types/bun": "latest",
         "@types/cookie-parser": "^1.4.7",
         "@types/express": "^4.17.21"
     },

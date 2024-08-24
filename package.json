@@ -2,12 +2,12 @@
     "name": "kader",
     "private": true,
     "scripts": {
-        "build": "bun x turbo build",
-        "build:server": "bun x turbo build --filter=\"@kader/server\"",
-        "dev": "bun x turbo dev",
-        "lint": "bun x turbo lint",
+        "build": "turbo build",
+        "build:server": "turbo build --filter=\"@kader/server\"",
+        "dev": "turbo dev",
+        "lint": "turbo lint",
         "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-        "start:server": "node ./apps/server/dist/index.js"
+        "start:server": "bun run ./apps/server/dist/index.js"
     },
     "devDependencies": {
         "prettier": "^3.2.5",
