@@ -15,8 +15,8 @@
         "dev": "bun run --hot ./src/index.ts",
         "build": "bun build ./src/index.ts --target bun --outdir dist",
         "start": "bun run ./dist/index.js",
-        "generate": "drizzle-kit generate",
-        "migrate": "drizzle-kit migrate"
+        "generate": "bun x drizzle-kit generate",
+        "migrate": "bun x drizzle-kit migrate"
     },
     "type": "module",
     "devDependencies": {
