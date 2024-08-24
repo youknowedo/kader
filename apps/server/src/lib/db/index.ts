@@ -2,7 +2,7 @@ import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
-import { sessionTable, userTable } from "./schema";
+import { sessionTable, userTable } from "./schema.js";
 
 const client = new Client({
     host: process.env.DB_HOST,
