@@ -42,6 +42,8 @@ export const signup = procedure
 
             const session = await lucia.createSession(userId, {});
             const sessionCookie = lucia.createSessionCookie(session.id);
+            sessionCookie.attributes.sameSite = "none";
+            sessionCookie.attributes.secure = true;
 
             ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
             return {

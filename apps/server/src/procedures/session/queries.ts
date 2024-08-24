@@ -19,6 +19,9 @@ export const queries = {
 
         if (session && session.fresh) {
             const sessionCookie = lucia.createSessionCookie(session.id);
+            sessionCookie.attributes.sameSite = "none";
+            sessionCookie.attributes.secure = true;
+
             ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
             return {
                 success: true,
@@ -26,6 +29,9 @@ export const queries = {
         }
         if (!session || !user) {
             const sessionCookie = lucia.createBlankSessionCookie();
+            sessionCookie.attributes.sameSite = "none";
+            sessionCookie.attributes.secure = true;
+
             ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
             return {
                 success: true,
