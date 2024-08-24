@@ -8,6 +8,10 @@ COPY . .
 FROM base AS install
 RUN bun install --frozen-lockfile
 
+RUN bun run build
+
+WORKDIR /apps/server
+
 ENV NODE_ENV=production
 USER bun
 EXPOSE 3000/tcp
