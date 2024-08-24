@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { eq } from "drizzle-orm";
 import { lucia } from "../../lib/auth.js";
 import { db } from "../../lib/db/index.js";

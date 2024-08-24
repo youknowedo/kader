@@ -1,4 +1,5 @@
 import { hash } from "argon2";
+import crypto from "crypto";
 import { generateIdFromEntropySize } from "lucia";
 import { z } from "zod";
 import { lucia } from "../../lib/auth.js";
