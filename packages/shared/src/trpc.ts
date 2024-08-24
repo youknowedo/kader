@@ -1,11 +1,11 @@
 import type { AppRouter } from "@kader/server";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 
-export const trpcWithSession = (sessionId: string) =>
+export const trpcWithSession = (serverUrl: string, sessionId: string) =>
     createTRPCProxyClient<AppRouter>({
         links: [
             httpBatchLink({
-                url: "http://localhost:3000/trpc",
+                url: `${serverUrl}/trpc`,
                 fetch: (url, options) =>
                     fetch(url, {
                         ...options,
@@ -19,18 +19,19 @@ export const trpcWithSession = (sessionId: string) =>
         ],
     });
 
-export const trpc = createTRPCProxyClient<AppRouter>({
-    links: [
-        httpBatchLink({
-            url: "http://localhost:3000/trpc",
-            fetch: (url, options) =>
-                fetch(url, {
-                    ...options,
-                    credentials: "include",
-                    headers: {
-                        ...options?.headers,
-                    },
-                }),
-        }),
-    ],
-});
+export const trpc = (serverUrl: string) =>
+    createTRPCProxyClient<AppRouter>({
+        links: [
+            httpBatchLink({
+                url: `${serverUrl}/trpc`,
+                fetch: (url, options) =>
+                    fetch(url, {
+                        ...options,
+                        credentials: "include",
+                        headers: {
+                            ...options?.headers,
+                        },
+                    }),
+            }),
+        ],
+    });

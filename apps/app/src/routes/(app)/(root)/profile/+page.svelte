@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { user } from '$lib/stores';
-	import { trpc } from '@kader/shared/trpc';
+	import { trpc } from '$lib/trpc';
 	import { Button, Input, Label, Separator } from '@kader/ui/components';
 </script>
 

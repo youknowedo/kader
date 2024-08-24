@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
-	import { trpc } from '@kader/shared/trpc';
+	import { trpc } from '$lib/trpc';
 	import { Button, Input, Label, Separator } from '@kader/ui/components';
 
 	let pfp: string | null = null;

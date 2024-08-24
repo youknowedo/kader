@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { trpc } from '$lib/trpc';
 	import type { Vendor } from '@kader/shared';
-	import { trpc } from '@kader/shared/trpc';
 	import { onMount } from 'svelte';
 	import DataTable from './table/DataTable.svelte';
 

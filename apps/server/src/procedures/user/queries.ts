@@ -1,5 +1,6 @@
 import { eq, inArray } from "drizzle-orm";
 import type { User } from "lucia";
+import { TOTP } from "otpauth";
 import { z } from "zod";
 import { lucia } from "../../lib/auth.js";
 import { db } from "../../lib/db/index.js";
@@ -123,6 +124,70 @@ export const queries = {
                 return {
                     success: true,
                     users: users.map((u, i) => u && { ...u, pfp: pfp[i] }),
+                };
+            }
+        ),
+    fromQr: procedure
+        .input(
+            z.object({
+                token: z.string(),
+                userId: z.string(),
+            })
+        )
+        .query(
+            async ({ ctx, input }): Promise<ResponseData<{ user: User }>> => {
+                if (!ctx.sessionId)
+                    return {
+                        success: false,
+                        error: "Unauthenticated",
+                    };
+
+                const { session } = await lucia.validateSession(ctx.sessionId);
+                if (!session)
+                    return {
+                        success: false,
+                        error: "Unauthenticated",
+                    };
+
+                const user = (
+                    await db
+                        .select()
+                        .from(userTable)
+                        .where(eq(userTable.id, input.userId))
+                )[0];
+
+                if (!user.hex_qr_id)
+                    return {
+                        success: false,
+                        error: "No QR ID",
+                    };
+
+                const totp = new TOTP({
+                    algorithm: "SHA1",
+                    digits: 6,
+                    period: 30,
+                    secret: user.hex_qr_id,
+                });
+
+                const valid = !!totp.validate({
+                    token: input.token,
+                });
+
+                if (!valid)
+                    return {
+                        success: false,
+                        error: "Invalid Token",
+                    };
+
+                return {
+                    success: true,
+                    user: user && {
+                        ...user,
+                        pfp: await minio.presignedGetObject(
+                            process.env.MINIO_BUCKET!,
+                            user.id + ".webp"
+                        ),
+                    },
                 };
             }
         ),

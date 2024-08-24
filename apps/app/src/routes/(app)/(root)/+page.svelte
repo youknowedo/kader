@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores';
+	import { trpc } from '$lib/trpc';
 	import type { User } from '@kader/shared';
-	import { trpc } from '@kader/shared/trpc';
 	import { Alert, Button } from '@kader/ui/components';
 	import { Buffer } from 'buffer';
 	import CircleAlert from 'lucide-svelte/icons/circle-alert';
@@ -35,7 +35,7 @@
 						token: string;
 					} = JSON.parse(result.data);
 
-					const { user: u } = await trpc.qr.verify.mutate({ userId, token });
+					const { user: u } = await trpc.user.fromQr.query({ userId, token });
 
 					if (!u) return;
 

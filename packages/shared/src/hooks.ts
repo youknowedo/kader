@@ -1,11 +1,9 @@
 import type { Handle } from "@sveltejs/kit";
 import { trpcWithSession } from "./trpc";
 
-export const sharedHandle =
-    (handle?: Handle): Handle =>
+export const createSharedHandle =
+    (serverUrl: string): Handle =>
     async ({ event, resolve }) => {
-        if (handle) handle({ event, resolve });
-
         const sessionId = event.cookies.get("auth_session");
         if (!sessionId) {
             (event.locals as any).user = undefined;
@@ -13,8 +11,10 @@ export const sharedHandle =
             return resolve(event);
         }
 
-        const { success, error } =
-            await trpcWithSession(sessionId).session.validate.query();
+        const { success, error } = await trpcWithSession(
+            serverUrl,
+            sessionId
+        ).session.validate.query();
         if (!success) {
             (event.locals as any).user = undefined;
             (event.locals as any).sessionId = undefined;
@@ -24,8 +24,10 @@ export const sharedHandle =
             return resolve(event);
         }
 
-        const { user } =
-            await trpcWithSession(sessionId).user.getSingle.query();
+        const { user } = await trpcWithSession(
+            serverUrl,
+            sessionId
+        ).user.getSingle.query();
 
         (event.locals as any).user = user;
         (event.locals as any).sessionId = sessionId;
