@@ -15,16 +15,16 @@
 	},
 	"exports": {
 		".": {
-			"default": "./dist/index.js",
-			"types": "./dist/index.d.ts"
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
 		},
 		"./components": {
-			"default": "./dist/components/index.js",
-			"types": "./dist/components/index.d.ts"
+			"types": "./dist/components/index.d.ts",
+			"default": "./dist/components/index.js"
 		},
 		"./utils": {
-			"default": "./dist/utils.js",
-			"types": "./dist/utils.d.ts"
+			"types": "./dist/utils.d.ts",
+			"default": "./dist/utils.js"
 		},
 		"./styles.css": "./src/styles.css",
 		"./tailwind": "./tailwind.config.js",
