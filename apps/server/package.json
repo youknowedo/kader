@@ -12,7 +12,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "bun run --hot ./src/index.ts",
-        "build": "bun build ./src/index.ts --target bun --outdir dist",
+        "build": "bun build ./src/index.ts --outdir dist --target bun --entry-naming ./index.mjs",
         "generate": "drizzle-kit generate",
         "migrate": "drizzle-kit migrate"
     },
