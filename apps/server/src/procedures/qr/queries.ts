@@ -1,5 +1,5 @@
-import crypto from "crypto";
 import { eq } from "drizzle-orm";
+import crypto from "node:crypto";
 import { lucia } from "../../lib/auth.js";
 import { db } from "../../lib/db/index.js";
 import { userTable } from "../../lib/db/schema.js";
