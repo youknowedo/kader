@@ -1,10 +1,10 @@
 import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 
 import { drizzle } from "drizzle-orm/node-postgres";
-import { Client } from "pg";
+import pg from "pg";
 import { sessionTable, userTable } from "./schema.js";
 
-const client = new Client({
+const client = new pg.Client({
     host: process.env.DB_HOST,
     port: +(process.env.DB_PORT ?? 5432),
     user: process.env.DB_USER,
