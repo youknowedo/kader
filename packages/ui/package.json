@@ -26,8 +26,8 @@
 		"dist",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*",
-		"./tailwind.config.ts",
-		"./postcss.config.ts"
+		"./tailwind.config.js",
+		"./postcss.config.js"
 	],
 	"peerDependencies": {
 		"svelte": "^4.0.0"
