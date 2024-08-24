@@ -14,10 +14,15 @@
 
 		const formData = new FormData(e.currentTarget);
 
-		await trpc.auth.login.mutate({
+		const { success, error } = await trpc.auth.login.mutate({
 			email: formData.get('email') as string,
 			password: formData.get('password') as string
 		});
+
+		if (!success) {
+			alert(error);
+			return;
+		}
 
 		goto('/');
 	};

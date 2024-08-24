@@ -4,7 +4,7 @@
 	import { trpc } from '$lib/trpc';
 	import { Button, Card, Input, Label } from '@kader/ui/components';
 
-	const signup = (
+	const signup = async (
 		e: SubmitEvent & {
 			currentTarget: EventTarget & HTMLFormElement;
 		}
@@ -13,11 +13,18 @@
 
 		const formData = new FormData(e.currentTarget);
 
-		trpc.auth.signup.mutate({
+		const { success, error } = await trpc.auth.signup.mutate({
 			username: formData.get('username') as string,
 			email: formData.get('email') as string,
 			password: formData.get('password') as string
 		});
+
+		if (!success) {
+			alert(error);
+			return;
+		}
+
+		goto('/');
 	};
 </script>
 
