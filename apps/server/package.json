@@ -1,25 +1,23 @@
 {
     "name": "@kader/server",
-    "module": "./src/index.ts",
-    "packageManager": "bun@1.1.22",
+    "module": "./api/trpc.ts",
     "files": [
-        "src/server.ts"
+        "api/server.ts"
     ],
     "exports": {
         ".": {
-            "types": "./src/index.ts"
+            "types": "./api/trpc.ts"
         }
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "bun run --hot ./src/index.ts",
-        "build": "tsc --outDir dist --target esnext ./src/index.ts",
-        "start": "tsc ./dist/index.js",
+        "dev": "bun run --hot ./api/trpc.ts",
         "generate": "drizzle-kit generate",
         "migrate": "drizzle-kit migrate"
     },
     "type": "module",
     "devDependencies": {
+        "@types/bun": "latest",
         "@types/cookie-parser": "^1.4.7",
         "@types/express": "^4.17.21"
     },
