@@ -12,7 +12,6 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@kader/server": "*",
 		"@kader/ui": "*",
 		"@kader/shared": "*",
 		"@sveltejs/adapter-auto": "^3.0.0",
