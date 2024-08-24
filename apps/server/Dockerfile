@@ -1,7 +1,7 @@
 # Use the official Bun image
 FROM oven/bun:1-alpine AS base
 
-WORKDIR /apps/server
+WORKDIR /
 
 # Install dependencies
 FROM base AS install
