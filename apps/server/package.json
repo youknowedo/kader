@@ -1,17 +1,18 @@
 {
     "name": "@kader/server",
-    "module": "./api/trpc.ts",
+    "module": "./src/index.ts",
     "files": [
         "api/server.ts"
     ],
     "exports": {
         ".": {
-            "types": "./api/trpc.ts"
+            "types": "./src/index.ts"
         }
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "bun run --hot ./api/trpc.ts",
+        "dev": "bun run --hot ./src/index.ts",
+        "build": "bun build ./src/index.ts --target bun --outdir api",
         "generate": "drizzle-kit generate",
         "migrate": "drizzle-kit migrate"
     },
