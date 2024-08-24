@@ -35,6 +35,7 @@ app.use(express.json())
                 const allowedOrigins = [
                     process.env.APP_URL,
                     process.env.WEB_URL,
+                    "http://localhost:3001",
                 ];
                 if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
                     callback(null, true);

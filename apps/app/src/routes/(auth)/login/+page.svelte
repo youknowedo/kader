@@ -5,7 +5,7 @@
 	import { Button, Card, Input, Label } from '@kader/ui/components';
 	import '@kader/ui/styles.css';
 
-	const login = (
+	const login = async (
 		e: SubmitEvent & {
 			currentTarget: EventTarget & HTMLFormElement;
 		}
@@ -14,10 +14,12 @@
 
 		const formData = new FormData(e.currentTarget);
 
-		trpc.auth.login.mutate({
+		await trpc.auth.login.mutate({
 			email: formData.get('email') as string,
 			password: formData.get('password') as string
 		});
+
+		goto('/');
 	};
 </script>
 
