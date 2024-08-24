@@ -5,7 +5,7 @@ export const minio = new Client({
     port: +(process.env.MINIO_PORT ?? 9000),
     accessKey: process.env.MINIO_ACCESS_KEY!,
     secretKey: process.env.MINIO_SECRET_KEY!,
-    useSSL: false,
+    useSSL: true,
 });
 
 minio.bucketExists(process.env.MINIO_BUCKET!).then((exists) => {
