@@ -1,4 +1,3 @@
-import { dev } from '$app/environment';
 import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
@@ -14,7 +13,7 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
 		paths: {
-			base: dev ? '/' : '/app'
+			base: process.env.NODE_ENV == 'production' ? '/app' : '/'
 		}
 	}
 };
