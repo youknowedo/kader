@@ -23,7 +23,7 @@ export const queries = {
                 process.env.NODE_ENV === "production" ? "none" : "lax";
             sessionCookie.attributes.secure = true;
             sessionCookie.attributes.domain = process.env.APP_URL?.replace(
-                "https://",
+                process.env.NODE_ENV === "production" ? "https://" : "http://",
                 ""
             );
 
@@ -38,7 +38,7 @@ export const queries = {
                 process.env.NODE_ENV === "production" ? "none" : "lax";
             sessionCookie.attributes.secure = true;
             sessionCookie.attributes.domain = process.env.APP_URL?.replace(
-                "https://",
+                process.env.NODE_ENV === "production" ? "https://" : "http://",
                 ""
             );
 
