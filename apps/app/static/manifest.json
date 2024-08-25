@@ -1,0 +1,16 @@
+{
+	"name": "Kader",
+	"short_name": "Kader",
+	"description": "Hela Lindholmens kårkort",
+	"start_url": "./",
+	"display": "standalone",
+	"theme_color": "hsl(0 100% 50%)",
+	"background_color": "hsl(0 0% 7%)",
+	"icons": [
+		{
+			"src": "/logo.svg",
+			"type": "image/svg+xml",
+			"sizes": "512x512"
+		}
+	]
+}
