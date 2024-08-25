@@ -22,6 +22,10 @@ export const queries = {
             sessionCookie.attributes.sameSite =
                 process.env.NODE_ENV === "production" ? "none" : "lax";
             sessionCookie.attributes.secure = true;
+            sessionCookie.attributes.domain = process.env.APP_URL?.replace(
+                "https://",
+                ""
+            );
 
             ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
             return {
@@ -33,6 +37,10 @@ export const queries = {
             sessionCookie.attributes.sameSite =
                 process.env.NODE_ENV === "production" ? "none" : "lax";
             sessionCookie.attributes.secure = true;
+            sessionCookie.attributes.domain = process.env.APP_URL?.replace(
+                "https://",
+                ""
+            );
 
             ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
             return {
