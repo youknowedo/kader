@@ -52,7 +52,7 @@
 			</div>
 			<div class="mt-4 text-sm text-center">
 				Already have an account?
-				<button on:click={() => goto('/app/app/login')} class="underline"> Login </button>
+				<button on:click={() => goto('/app/login')} class="underline"> Login </button>
 			</div>
 		</form>
 	</Card.Content>
