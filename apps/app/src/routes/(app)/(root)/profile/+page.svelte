@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { user } from '$lib/stores';
 	import { trpc } from '$lib/trpc';
 	import { Button, Input, Label, Separator } from '@kader/ui/components';
@@ -13,4 +15,4 @@
 
 <Separator class="box-content w-64 h-0.5 mx-auto my-12 rounded-full bg-background" />
 
-<Button on:click={() => trpc.auth.logout.mutate()}>Log out</Button>
+<Button on:click={() => (trpc.auth.logout.mutate(), goto(base + '/login'))}>Log out</Button>
