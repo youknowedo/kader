@@ -14,6 +14,12 @@ const config = {
 		adapter: adapter(),
 		paths: {
 			base: process.env.NODE_ENV == 'production' ? '/app' : ''
+		},
+		files: {
+			serviceWorker: 'src/worker.ts'
+		},
+		serviceWorker: {
+			register: false
 		}
 	}
 };
