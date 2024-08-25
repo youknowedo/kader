@@ -19,7 +19,8 @@ export const queries = {
 
         if (session && session.fresh) {
             const sessionCookie = lucia.createSessionCookie(session.id);
-            sessionCookie.attributes.sameSite = "none";
+            sessionCookie.attributes.sameSite =
+                process.env.NODE_ENV === "production" ? "none" : "lax";
             sessionCookie.attributes.secure = true;
 
             ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
@@ -29,7 +30,8 @@ export const queries = {
         }
         if (!session || !user) {
             const sessionCookie = lucia.createBlankSessionCookie();
-            sessionCookie.attributes.sameSite = "none";
+            sessionCookie.attributes.sameSite =
+                process.env.NODE_ENV === "production" ? "none" : "lax";
             sessionCookie.attributes.secure = true;
 
             ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());

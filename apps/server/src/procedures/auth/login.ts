@@ -52,8 +52,9 @@ export const login = procedure
 
         const session = await lucia.createSession(user.id, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
-        sessionCookie.attributes.sameSite = "none";
-        sessionCookie.attributes.secure = true;
+        sessionCookie.attributes.sameSite =
+            process.env.NODE_ENV === "production" ? "none" : "lax";
+        sessionCookie.attributes.secure = process.env.NODE_ENV === "production";
 
         ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
 

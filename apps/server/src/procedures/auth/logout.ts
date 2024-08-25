@@ -13,6 +13,10 @@ export const logout = procedure.mutation(
         await lucia.invalidateSession(ctx.sessionId);
 
         const sessionCookie = lucia.createBlankSessionCookie();
+        sessionCookie.attributes.sameSite =
+            process.env.NODE_ENV === "production" ? "none" : "lax";
+        sessionCookie.attributes.secure = process.env.NODE_ENV === "production";
+
         ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
 
         return {
