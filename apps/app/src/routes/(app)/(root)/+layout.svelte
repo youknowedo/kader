@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 
 	let switching = false;
@@ -28,10 +28,10 @@
 				setTimeout(() => {
 					switching = false;
 				}, 500);
-				goto(dev ? '/explore' : '/app/explore');
+				goto(base + '/explore');
 			}}
 		>
-			<img class="w-6 h-6 m-6" src="/explore.svg" alt="" />
+			<img class="w-6 h-6 m-6" src="{base}/explore.svg" alt="" />
 		</button>
 		<button
 			on:click={() => {
@@ -39,10 +39,10 @@
 				setTimeout(() => {
 					switching = false;
 				}, 500);
-				goto(dev ? '/' : '/app/');
+				goto(base + '/');
 			}}
 		>
-			<img class="w-6 h-6 m-6" src="/logo.svg" alt="" />
+			<img class="w-6 h-6 m-6" src="{base}/logo.svg" alt="" />
 		</button>
 		<button
 			on:click={() => {
@@ -50,7 +50,7 @@
 				setTimeout(() => {
 					switching = false;
 				}, 500);
-				goto(dev ? '/profile' : '/app/profile');
+				goto(base + '/profile');
 			}}
 		>
 			<img class="w-6 h-6 m-6" src="/profile.svg" alt="" />

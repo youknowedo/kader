@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { user } from '$lib/stores';
 	import { trpc } from '$lib/trpc';
 	import type { User } from '@kader/shared';
@@ -105,10 +105,7 @@
 	</Button>
 
 	{#if !$user?.completed_profile}
-		<button
-			class="text-left"
-			on:click={() => goto(dev ? '/completeProfile' : '/app/completeProfile')}
-		>
+		<button class="text-left" on:click={() => goto(base + '/completeProfile')}>
 			<Alert.Root class="mb-12 -mt-6">
 				<CircleAlert class="w-4 h-4" />
 				<Alert.Title>Heads up!</Alert.Title>
