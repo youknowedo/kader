@@ -1,4 +1,4 @@
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, ne } from "drizzle-orm";
 import type { User } from "lucia";
 import { Secret, TOTP } from "otpauth";
 import { z } from "zod";
@@ -72,10 +72,13 @@ export const queries = {
 
     getMultiple: procedure
         .input(
-            z.object({
-                ids: z.array(z.string()).nullish(),
-                vendorId: z.string().nullish(),
-            })
+            z
+                .object({
+                    ids: z.array(z.string()).nullish(),
+                    vendorId: z.string().nullish(),
+                    noVendors: z.boolean().nullish(),
+                })
+                .nullish()
         )
         .query(
             async ({
@@ -103,14 +106,16 @@ export const queries = {
                         error: "Unauthorized",
                     };
 
-                const { ids, vendorId } = input;
-
                 const userSelect = db.select().from(userTable);
-                const users = await (ids
-                    ? userSelect.where(inArray(userTable.id, ids))
-                    : vendorId
-                      ? userSelect.where(eq(userTable.vendor_id, vendorId))
-                      : userSelect);
+                const users = await (input?.ids
+                    ? userSelect.where(inArray(userTable.id, input?.ids))
+                    : input?.vendorId
+                      ? userSelect.where(
+                            eq(userTable.vendor_id, input?.vendorId)
+                        )
+                      : input?.noVendors
+                        ? userSelect.where(ne(userTable.role, "vendor"))
+                        : userSelect);
 
                 const pfp = await Promise.all(
                     users.map((u) =>

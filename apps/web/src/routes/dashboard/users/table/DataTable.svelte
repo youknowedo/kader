@@ -3,8 +3,10 @@
 	import { Button, DropdownMenu, Input, Label, Sheet, Table } from '@kader/ui/components';
 	import type { Session, User } from 'lucia';
 	import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
+	import Check from 'lucide-svelte/icons/check';
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
-	import Plus from 'lucide-svelte/icons/plus';
+	import X from 'lucide-svelte/icons/x';
+
 	import { createRender, createTable, Render, Subscribe } from 'svelte-headless-table';
 	import {
 		addHiddenColumns,
@@ -14,8 +16,8 @@
 		addTableFilter
 	} from 'svelte-headless-table/plugins';
 	import { readable } from 'svelte/store';
-	import UserSelect from '../UserSelect.svelte';
 	import DataTableCheckbox from './Checkbox.svelte';
+	import CheckCross from './CheckCross.svelte';
 
 	export let data: User[];
 
@@ -64,6 +66,12 @@
 			accessor: 'email',
 			header: 'Email',
 			cell: ({ value }) => value
+		}),
+		table.column({
+			accessor: 'role',
+			header: 'Is member?',
+			cell: ({ value }) =>
+				createRender(CheckCross, { value: value !== 'user' && value !== 'vendor' })
 		})
 	]);
 
@@ -83,7 +91,7 @@
 		.filter(([, hide]) => !hide)
 		.map(([id]) => id);
 
-	const hidableCols = ['full_name', 'email'];
+	const hidableCols = ['full_name', 'email', 'role'];
 </script>
 
 <div class="flex items-center justify-between py-4">
@@ -106,35 +114,6 @@
 				{/each}
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
-
-		<Sheet.Root>
-			<Sheet.Trigger asChild let:builder>
-				<Button builders={[builder]} variant="outline">
-					<Plus />
-					Add
-				</Button>
-			</Sheet.Trigger>
-			<Sheet.Content side="right">
-				<div class="flex flex-col justify-between h-full">
-					<div>
-						<Sheet.Header>
-							<Sheet.Title>Edit profile</Sheet.Title>
-							<Sheet.Description>
-								Make changes to your profile here. Click save when you're done.
-							</Sheet.Description>
-						</Sheet.Header>
-
-						<UserSelect {data} />
-					</div>
-
-					<Sheet.Footer>
-						<Sheet.Close asChild let:builder>
-							<Button builders={[builder]} type="submit">Save changes</Button>
-						</Sheet.Close>
-					</Sheet.Footer>
-				</div>
-			</Sheet.Content>
-		</Sheet.Root>
 	</div>
 </div>
 

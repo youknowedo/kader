@@ -3,12 +3,11 @@
 	import PanelLeft from 'lucide-svelte/icons/panel-left';
 	import Settings from 'lucide-svelte/icons/settings';
 	import Store from 'lucide-svelte/icons/store';
+	import Users from 'lucide-svelte/icons/users';
 
 	import { browser } from '$app/environment';
-	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { PUBLIC_SERVER_URL } from '$env/static/public';
 	import { user } from '$lib/stores.js';
 	import { trpc } from '$lib/trpc';
 	import { Breadcrumb, Button, DropdownMenu, Sheet, Tooltip } from '@kader/ui/components';
@@ -24,6 +23,7 @@
 		admin?: boolean;
 	}[] = [
 		{ icon: Home, name: 'Dashboard', href: '/dashboard' },
+		{ icon: Users, name: 'Users', href: '/dashboard/users', admin: true },
 		{ icon: Store, name: 'Vendors', href: '/dashboard/vendors', admin: true }
 	];
 
