@@ -77,12 +77,14 @@
 	}
 }
 
-.neu-up {
+.neu-up,
+.before\:neu-up::before {
 	filter: drop-shadow(-4px -4px 8px rgba(119, 119, 119, 0.25)) drop-shadow(4px 4px 8px black);
 }
 .neu-down,
 .hover\:neu-down:hover,
-.active\:neu-down:active {
+.active\:neu-down:active,
+.before\:neu-down::before {
 	filter: drop-shadow(-4px -4px 8px black) drop-shadow(4px 4px 8px rgba(119, 119, 119, 0.25));
 }
 

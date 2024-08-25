@@ -1,4 +1,7 @@
 <script lang="ts">
+	import Compass from 'lucide-svelte/icons/compass';
+	import User from 'lucide-svelte/icons/user';
+
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
@@ -31,7 +34,7 @@
 				goto(base + '/explore');
 			}}
 		>
-			<img class="w-6 h-6 m-6" src="{base}/explore.svg" alt="" />
+			<Compass class="w-6 h-6 m-6" />
 		</button>
 		<button
 			on:click={() => {
@@ -53,7 +56,7 @@
 				goto(base + '/profile');
 			}}
 		>
-			<img class="w-6 h-6 m-6" src="{base}/profile.svg" alt="" />
+			<User class="w-6 h-6 m-6" />
 		</button>
 	</div>
 </div>

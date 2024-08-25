@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
 	import { trpc } from '$lib/trpc';
 	import { Button, Input, Label, Separator } from '@kader/ui/components';
@@ -28,6 +30,7 @@
 		});
 
 		if (!res.ok) console.error(await res.text());
+		else goto(base + '/');
 	};
 </script>
 
@@ -36,7 +39,7 @@
 	<div class="flex-1">
 		<label for="picture" class=" neu-up">
 			{#if pfp}
-				<img src={pfp} alt="Profile" class="w-40 h-40 m-auto rounded-full" />
+				<img src={pfp} alt="Profile" class="object-cover w-40 h-40 m-auto rounded-full" />
 			{:else}
 				<div
 					class="flex items-center justify-center w-40 h-40 m-auto text-center rounded-full bg-background"

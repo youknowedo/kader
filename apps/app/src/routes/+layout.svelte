@@ -1,5 +1,5 @@
 <script>
-	import { user } from '$lib/stores';
+	import { offline, user } from '$lib/stores';
 	import { trpc } from '$lib/trpc';
 	import '@kader/ui/styles.css';
 	import cookie from 'cookie';
@@ -7,10 +7,11 @@
 	import { onMount } from 'svelte';
 
 	onMount(async () => {
+		offline.set(false);
 		const { user: u } = await trpc.user.getSingle
 			.query()
 			.catch(
-				() => (console.log('failed'), { user: JSON.parse(localStorage.getItem('user') ?? 'null') })
+				() => (offline.set(true), { user: JSON.parse(localStorage.getItem('user') ?? 'null') })
 			);
 		user.set(u ?? null);
 
@@ -21,3 +22,11 @@
 <ModeWatcher />
 
 <slot />
+
+{#if $offline}
+	<div
+		class="absolute inset-x-0 bottom-0 flex items-center justify-center text-center text-white bg-primary"
+	>
+		offline
+	</div>
+{/if}

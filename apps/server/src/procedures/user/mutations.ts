@@ -11,7 +11,7 @@ export const mutations = {
     updateProfile: procedure
         .input(
             z.object({
-                full_name: z.string().email(),
+                full_name: z.string(),
             })
         )
         .mutation(
@@ -46,7 +46,8 @@ export const mutations = {
 
                 const pfpUploadUrl = await minio.presignedPutObject(
                     process.env.MINIO_BUCKET!,
-                    user.id + ".webp"
+                    user.id + ".webp",
+                    3000
                 );
 
                 return {

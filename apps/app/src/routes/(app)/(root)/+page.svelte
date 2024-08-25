@@ -12,7 +12,6 @@
 	import * as OTPAuth from 'otpauth';
 	import QrScanner from 'qr-scanner';
 	import QRCode from 'qrcode';
-	import { onMount } from 'svelte';
 
 	let token: string;
 	let qr: string;
@@ -55,8 +54,8 @@
 		}
 	};
 
-	onMount(async () => {
-		if (!$user) return;
+	user.subscribe(async (u) => {
+		if (!u) return;
 
 		let hex_qr_id = localStorage.getItem('qr_id');
 		let qrId: Uint8Array;
@@ -85,7 +84,7 @@
 
 			qr = await QRCode.toDataURL(
 				JSON.stringify({
-					userId: $user.id,
+					userId: u.id,
 					token
 				}),
 				{ errorCorrectionLevel: 'H' }
@@ -106,7 +105,7 @@
 		/>
 	</Button>
 
-	{#if !$user?.completed_profile}
+	{#if $user && !$user.completed_profile}
 		<button class="text-left" on:click={() => goto(base + '/completeProfile')}>
 			<Alert.Root class="mb-12 -mt-6">
 				<CircleAlert class="w-4 h-4" />
