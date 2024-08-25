@@ -21,9 +21,10 @@ export const queries = {
             const sessionCookie = lucia.createSessionCookie(session.id);
             sessionCookie.attributes.sameSite =
                 process.env.NODE_ENV === "production" ? "none" : "lax";
-            sessionCookie.attributes.secure = true;
+            sessionCookie.attributes.secure =
+                process.env.NODE_ENV === "production";
             sessionCookie.attributes.domain = process.env.APP_URL?.replace(
-                process.env.NODE_ENV === "production" ? "https://" : "http://",
+                "https://",
                 ""
             );
 
@@ -36,9 +37,10 @@ export const queries = {
             const sessionCookie = lucia.createBlankSessionCookie();
             sessionCookie.attributes.sameSite =
                 process.env.NODE_ENV === "production" ? "none" : "lax";
-            sessionCookie.attributes.secure = true;
+            sessionCookie.attributes.secure =
+                process.env.NODE_ENV === "production";
             sessionCookie.attributes.domain = process.env.APP_URL?.replace(
-                process.env.NODE_ENV === "production" ? "https://" : "http://",
+                "https://",
                 ""
             );
 

@@ -15,11 +15,12 @@ export const logout = procedure.mutation(
         const sessionCookie = lucia.createBlankSessionCookie();
         sessionCookie.attributes.sameSite =
             process.env.NODE_ENV === "production" ? "none" : "lax";
-        sessionCookie.attributes.secure = true;
-        sessionCookie.attributes.domain = process.env.APP_URL?.replace(
-            process.env.NODE_ENV === "production" ? "https://" : "http://",
-            ""
-        );
+        sessionCookie.attributes.secure = process.env.NODE_ENV === "production";
+        if (process.env.NODE_ENV === "production")
+            sessionCookie.attributes.domain = process.env.APP_URL?.replace(
+                "https://",
+                ""
+            );
 
         ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
 

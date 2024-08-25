@@ -46,6 +46,11 @@ export const signup = procedure
                 process.env.NODE_ENV === "production" ? "none" : "lax";
             sessionCookie.attributes.secure =
                 process.env.NODE_ENV === "production";
+            if (process.env.NODE_ENV === "production")
+                sessionCookie.attributes.domain = process.env.APP_URL?.replace(
+                    "https://",
+                    ""
+                );
 
             ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
             return {
