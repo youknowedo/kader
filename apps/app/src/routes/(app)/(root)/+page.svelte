@@ -28,6 +28,8 @@
 			qrScanner = new QrScanner(
 				video,
 				async (result) => {
+					qrScanner?.stop();
+
 					const {
 						userId,
 						token
@@ -67,7 +69,7 @@
 
 			localStorage.setItem('qr_id', hex_qr_id);
 			qrId = Uint8Array.from(Buffer.from(hex_qr_id, 'hex'));
-		} else qrId = Uint8Array.from(Buffer.from(localStorage.getItem('qr_id')!, 'hex'));
+		} else qrId = Uint8Array.from(Buffer.from(hex_qr_id, 'hex'));
 
 		let secret = new OTPAuth.Secret({ buffer: qrId.buffer });
 		let totp = new OTPAuth.TOTP({
@@ -122,19 +124,20 @@
 		Loading...
 	{/if}
 	<div class={!scanMode && $user?.role !== 'vendor' ? 'hidden' : ''}>
-		{#if scannedUser}
-			<div class="flex flex-col items-center justify-center">
-				<img class="w-24 h-24 rounded-full" src={scannedUser.pfp} alt="" />
-				<p class="mt-2 text-lg font-semibold">{scannedUser.full_name}</p>
-				<p class="mt-1 text-sm text-gray-500">{scannedUser.email}</p>
+		<div class="flex-col items-center justify-center {scannedUser ? 'flex' : 'hidden'}">
+			<img class="w-24 h-24 rounded-full" src={scannedUser?.pfp} alt="" />
+			<p class="mt-2 text-lg font-semibold">{scannedUser?.full_name}</p>
+			<p class="mt-1 text-sm text-gray-500">{scannedUser?.email}</p>
 
-				<Button on:click={() => (scannedUser = null)}>Back</Button>
-			</div>
-		{:else}
-			<video id="scanner" class="w-64 h-64" bind:this={video}>
-				<div class="placeholder">No cameras loaded!</div>
-				<track kind="captions" />
-			</video>
-		{/if}
+			<Button on:click={() => ((scannedUser = null), qrScanner?.start())}>Back</Button>
+		</div>
+		<video
+			id="scanner"
+			class="w-64 h-64 object-cover {scannedUser ? 'hidden' : ''}"
+			bind:this={video}
+		>
+			<div class="placeholder">No cameras loaded!</div>
+			<track kind="captions" />
+		</video>
 	</div>
 </div>

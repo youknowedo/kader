@@ -1,6 +1,6 @@
 import { eq, inArray } from "drizzle-orm";
 import type { User } from "lucia";
-import { TOTP } from "otpauth";
+import { Secret, TOTP } from "otpauth";
 import { z } from "zod";
 import { lucia } from "../../lib/auth.js";
 import { db } from "../../lib/db/index.js";
@@ -162,16 +162,21 @@ export const queries = {
                         error: "No QR ID",
                     };
 
+                const uint = Uint8Array.from(
+                    Buffer.from(user.hex_qr_id, "hex")
+                );
+                const secret = new Secret({ buffer: uint.buffer });
                 const totp = new TOTP({
                     algorithm: "SHA1",
                     digits: 6,
                     period: 30,
-                    secret: user.hex_qr_id,
+                    secret,
                 });
 
-                const valid = !!totp.validate({
-                    token: input.token,
-                });
+                const valid =
+                    totp.validate({
+                        token: input.token,
+                    }) !== null;
 
                 if (!valid)
                     return {
