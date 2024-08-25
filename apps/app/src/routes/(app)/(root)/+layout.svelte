@@ -27,7 +27,7 @@
 				setTimeout(() => {
 					switching = false;
 				}, 500);
-				goto('/explore');
+				goto('/app/explore');
 			}}
 		>
 			<img class="w-6 h-6 m-6" src="/explore.svg" alt="" />
@@ -38,7 +38,7 @@
 				setTimeout(() => {
 					switching = false;
 				}, 500);
-				goto('/');
+				goto('/app/');
 			}}
 		>
 			<img class="w-6 h-6 m-6" src="/logo.svg" alt="" />
@@ -49,7 +49,7 @@
 				setTimeout(() => {
 					switching = false;
 				}, 500);
-				goto('/profile');
+				goto('/app/profile');
 			}}
 		>
 			<img class="w-6 h-6 m-6" src="/profile.svg" alt="" />

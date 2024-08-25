@@ -104,7 +104,7 @@
 	</Button>
 
 	{#if !$user?.completed_profile}
-		<button class="text-left" on:click={() => goto('/completeProfile')}>
+		<button class="text-left" on:click={() => goto('/app/completeProfile')}>
 			<Alert.Root class="mb-12 -mt-6">
 				<CircleAlert class="w-4 h-4" />
 				<Alert.Title>Heads up!</Alert.Title>
