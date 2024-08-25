@@ -2,11 +2,13 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { user } from '$lib/stores.js';
+	import { onMount } from 'svelte';
 
-	export let data;
-
-	if (!data.user) goto(base + '/login');
-	else user.set(data.user);
+	onMount(() => {
+		user.subscribe((u) => {
+			if (!u) goto(base + '/login');
+		});
+	});
 </script>
 
 <div class="mx-auto max-w-80">

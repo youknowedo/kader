@@ -1,22 +1,20 @@
 <script>
+	import { user } from '$lib/stores';
+	import { trpc } from '$lib/trpc';
 	import '@kader/ui/styles.css';
+	import cookie from 'cookie';
 	import { ModeWatcher } from 'mode-watcher';
 	import { onMount } from 'svelte';
 
 	onMount(async () => {
-		const registration = await navigator.serviceWorker.ready;
+		const { user: u } = await trpc.user.getSingle
+			.query()
+			.catch(
+				() => (console.log('failed'), { user: JSON.parse(localStorage.getItem('user') ?? 'null') })
+			);
+		user.set(u ?? null);
 
-		registration.addEventListener('updatefound', () => {
-			const newWorker = registration.installing;
-			newWorker?.addEventListener('statechange', () => {
-				if (newWorker?.state === 'installed') {
-					if (confirm('A new version is available. Reload to update?')) {
-						newWorker.postMessage({ type: 'SKIP_WAITING' });
-						location.reload();
-					}
-				}
-			});
-		});
+		if (u) localStorage.setItem('user', JSON.stringify(u));
 	});
 </script>
 

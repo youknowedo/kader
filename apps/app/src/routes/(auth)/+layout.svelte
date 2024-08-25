@@ -1,10 +1,14 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
+	import { user } from '$lib/stores';
+	import { onMount } from 'svelte';
 
-	export let data;
-
-	if (data.user) goto(base + '/');
+	onMount(() => {
+		user.subscribe((u) => {
+			if (u) goto(base + '/');
+		});
+	});
 </script>
 
 <div class="flex flex-col justify-center h-screen">

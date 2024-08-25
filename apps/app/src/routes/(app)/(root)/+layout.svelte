@@ -12,17 +12,15 @@
 	<div
 		class="absolute flex items-center justify-around h-20 bottom-12 rounded-3xl bg-background w-80 neu-up"
 	>
-		{#key $page.url.pathname}
-			<div
-				class="absolute w-16 h-16 rounded-full bg-primary neu-r -z-10 duration-500 {$page.url.pathname.startsWith(
-					'/explore'
-				)
-					? 'mr-[13.25rem]'
-					: $page.url.pathname.startsWith('/profile')
-						? '-mr-[13.25rem]'
-						: 'mr-0'} {switching ? 'elongate' : ''}"
-			/>
-		{/key}
+		<div
+			class="absolute w-16 h-16 rounded-full bg-primary neu-r -z-10 duration-500 {$page.url.pathname.startsWith(
+				base + '/explore'
+			)
+				? 'mr-[13.25rem]'
+				: $page.url.pathname.startsWith(base + '/profile')
+					? '-mr-[13.25rem]'
+					: 'mr-0'} {switching ? 'elongate' : ''}"
+		/>
 
 		<button
 			on:click={() => {
