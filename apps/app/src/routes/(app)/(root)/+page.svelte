@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/stores';
 	import { trpc } from '$lib/trpc';
@@ -104,7 +105,10 @@
 	</Button>
 
 	{#if !$user?.completed_profile}
-		<button class="text-left" on:click={() => goto('/app/completeProfile')}>
+		<button
+			class="text-left"
+			on:click={() => goto(dev ? '/completeProfile' : '/app/completeProfile')}
+		>
 			<Alert.Root class="mb-12 -mt-6">
 				<CircleAlert class="w-4 h-4" />
 				<Alert.Title>Heads up!</Alert.Title>

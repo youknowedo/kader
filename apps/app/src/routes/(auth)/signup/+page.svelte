@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { PUBLIC_SERVER_URL } from '$env/static/public';
 	import { trpc } from '$lib/trpc';
@@ -24,7 +25,7 @@
 			return;
 		}
 
-		goto('/app/app/');
+		goto(dev ? '/' : '/app/');
 	};
 </script>
 
@@ -52,7 +53,9 @@
 			</div>
 			<div class="mt-4 text-sm text-center">
 				Already have an account?
-				<button on:click={() => goto('/app/login')} class="underline"> Login </button>
+				<button on:click={() => goto(dev ? '/login' : '/app/login')} class="underline">
+					Login
+				</button>
 			</div>
 		</form>
 	</Card.Content>

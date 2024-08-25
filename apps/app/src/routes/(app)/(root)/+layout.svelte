@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
@@ -27,7 +28,7 @@
 				setTimeout(() => {
 					switching = false;
 				}, 500);
-				goto('/app/explore');
+				goto(dev ? '/explore' : '/app/explore');
 			}}
 		>
 			<img class="w-6 h-6 m-6" src="/explore.svg" alt="" />
@@ -38,7 +39,7 @@
 				setTimeout(() => {
 					switching = false;
 				}, 500);
-				goto('/app/');
+				goto(dev ? '/' : '/app/');
 			}}
 		>
 			<img class="w-6 h-6 m-6" src="/logo.svg" alt="" />
@@ -49,7 +50,7 @@
 				setTimeout(() => {
 					switching = false;
 				}, 500);
-				goto('/app/profile');
+				goto(dev ? '/profile' : '/app/profile');
 			}}
 		>
 			<img class="w-6 h-6 m-6" src="/profile.svg" alt="" />
