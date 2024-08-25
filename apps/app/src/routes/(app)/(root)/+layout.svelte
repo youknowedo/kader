@@ -53,7 +53,7 @@
 				goto(base + '/profile');
 			}}
 		>
-			<img class="w-6 h-6 m-6" src="/profile.svg" alt="" />
+			<img class="w-6 h-6 m-6" src="{base}/profile.svg" alt="" />
 		</button>
 	</div>
 </div>
