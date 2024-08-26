@@ -33,8 +33,12 @@ app.use(express.json())
         cors({
             origin(requestOrigin, callback) {
                 const allowedOrigins = [
-                    process.env.APP_URL,
-                    process.env.WEB_URL,
+                    process.env.NODE_ENV === "production"
+                        ? process.env.PROD_APP_URL
+                        : "http://localhost:3001",
+                    process.env.NODE_ENV === "production"
+                        ? process.env.PROD_WEB_URL
+                        : "http://localhost:3001",
                 ];
                 if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
                     callback(null, true);

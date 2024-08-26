@@ -42,15 +42,11 @@ export const signup = procedure
 
             const session = await lucia.createSession(userId, {});
             const sessionCookie = lucia.createSessionCookie(session.id);
-            sessionCookie.attributes.sameSite =
-                process.env.NODE_ENV === "production" ? "none" : "lax";
+            sessionCookie.attributes.sameSite = "lax";
             sessionCookie.attributes.secure =
                 process.env.NODE_ENV === "production";
             if (process.env.NODE_ENV === "production")
-                sessionCookie.attributes.domain = process.env.APP_URL?.replace(
-                    "https://",
-                    ""
-                );
+                sessionCookie.attributes.domain = ctx.req.headers.host;
 
             ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
             return {

@@ -19,14 +19,10 @@ export const queries = {
 
         if (session && session.fresh) {
             const sessionCookie = lucia.createSessionCookie(session.id);
-            sessionCookie.attributes.sameSite =
-                process.env.NODE_ENV === "production" ? "none" : "lax";
+            sessionCookie.attributes.sameSite = "lax";
             sessionCookie.attributes.secure =
                 process.env.NODE_ENV === "production";
-            sessionCookie.attributes.domain = process.env.APP_URL?.replace(
-                "https://",
-                ""
-            );
+            sessionCookie.attributes.domain = ctx.req.headers.host;
 
             ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
             return {
@@ -35,14 +31,10 @@ export const queries = {
         }
         if (!session || !user) {
             const sessionCookie = lucia.createBlankSessionCookie();
-            sessionCookie.attributes.sameSite =
-                process.env.NODE_ENV === "production" ? "none" : "lax";
+            sessionCookie.attributes.sameSite = "lax";
             sessionCookie.attributes.secure =
                 process.env.NODE_ENV === "production";
-            sessionCookie.attributes.domain = process.env.APP_URL?.replace(
-                "https://",
-                ""
-            );
+            sessionCookie.attributes.domain = ctx.req.headers.host;
 
             ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
             return {
