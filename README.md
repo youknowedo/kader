@@ -23,14 +23,14 @@ Offline first membership identification app. Enables vendors to identify real me
 -   Rename [`server/.env.example`](./apps/server/.env.example) to `.env`
 -   Fill in database and MinIO credentials
 -   Run `bun i` and `bun dev`, or equivalent in [root](./)
--   Open localhost port [:3001](http://localhost:3001) for [app](./apps/app/) and [:3002](http://localhost:3001) for web. The API is hosted on port [:3000](http://localhost:3000)
+-   Open localhost port [:3001](http://localhost:3001) for [app](./apps/app/) and [:3002](http://localhost:3001) for [web](./apps/web). The [server API](./apps/server) is hosted on port [:3000](http://localhost:3000)
 
 ### Production
 
 -   Rename [`server/.env.example`](./apps/server/.env.example) to `.env`
 -   Fill in database and MinIO credentials and app and/or web urls
 -   Rename [`app/.env.example`](./apps/app/.env.example) and [`web/.env.example`](./apps/web/.env.example) to `.env`
--   Fill in the server api url
+-   Fill in the server API URL
 -   Run `bun i` and `bun run build`, or equivalent in [root](./)
 
 ## License
