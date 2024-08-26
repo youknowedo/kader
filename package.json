@@ -3,7 +3,7 @@
     "private": true,
     "scripts": {
         "build": "turbo build",
-        "build:server": "turbo build --filter=\"@kader/server\"",
+        "preview": "turbo preview",
         "dev": "turbo dev",
         "lint": "turbo lint",
         "format": "prettier --write \"**/*.{ts,tsx,md}\""

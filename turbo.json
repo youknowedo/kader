@@ -17,6 +17,10 @@
         "start": {
             "dependsOn": ["^start"],
             "persistent": true
+        },
+        "preview": {
+            "dependsOn": ["^preview"],
+            "persistent": true
         }
     }
 }

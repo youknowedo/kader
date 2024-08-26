@@ -1,6 +1,6 @@
 # Kader
 
-This is an official starter Turborepo.
+Offline first membership identification app. Enables vendors to identify real members and what benefits they are entitled to.
 
 ### Apps and Packages
 
@@ -10,10 +10,11 @@ This is an official starter Turborepo.
 -   [`@kader/shared`](./packages/shared/): Shared functions and types
 -   [`@kader/ui`](./packages/ui/): Shared Svelte components, mainly customized [shadcn-svelte](https://www.shadcn-svelte.com/) components
 
-## Requirements
+### Requirements
 
 -   [PostgreSQL](https://www.postgresql.org/) database
 -   [MinIO](https://min.io/) instance: Hosts all of the images
+-   [Bun](https://bun.sh/): Used as package manager and for building
 
 ## How to run
 
@@ -23,3 +24,15 @@ This is an official starter Turborepo.
 -   Fill in database and MinIO credentials
 -   Run `bun i` and `bun dev`, or equivalent in [root](./)
 -   Open localhost port [:3001](http://localhost:3001) for [app](./apps/app/) and [:3002](http://localhost:3001) for web. The API is hosted on port [:3000](http://localhost:3000)
+
+### Production
+
+-   Rename [`server/.env.example`](./apps/server/.env.example) to `.env`
+-   Fill in database and MinIO credentials and app and/or web urls
+-   Rename [`app/.env.example`](./apps/app/.env.example) and [`web/.env.example`](./apps/web/.env.example) to `.env`
+-   Fill in the server api url
+-   Run `bun i` and `bun run build`, or equivalent in [root](./)
+
+## License
+
+Licensed under the [MIT License](./LICENSE).
