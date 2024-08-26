@@ -133,7 +133,7 @@
 		You are offline. Cannot scan QR codes.
 	{/if}
 
-	<div class={!$offline && !scanMode && $user?.role !== 'vendor' ? 'hidden' : ''}>
+	<div class={$offline || (!scanMode && $user?.role !== 'vendor') ? 'hidden' : ''}>
 		<div class="flex-col items-center justify-center {scannedUser ? 'flex' : 'hidden'}">
 			<img class="w-24 h-24 rounded-full" src={scannedUser?.pfp} alt="" />
 			<p class="mt-2 text-lg font-semibold">{scannedUser?.full_name}</p>

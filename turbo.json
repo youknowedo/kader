@@ -1,5 +1,7 @@
 {
     "$schema": "https://turbo.build/schema.json",
+    "globalEnv": ["NODE_ENV"],
+    "globalPassThroughEnv": ["NODE_ENV"],
     "ui": "tui",
     "tasks": {
         "build": {
@@ -14,12 +16,8 @@
             "cache": false,
             "persistent": true
         },
-        "start": {
-            "dependsOn": ["^start"],
-            "persistent": true
-        },
         "preview": {
-            "dependsOn": ["^preview"],
+            "cache": false,
             "persistent": true
         }
     }

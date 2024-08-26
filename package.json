@@ -3,7 +3,8 @@
     "private": true,
     "scripts": {
         "build": "turbo build",
-        "preview": "turbo preview",
+        "build:server": "turbo build --filter server",
+        "preview": "turbo preview  --env-mode loose",
         "dev": "turbo dev",
         "lint": "turbo lint",
         "format": "prettier --write \"**/*.{ts,tsx,md}\""

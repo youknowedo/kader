@@ -40,6 +40,11 @@ app.use(express.json())
                         ? process.env.PROD_WEB_URL
                         : "http://localhost:3002",
                 ];
+                console.log(
+                    allowedOrigins,
+                    process.env.NODE_ENV,
+                    process.env.PROD_APP_URL
+                );
                 if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
                     callback(null, true);
                 } else {
