@@ -1,30 +1,19 @@
 <script lang="ts">
-	import { Button, DropdownMenu, Input, Table } from '@kader/ui/components';
-	import type { Session, User } from 'lucia';
+	import { Button, Table } from '@kader/ui/components';
+	import type { User } from 'lucia';
 	import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
-	import ChevronDown from 'lucide-svelte/icons/chevron-down';
 
 	import { createRender, createTable, Render, Subscribe } from 'svelte-headless-table';
-	import {
-		addHiddenColumns,
-		addPagination,
-		addSelectedRows,
-		addSortBy,
-		addTableFilter
-	} from 'svelte-headless-table/plugins';
+	import { addPagination, addSelectedRows, addSortBy } from 'svelte-headless-table/plugins';
 	import { readable } from 'svelte/store';
-	import Actions from './Actions.svelte';
 	import Checkbox from './Checkbox.svelte';
+	import Profile from './Profile.svelte';
 
 	export let data: User[];
 
 	const table = createTable(readable(data), {
 		page: addPagination(),
 		sort: addSortBy(),
-		filter: addTableFilter({
-			fn: ({ filterValue, value }) => value.toLowerCase().includes(filterValue.toLowerCase())
-		}),
-		hide: addHiddenColumns(),
 		select: addSelectedRows()
 	});
 
@@ -44,35 +33,19 @@
 				return createRender(Checkbox, {
 					checked: isSelected
 				});
-			},
-			plugins: {
-				sort: {
-					disable: true
-				},
-				filter: {
-					exclude: true
-				}
 			}
 		}),
 		table.column({
-			accessor: 'full_name',
+			id: 'full_name',
+			accessor: (u) => ({ user: u }),
 			header: 'Name',
-			cell: ({ value }) => value ?? 'N/A'
+			cell: ({ value }) => createRender(Profile, value)
 		}),
 		table.column({
+			id: 'email',
 			accessor: 'email',
 			header: 'Email',
 			cell: ({ value }) => value
-		}),
-		table.column({
-			id: 'action',
-			accessor: 'id',
-			header: '',
-			cell: ({ row }, { pluginStates }) => {
-				return createRender(Actions, {
-					id: row.id
-				});
-			}
 		})
 	]);
 
@@ -81,42 +54,11 @@
 
 	const { hasNextPage, hasPreviousPage, pageIndex } = pluginStates.page;
 
-	const { filterValue } = pluginStates.filter;
-	const { hiddenColumnIds } = pluginStates.hide;
 	const { selectedDataIds } = pluginStates.select;
 
 	const ids = flatColumns.map((col) => col.id);
 	let hideForId = Object.fromEntries(ids.map((id) => [id, true]));
-
-	$: $hiddenColumnIds = Object.entries(hideForId)
-		.filter(([, hide]) => !hide)
-		.map(([id]) => id);
-
-	const hidableCols = ['email'];
 </script>
-
-<div class="flex items-center justify-between py-4">
-	<Input class="max-w-sm" placeholder="Filter..." type="text" bind:value={$filterValue} />
-
-	<div class="flex gap-2">
-		<DropdownMenu.Root>
-			<DropdownMenu.Trigger asChild let:builder>
-				<Button variant="outline" class="ml-auto" builders={[builder]}>
-					Columns <ChevronDown class="w-4 h-4 ml-2" />
-				</Button>
-			</DropdownMenu.Trigger>
-			<DropdownMenu.Content>
-				{#each flatColumns as col}
-					{#if hidableCols.includes(col.id)}
-						<DropdownMenu.CheckboxItem bind:checked={hideForId[col.id]}>
-							{col.header}
-						</DropdownMenu.CheckboxItem>
-					{/if}
-				{/each}
-			</DropdownMenu.Content>
-		</DropdownMenu.Root>
-	</div>
-</div>
 
 <div class="border rounded-md">
 	<Table.Root {...$tableAttrs}>
