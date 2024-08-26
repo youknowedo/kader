@@ -38,7 +38,7 @@ app.use(express.json())
                         : "http://localhost:3001",
                     process.env.NODE_ENV === "production"
                         ? process.env.PROD_WEB_URL
-                        : "http://localhost:3001",
+                        : "http://localhost:3002",
                 ];
                 if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
                     callback(null, true);
