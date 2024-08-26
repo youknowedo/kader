@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
-	import { user } from '$lib/stores';
+	import { offline, user } from '$lib/stores';
 	import { trpc } from '$lib/trpc';
 	import type { User } from '@kader/shared';
 	import { Alert, Button } from '@kader/ui/components';
@@ -12,6 +12,7 @@
 	import * as OTPAuth from 'otpauth';
 	import QrScanner from 'qr-scanner';
 	import QRCode from 'qrcode';
+	import { toast } from 'svelte-sonner';
 
 	let token: string;
 	let qr: string;
@@ -22,6 +23,11 @@
 	let scannedUser: User | null = null;
 
 	const switchMode = () => {
+		if ($offline) {
+			toast.error('You are offline!');
+			return;
+		}
+
 		scanMode = !scanMode;
 		if (scanMode) {
 			qrScanner = new QrScanner(
@@ -122,7 +128,12 @@
 	{:else}
 		Loading...
 	{/if}
-	<div class={!scanMode && $user?.role !== 'vendor' ? 'hidden' : ''}>
+
+	{#if $offline && $user?.role === 'vendor'}
+		You are offline. Cannot scan QR codes.
+	{/if}
+
+	<div class={!$offline && !scanMode && $user?.role !== 'vendor' ? 'hidden' : ''}>
 		<div class="flex-col items-center justify-center {scannedUser ? 'flex' : 'hidden'}">
 			<img class="w-24 h-24 rounded-full" src={scannedUser?.pfp} alt="" />
 			<p class="mt-2 text-lg font-semibold">{scannedUser?.full_name}</p>

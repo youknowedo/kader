@@ -1,5 +1,5 @@
-import type { AppRouter } from "@kader/server";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+import type { AppRouter } from "server";
 
 export const trpcWithSession = (serverUrl: string, sessionId: string) =>
     createTRPCProxyClient<AppRouter>({

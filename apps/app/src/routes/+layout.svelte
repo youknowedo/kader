@@ -1,8 +1,8 @@
 <script>
 	import { offline, user } from '$lib/stores';
 	import { trpc } from '$lib/trpc';
+	import { Toaster } from '@kader/ui/components';
 	import '@kader/ui/styles.css';
-	import cookie from 'cookie';
 	import { ModeWatcher } from 'mode-watcher';
 	import { onMount } from 'svelte';
 
@@ -20,6 +20,7 @@
 </script>
 
 <ModeWatcher />
+<Toaster />
 
 <slot />
 
