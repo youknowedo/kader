@@ -56,4 +56,74 @@ export const mutations = {
                 };
             }
         ),
+    acceptMembership: procedure
+        .input(z.string())
+        .mutation(async ({ ctx, input }): Promise<ResponseData> => {
+            if (!ctx.sessionId)
+                return {
+                    success: false,
+                    error: "Unauthenticated",
+                };
+
+            const { session, user } = await lucia.validateSession(
+                ctx.sessionId
+            );
+            if (!session)
+                return {
+                    success: false,
+                    error: "Unauthenticated",
+                };
+
+            if (user.role !== "admin")
+                return {
+                    success: false,
+                    error: "Unauthorized",
+                };
+
+            await db
+                .update(userTable)
+                .set({
+                    role: "member",
+                })
+                .where(eq(userTable.id, input));
+
+            return {
+                success: true,
+            };
+        }),
+    rejectMembership: procedure
+        .input(z.string())
+        .mutation(async ({ ctx, input }): Promise<ResponseData> => {
+            if (!ctx.sessionId)
+                return {
+                    success: false,
+                    error: "Unauthenticated",
+                };
+
+            const { session, user } = await lucia.validateSession(
+                ctx.sessionId
+            );
+            if (!session)
+                return {
+                    success: false,
+                    error: "Unauthenticated",
+                };
+
+            if (user.role !== "admin")
+                return {
+                    success: false,
+                    error: "Unauthorized",
+                };
+
+            await db
+                .update(userTable)
+                .set({
+                    role: "rejected",
+                })
+                .where(eq(userTable.id, input));
+
+            return {
+                success: true,
+            };
+        }),
 };

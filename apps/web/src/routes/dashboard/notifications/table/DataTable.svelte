@@ -55,9 +55,6 @@
 	const { hasNextPage, hasPreviousPage, pageIndex } = pluginStates.page;
 
 	const { selectedDataIds } = pluginStates.select;
-
-	const ids = flatColumns.map((col) => col.id);
-	let hideForId = Object.fromEntries(ids.map((id) => [id, true]));
 </script>
 
 <div class="border rounded-md">

@@ -14,6 +14,6 @@
 
 {#key users}
 	<div class="container py-10 mx-auto">
-		<DataTable data={users} />
+		<DataTable data={users.filter((u) => u.completed_profile)} />
 	</div>
 {/key}

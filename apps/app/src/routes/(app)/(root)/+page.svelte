@@ -111,18 +111,6 @@
 		/>
 	</Button>
 
-	{#if $user && !$user.completed_profile}
-		<button class="text-left" on:click={() => goto(base + '/completeProfile')}>
-			<Alert.Root class="mb-12 -mt-6">
-				<CircleAlert class="w-4 h-4" />
-				<Alert.Title>Heads up!</Alert.Title>
-				<Alert.Description>
-					Most vendors don't accept users without a profile picture. Add it now just to be safe!
-				</Alert.Description>
-			</Alert.Root>
-		</button>
-	{/if}
-
 	{#if qr}
 		<img class="h-64 {!scanMode && $user?.role !== 'vendor' ? '' : 'hidden'}" src={qr} alt="" />
 	{:else}

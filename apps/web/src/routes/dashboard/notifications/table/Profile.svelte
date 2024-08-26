@@ -2,6 +2,7 @@
 	import { trpc } from '$lib/trpc';
 	import type { User } from '@kader/shared';
 	import { Button, Drawer } from '@kader/ui/components';
+	import { toast } from 'svelte-sonner';
 
 	export let user: User;
 </script>
@@ -21,9 +22,30 @@
 			<Drawer.Title>{user.full_name}</Drawer.Title>
 		</Drawer.Header>
 		<Drawer.Footer class="flex flex-col gap-4">
-			<Button variant="neu">Submit</Button>
 			<Drawer.Close>
-				<Button class="flex w-full text-primary" variant="ghost">Cancel</Button>
+				<Button
+					on:click={async () => {
+						const { error } = await trpc.user.acceptMembership.mutate(user.id);
+
+						if (error) toast.error(error);
+						toast.success("User's membership accepted");
+					}}
+					variant="neu"
+				>
+					Submit
+				</Button>
+				<Button
+					on:click={async () => {
+						const { error } = await trpc.user.rejectMembership.mutate(user.id);
+
+						if (error) toast.error(error);
+						toast.success("User's membership rejected");
+					}}
+					class="flex w-full text-primary"
+					variant="ghost"
+				>
+					Cancel
+				</Button>
 			</Drawer.Close>
 		</Drawer.Footer>
 	</Drawer.Content>
