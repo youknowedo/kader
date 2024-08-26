@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Bell from 'lucide-svelte/icons/bell';
 	import Home from 'lucide-svelte/icons/house';
 	import PanelLeft from 'lucide-svelte/icons/panel-left';
 	import Settings from 'lucide-svelte/icons/settings';
@@ -24,7 +25,8 @@
 	}[] = [
 		{ icon: Home, name: 'Dashboard', href: '/dashboard' },
 		{ icon: Users, name: 'Users', href: '/dashboard/users', admin: true },
-		{ icon: Store, name: 'Vendors', href: '/dashboard/vendors', admin: true }
+		{ icon: Store, name: 'Vendors', href: '/dashboard/vendors', admin: true },
+		{ icon: Bell, name: 'Notifications', href: '/dashboard/notifications', admin: true }
 	];
 
 	$: breadcrumbs = browser

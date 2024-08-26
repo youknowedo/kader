@@ -1,11 +1,8 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { Button, DropdownMenu, Input, Label, Sheet, Table } from '@kader/ui/components';
+	import { Button, DropdownMenu, Input, Table } from '@kader/ui/components';
 	import type { Session, User } from 'lucia';
 	import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
-	import Check from 'lucide-svelte/icons/check';
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
-	import X from 'lucide-svelte/icons/x';
 
 	import { createRender, createTable, Render, Subscribe } from 'svelte-headless-table';
 	import {
@@ -16,8 +13,8 @@
 		addTableFilter
 	} from 'svelte-headless-table/plugins';
 	import { readable } from 'svelte/store';
-	import DataTableCheckbox from './Checkbox.svelte';
-	import CheckCross from './CheckCross.svelte';
+	import Actions from './Actions.svelte';
+	import Checkbox from './Checkbox.svelte';
 
 	export let data: User[];
 
@@ -36,7 +33,7 @@
 			accessor: 'id',
 			header: (_, { pluginStates }) => {
 				const { allPageRowsSelected } = pluginStates.select;
-				return createRender(DataTableCheckbox, {
+				return createRender(Checkbox, {
 					checked: allPageRowsSelected
 				});
 			},
@@ -44,7 +41,7 @@
 				const { getRowState } = pluginStates.select;
 				const { isSelected } = getRowState(row);
 
-				return createRender(DataTableCheckbox, {
+				return createRender(Checkbox, {
 					checked: isSelected
 				});
 			},
@@ -68,10 +65,14 @@
 			cell: ({ value }) => value
 		}),
 		table.column({
-			accessor: 'role',
-			header: 'Is member?',
-			cell: ({ value }) =>
-				createRender(CheckCross, { value: value !== 'user' && value !== 'vendor' })
+			id: 'action',
+			accessor: 'id',
+			header: '',
+			cell: ({ row }, { pluginStates }) => {
+				return createRender(Actions, {
+					id: row.id
+				});
+			}
 		})
 	]);
 
@@ -91,7 +92,7 @@
 		.filter(([, hide]) => !hide)
 		.map(([id]) => id);
 
-	const hidableCols = ['email', 'role'];
+	const hidableCols = ['email'];
 </script>
 
 <div class="flex items-center justify-between py-4">
@@ -151,7 +152,7 @@
 					<Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && 'selected'}>
 						{#each row.cells as cell (cell.id)}
 							<Subscribe attrs={cell.attrs()} let:attrs>
-								<Table.Cell {...attrs}>
+								<Table.Cell {...attrs} width="10px">
 									{#if cell.id === 'id'}
 										<div class="-mb-1">
 											<Render of={cell.render()} />
