@@ -24,7 +24,7 @@
 			return;
 		}
 
-		goto(base + '/');
+		goto('/');
 	};
 </script>
 
@@ -54,7 +54,7 @@
 			</div>
 			<div class="mt-4 text-sm text-center">
 				Don&apos;t have an account?
-				<button on:click={() => goto(base + '/signup')} class="underline">Sign up</button>
+				<button on:click={() => goto('/signup')} class="underline">Sign up</button>
 			</div>
 		</form>
 	</Card.Content>

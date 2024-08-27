@@ -6,7 +6,7 @@
 
 	onMount(() => {
 		user.subscribe((u) => {
-			if (u) goto(base + '/');
+			if (u) goto('/');
 		});
 	});
 </script>

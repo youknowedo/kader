@@ -17,10 +17,10 @@
 	>
 		<div
 			class="absolute w-16 h-16 rounded-full bg-primary neu-r -z-10 duration-500 {$page.url.pathname.startsWith(
-				base + '/explore'
+				'/explore'
 			)
 				? 'mr-[13.25rem]'
-				: $page.url.pathname.startsWith(base + '/profile')
+				: $page.url.pathname.startsWith('/profile')
 					? '-mr-[13.25rem]'
 					: 'mr-0'} {switching ? 'elongate' : ''}"
 		/>
@@ -31,7 +31,7 @@
 				setTimeout(() => {
 					switching = false;
 				}, 500);
-				goto(base + '/explore');
+				goto('/explore');
 			}}
 		>
 			<Compass class="w-6 h-6 m-6" />
@@ -42,7 +42,7 @@
 				setTimeout(() => {
 					switching = false;
 				}, 500);
-				goto(base + '/');
+				goto('/');
 			}}
 		>
 			<img class="w-6 h-6 m-6" src="{base}/logo.svg" alt="" />
@@ -53,7 +53,7 @@
 				setTimeout(() => {
 					switching = false;
 				}, 500);
-				goto(base + '/profile');
+				goto('/profile');
 			}}
 		>
 			<User class="w-6 h-6 m-6" />

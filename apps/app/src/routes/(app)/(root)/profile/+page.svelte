@@ -18,4 +18,4 @@
 
 <Separator class="box-content w-64 h-0.5 mx-auto my-12 rounded-full bg-background" />
 
-<Button on:click={() => (trpc.auth.logout.mutate(), goto(base + '/login'))}>Log out</Button>
+<Button on:click={() => (trpc.auth.logout.mutate(), goto('/login'))}>Log out</Button>

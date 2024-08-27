@@ -29,7 +29,7 @@
 		});
 
 		if (!res.ok) console.error(await res.text());
-		else goto(base + '/');
+		else goto('/');
 	};
 </script>
 

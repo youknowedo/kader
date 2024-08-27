@@ -6,10 +6,10 @@
 
 	onMount(() => {
 		user.subscribe((u) => {
-			if (u === null) goto(base + '/login');
+			if (u === null) goto('/login');
 			if (!u) return;
 
-			if (!u.completed_profile) goto(base + '/completeProfile');
+			if (!u.completed_profile) goto('/completeProfile');
 		});
 	});
 </script>

@@ -3,7 +3,6 @@
 	import { trpc } from '$lib/trpc';
 	import { Toaster } from '@kader/ui/components';
 	import '@kader/ui/styles.css';
-	import { ModeWatcher } from 'mode-watcher';
 	import { onMount } from 'svelte';
 
 	onMount(async () => {
@@ -19,7 +18,6 @@
 	});
 </script>
 
-<ModeWatcher />
 <Toaster />
 
 <slot />
