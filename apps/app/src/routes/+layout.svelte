@@ -48,6 +48,7 @@
 		}
 
 		toast.success('Email sent!');
+		console.log('Email sent!');
 	};
 </script>
 

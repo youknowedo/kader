@@ -4,7 +4,7 @@ import { TimeSpan, createDate } from "oslo";
 import { alphabet, generateRandomString } from "oslo/crypto";
 import { db } from "./db";
 import { userTable, verificationCodesTable } from "./db/schema";
-import { mail } from "./mail";
+import { transporter } from "./mail";
 
 export const sendVerificationCode = async (userId: string) => {
     const code = generateRandomString(8, alphabet("0-9"));
@@ -30,17 +30,13 @@ export const sendVerificationCode = async (userId: string) => {
             .where(eq(userTable.id, userId))
     )[0];
 
-    const message = mail
-        .sendAsync({
-            from: "you <no-reply@kader.se>",
-            to: "fenwikk@protonmail.com",
-            subject: "testing emailjs",
-            text: "i hope this works",
-        })
-        .catch((e) => {
-            console.log("error sending email");
-            console.log(JSON.stringify(e));
-        });
+    const info = await transporter.sendMail({
+        from: '"Kader" <no-reply@kader.se>',
+        to: email,
+        subject: "Your verification code has arrived!",
+        html: `Your verification code is: <b>${code}</b>`,
+    });
+    console.log(JSON.stringify(info));
 
-    return message;
+    return info;
 };
