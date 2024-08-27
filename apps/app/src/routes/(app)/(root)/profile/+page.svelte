@@ -4,6 +4,12 @@
 	import { user } from '$lib/stores';
 	import { trpc } from '$lib/trpc';
 	import { Button, Separator } from '@kader/ui/components';
+
+	const logout = async () => {
+		await trpc.auth.logout.mutate();
+		user.set(null);
+		window.location.reload();
+	};
 </script>
 
 <div class="flex flex-col items-center gap-4">
@@ -18,4 +24,4 @@
 
 <Separator class="box-content w-64 h-0.5 mx-auto my-12 rounded-full bg-background" />
 
-<Button on:click={() => (trpc.auth.logout.mutate(), goto('/login'))}>Log out</Button>
+<Button on:click={logout}>Log out</Button>

@@ -24,7 +24,7 @@
 			return;
 		}
 
-		goto('/');
+		window.location.reload();
 	};
 </script>
 
