@@ -39,15 +39,10 @@ export const sendVerificationCode = async (userId: string) => {
             pass: process.env.MAIL_PASS ?? "",
         },
     });
-    console.log(transporter);
-    const s = await transporter.verify().catch((error) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("Server is ready to take our messages");
-        }
+    await transporter.verify().catch((err) => {
+        console.error("error");
+        console.error(err);
     });
-    console.log(s);
 
     const info = transporter.sendMail(
         {
