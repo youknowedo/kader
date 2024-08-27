@@ -10,18 +10,6 @@
 	onMount(async () => {
 		offline.set(false);
 
-		const registration = await navigator.serviceWorker.ready;
-
-		registration.addEventListener('updatefound', () => {
-			const newWorker = registration.installing;
-
-			newWorker?.addEventListener('statechange', () => {
-				if (newWorker.state === 'installed') {
-					open = true;
-				}
-			});
-		});
-
 		const { user: u } = await trpc.user.getSingle
 			.query()
 			.catch(
@@ -35,25 +23,10 @@
 
 <Toaster />
 
-<AlertDialog.Root bind:open>
-	<AlertDialog.Content>
-		<AlertDialog.Header>
-			<AlertDialog.Title>An update is available</AlertDialog.Title>
-			<AlertDialog.Description>
-				There is a new version of the app available. Do you want to update now?
-			</AlertDialog.Description>
-		</AlertDialog.Header>
-		<AlertDialog.Footer>
-			<AlertDialog.Cancel>Skip</AlertDialog.Cancel>
-			<AlertDialog.Action on:click={() => window.location.reload()}>Update</AlertDialog.Action>
-		</AlertDialog.Footer>
-	</AlertDialog.Content>
-</AlertDialog.Root>
-
 {#if $user !== undefined}
 	<slot />
 {:else}
-	yurr
+	<div class="flex items-center justify-center w-screen h-screen">Loading...</div>
 {/if}
 
 {#if $offline}
