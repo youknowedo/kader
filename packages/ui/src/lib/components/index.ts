@@ -1,3 +1,4 @@
+export * as AlertDialog from './ui/alert-dialog/index.js';
 export * as Alert from './ui/alert/index.js';
 export * as Breadcrumb from './ui/breadcrumb/index.js';
 export { Root as Button } from './ui/button/index.js';
