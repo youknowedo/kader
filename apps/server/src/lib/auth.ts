@@ -10,6 +10,7 @@ export const lucia = new Lucia(adapter, {
     getUserAttributes: (attributes) => {
         return {
             email: attributes.email,
+            emailVerified: attributes.email_verified,
             hex_qr_id: attributes.hex_qr_id,
             username: attributes.username,
             completed_profile: attributes.completed_profile,
@@ -27,6 +28,7 @@ declare module "lucia" {
         DatabaseUserAttributes: {
             hex_qr_id: string | null;
             email: string;
+            email_verified: boolean;
             username: string;
             completed_profile: boolean;
             full_name: string | null;

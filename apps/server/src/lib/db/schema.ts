@@ -21,6 +21,7 @@ export const userTable = pgTable("user", {
 
     username: text("username").unique().notNull(),
     email: text("email").unique().notNull(),
+    email_verified: boolean("email_verified").notNull().default(false),
     password_hash: text("password_hash"),
 });
 export const userRelations = relations(userTable, ({ one, many }) => ({
@@ -45,6 +46,18 @@ export const sessionTable = pgTable("session", {
     userId: text("user_id")
         .notNull()
         .references(() => userTable.id),
+    expiresAt: timestamp("expires_at", {
+        withTimezone: true,
+        mode: "date",
+    }).notNull(),
+});
+
+export const verificationCodesTable = pgTable("verification_codes", {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+        .notNull()
+        .references(() => userTable.id),
+    code: text("code").notNull(),
     expiresAt: timestamp("expires_at", {
         withTimezone: true,
         mode: "date",
