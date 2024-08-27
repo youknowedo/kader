@@ -93,7 +93,7 @@
 					userId: u.id,
 					token
 				}),
-				{ errorCorrectionLevel: 'H' }
+				{ errorCorrectionLevel: 'H', scale: 10 }
 			);
 
 			setTimeout(generate, seconds * 1000);
