@@ -43,6 +43,7 @@ export const sendVerificationCode = async (userId: string) => {
         console.error("error");
         console.error(err);
     });
+    console.log("Transporter ready");
 
     const info = transporter.sendMail(
         {
