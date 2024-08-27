@@ -85,8 +85,12 @@ export const codes = router({
                     error: "Unauthenticated",
                 };
 
-            const info = sendVerificationCode(user.id);
-            console.log(JSON.stringify(info));
+            try {
+                const info = await sendVerificationCode(user.id);
+                console.log(info);
+            } catch (e) {
+                console.log(e);
+            }
 
             return {
                 success: true,
