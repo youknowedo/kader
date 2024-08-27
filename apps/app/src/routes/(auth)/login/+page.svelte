@@ -24,7 +24,9 @@
 			return;
 		}
 
-		window.location.reload();
+		setTimeout(() => {
+			window.location.reload();
+		}, 500);
 	};
 </script>
 

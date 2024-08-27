@@ -7,8 +7,10 @@
 
 	const logout = async () => {
 		await trpc.auth.logout.mutate();
-		user.set(null);
-		window.location.reload();
+
+		setTimeout(() => {
+			window.location.reload();
+		}, 500);
 	};
 </script>
 
