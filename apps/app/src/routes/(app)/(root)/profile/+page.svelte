@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { user } from '$lib/stores';
 	import { trpc } from '$lib/trpc';
@@ -9,7 +9,7 @@
 		await trpc.auth.logout.mutate();
 
 		setTimeout(() => {
-			window.location.reload();
+			invalidateAll();
 		}, 500);
 	};
 </script>

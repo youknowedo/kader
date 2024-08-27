@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { trpc } from '$lib/trpc';
 	import { Button, Card, Input, Label } from '@kader/ui/components';
@@ -25,7 +25,7 @@
 		}
 
 		setTimeout(() => {
-			window.location.reload();
+			invalidateAll();
 		}, 500);
 	};
 </script>
