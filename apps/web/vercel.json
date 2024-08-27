@@ -2,11 +2,11 @@
 	"rewrites": [
 		{
 			"source": "/app/",
-			"destination": "https://kader-app.vercel.app/app/"
+			"destination": "https://kader-app.vercel.app/"
 		},
 		{
 			"source": "/app/:match*",
-			"destination": "https://kader-app.vercel.app/app/:match*"
+			"destination": "https://kader-app.vercel.app/:match*"
 		}
 	]
 }
