@@ -1,5 +1,7 @@
+import { dev } from '$app/environment';
 import { trpc as t, trpcWithSession as tSession } from '@kader/shared/trpc';
 
-export const trpcWithSession = (sessionId: string) => tSession('/api', sessionId);
+export const trpcWithSession = (sessionId: string) =>
+	tSession(dev ? 'http://localhost:3000' : '/api', sessionId);
 
-export const trpc = t('/api');
+export const trpc = t(dev ? 'http://localhost:3000' : '/api');

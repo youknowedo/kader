@@ -36,6 +36,7 @@ export const sendVerificationCode = async (userId: string) => {
         subject: "Your verification code has arrived!",
         html: `Your verification code is: <b>${code}</b>`,
     });
+    console.log(JSON.stringify(info));
 
     return info;
 };

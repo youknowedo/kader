@@ -5,6 +5,7 @@ import { z } from "zod";
 import { lucia } from "../../lib/auth.js";
 import { db } from "../../lib/db/index.js";
 import { userTable } from "../../lib/db/schema.js";
+import { sendVerificationCode } from "../../lib/utils.js";
 import { procedure } from "../../server.js";
 import type { ResponseData } from "../../types.js";
 
@@ -49,6 +50,8 @@ export const signup = procedure
                 sessionCookie.attributes.domain = ctx.req.headers.origin
                     ?.replace(/^https?:\/\//, "")
                     .replace(/^http?:\/\//, "");
+
+            sendVerificationCode(userId);
 
             ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
             return {

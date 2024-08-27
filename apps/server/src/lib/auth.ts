@@ -10,7 +10,7 @@ export const lucia = new Lucia(adapter, {
     getUserAttributes: (attributes) => {
         return {
             email: attributes.email,
-            emailVerified: attributes.email_verified,
+            email_verified: attributes.email_verified,
             hex_qr_id: attributes.hex_qr_id,
             username: attributes.username,
             completed_profile: attributes.completed_profile,
