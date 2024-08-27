@@ -3,8 +3,8 @@ import { generateIdFromEntropySize } from "lucia";
 import { createTransport } from "nodemailer";
 import { TimeSpan, createDate } from "oslo";
 import { alphabet, generateRandomString } from "oslo/crypto";
-import { db } from "./db";
-import { userTable, verificationCodesTable } from "./db/schema";
+import { db } from "./db/index.js";
+import { userTable, verificationCodesTable } from "./db/schema.js";
 
 export const sendVerificationCode = async (userId: string) => {
     const code = generateRandomString(8, alphabet("0-9"));
