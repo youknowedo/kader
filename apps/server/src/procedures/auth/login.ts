@@ -55,7 +55,9 @@ export const login = procedure
         sessionCookie.attributes.sameSite = "lax";
         sessionCookie.attributes.secure = process.env.NODE_ENV === "production";
         if (process.env.NODE_ENV === "production")
-            sessionCookie.attributes.domain = ctx.req.headers.host;
+            sessionCookie.attributes.domain = ctx.req.headers.origin
+                ?.replace(/^https?:\/\//, "")
+                .replace(/^http?:\/\//, "");
 
         ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
 
