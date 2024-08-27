@@ -24,9 +24,7 @@
 			return;
 		}
 
-		setTimeout(() => {
-			invalidateAll();
-		}, 500);
+		invalidateAll();
 	};
 </script>
 
