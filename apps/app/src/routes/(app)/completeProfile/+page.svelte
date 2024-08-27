@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
-	import { PUBLIC_SERVER_URL } from '$env/static/public';
 	import { trpc } from '$lib/trpc';
 	import { Button, Input, Label, Separator } from '@kader/ui/components';
 
