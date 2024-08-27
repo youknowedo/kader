@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { generateIdFromEntropySize } from "lucia";
-import { createTransport } from "nodemailer";
+import * as nodemailer from "nodemailer";
 import { TimeSpan, createDate } from "oslo";
 import { alphabet, generateRandomString } from "oslo/crypto";
 import { db } from "./db/index.js";
@@ -30,7 +30,7 @@ export const sendVerificationCode = async (userId: string) => {
             .where(eq(userTable.id, userId))
     )[0];
 
-    const transporter = createTransport({
+    const transporter = nodemailer.createTransport({
         host: process.env.MAIL_HOST ?? "",
         port: +(process.env.MAIL_PORT ?? 587),
         secure: false,
