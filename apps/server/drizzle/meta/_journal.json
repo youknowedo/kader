@@ -78,6 +78,13 @@
       "when": 1724790307315,
       "tag": "0010_soft_red_hulk",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1724846521793,
+      "tag": "0011_naive_dazzler",
+      "breakpoints": true
     }
   ]
 }
