@@ -1,6 +1,5 @@
-import { PUBLIC_SERVER_URL } from '$env/static/public';
 import { trpc as t, trpcWithSession as tSession } from '@kader/shared/trpc';
 
-export const trpcWithSession = (sessionId: string) => tSession(PUBLIC_SERVER_URL, sessionId);
+export const trpcWithSession = (sessionId: string) => tSession('/api', sessionId);
 
-export const trpc = t(PUBLIC_SERVER_URL);
+export const trpc = t('/api');
