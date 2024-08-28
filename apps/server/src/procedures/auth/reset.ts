@@ -44,7 +44,7 @@ export const reset = router({
             });
 
             const transporter = createMailTransporter();
-            const link = `${ctx.req.headers.origin}/reset/${tokenId}`;
+            const link = `${ctx.req.headers.origin}/reset/callback?token=${tokenId}`;
 
             const info = transporter.sendMail(
                 {

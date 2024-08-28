@@ -4,16 +4,23 @@
 	import { trpc } from '$lib/trpc';
 	import { Button, Card, Input, Label } from '@kader/ui/components';
 
+	const verificationToken = $page.url.searchParams.get('token');
+
 	const reset = async (
 		e: SubmitEvent & {
 			currentTarget: EventTarget & HTMLFormElement;
 		}
 	) => {
+		if (!verificationToken) {
+			alert('No token');
+			return;
+		}
+
 		const formData = new FormData(e.currentTarget);
 		const password = formData.get('password') as string;
 
 		const { success, error } = await trpc.auth.reset.withToken.mutate({
-			verificationToken: $page.params.token,
+			verificationToken,
 			password
 		});
 
