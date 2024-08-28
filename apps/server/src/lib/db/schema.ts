@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { boolean, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { user } from "../../procedures/user";
 
 export const roleEnum = pgEnum("role", [
     "admin",
@@ -58,6 +59,17 @@ export const verificationCodesTable = pgTable("verification_codes", {
         .notNull()
         .references(() => userTable.id),
     code: text("code").notNull(),
+    expiresAt: timestamp("expires_at", {
+        withTimezone: true,
+        mode: "date",
+    }).notNull(),
+});
+
+export const resetPasswordTable = pgTable("reset_password", {
+    tokenHash: text("token_hash").primaryKey(),
+    userId: text("user_id")
+        .notNull()
+        .references(() => userTable.id),
     expiresAt: timestamp("expires_at", {
         withTimezone: true,
         mode: "date",
