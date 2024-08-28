@@ -30,6 +30,7 @@ export const sendVerificationCode = async (userId: string) => {
             .where(eq(userTable.id, userId))
     )[0];
 
+    console.log("Sending email to", email);
     const transporter = nodemailer.createTransport({
         host: process.env.MAIL_HOST ?? "",
         port: +(process.env.MAIL_PORT ?? 587),
@@ -61,6 +62,7 @@ export const sendVerificationCode = async (userId: string) => {
             console.log(`Message sent: ${info.messageId}`);
         }
     );
+    console.log("Message sent");
 
     return info;
 };
