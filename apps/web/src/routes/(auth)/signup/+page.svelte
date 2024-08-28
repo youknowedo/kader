@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { user } from '$lib/stores';
 	import { trpc } from '$lib/trpc';
 	import { Button, Card, Input, Label } from '@kader/ui/components';
 
@@ -13,11 +14,16 @@
 		const form = new FormData(e.currentTarget);
 		const data = Object.fromEntries(form.entries());
 
-		const { success, error } = await trpc.auth.signup.mutate({
+		const {
+			success,
+			error,
+			user: u
+		} = await trpc.auth.signup.mutate({
 			username: data.username.toString(),
 			email: data.email.toString(),
 			password: data.password.toString()
 		});
+		user.set(u);
 
 		if (success) goto('/dashboard');
 		else console.error('Failed to sign up', error);

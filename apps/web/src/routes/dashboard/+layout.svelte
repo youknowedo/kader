@@ -12,10 +12,14 @@
 	import { user } from '$lib/stores.js';
 	import { trpc } from '$lib/trpc';
 	import { Breadcrumb, Button, DropdownMenu, Sheet, Tooltip } from '@kader/ui/components';
+	import { onMount } from 'svelte';
 
-	export let data;
-
-	user.set(data.user);
+	onMount(async () => {
+		user.subscribe((u) => {
+			if (u === null) goto('/login');
+			if (!u) return;
+		});
+	});
 
 	const menuItems: {
 		icon: typeof Home;
@@ -45,7 +49,6 @@
 		: [];
 
 	$: browser &&
-		data.sessionId &&
 		breadcrumbs.forEach(async (breadcrumb, i) => {
 			if (breadcrumb.name !== $page.params.vendorId)
 				return (breadcrumbs[i].name =
