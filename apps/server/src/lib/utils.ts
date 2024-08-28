@@ -41,30 +41,43 @@ export const sendVerificationCode = async (userId: string) => {
             .where(eq(userTable.id, userId))
     )[0];
 
-    const transporter = createMailTransporter();
+    try {
+        const transporter = nodemailer.createTransport({
+            host: process.env.MAIL_HOST ?? "",
+            port: +(process.env.MAIL_PORT ?? 587),
+            secure: false,
+            auth: {
+                user: process.env.MAIL_USER ?? "",
+                pass: process.env.MAIL_PASS ?? "",
+            },
+        });
+        await transporter.verify().catch((err) => {
+            console.error("error");
+            console.error(err);
+        });
+        console.log("Transporter ready");
 
-    await transporter.verify().catch((err) => {
+        const info = transporter.sendMail(
+            {
+                from: '"Kader" <no-reply@kader.se>',
+                to: email,
+                subject: "Your verification code has arrived!",
+                html: `Your verification code is: <b>${code}</b>`,
+            },
+            (err, info) => {
+                if (err) {
+                    console.error("error");
+                    console.error(err);
+                }
+                console.log(info);
+                console.log(`Message sent: ${info.messageId}`);
+            }
+        );
+
+        return info;
+    } catch (err) {
         console.error("error");
         console.error(err);
-    });
-    const info = transporter.sendMail(
-        {
-            from: '"Kader" <no-reply@kader.se>',
-            to: email,
-            subject: "Your verification code has arrived!",
-            html: `Your verification code is: <b>${code}</b>`,
-        },
-        (err, info) => {
-            if (err) {
-                console.error("error");
-                console.error(err);
-            }
-            console.log(info);
-            console.log(`Message sent: ${info.messageId}`);
-        }
-    );
-
-    transporter.close();
-
-    return info;
+        return err;
+    }
 };

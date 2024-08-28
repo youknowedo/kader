@@ -1,6 +1,5 @@
 import { relations } from "drizzle-orm";
 import { boolean, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { user } from "../../procedures/user";
 
 export const roleEnum = pgEnum("role", [
     "admin",
