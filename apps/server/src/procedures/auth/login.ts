@@ -1,9 +1,11 @@
 import { verify } from "argon2";
 import { eq } from "drizzle-orm";
+import type { User } from "lucia";
 import { z } from "zod";
 import { lucia } from "../../lib/auth.js";
 import { db } from "../../lib/db/index.js";
 import { userTable } from "../../lib/db/schema.js";
+import { minio } from "../../lib/storage.js";
 import { procedure } from "../../server.js";
 import type { ResponseData } from "../../types.js";
 
@@ -14,7 +16,7 @@ export const login = procedure
             password: z.string().min(6),
         })
     )
-    .mutation(async ({ ctx, input }): Promise<ResponseData> => {
+    .mutation(async ({ ctx, input }): Promise<ResponseData<{ user: User }>> => {
         const { email, password } = input;
 
         const user = (
@@ -50,6 +52,11 @@ export const login = procedure
             };
         }
 
+        const pfp = await minio.presignedGetObject(
+            process.env.MINIO_BUCKET!,
+            user.id + ".webp"
+        );
+
         const session = await lucia.createSession(user.id, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
         sessionCookie.attributes.sameSite = "lax";
@@ -60,8 +67,13 @@ export const login = procedure
                 .replace(/^http?:\/\//, "");
 
         ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
+        ctx.res.setHeader("Location", "/");
 
         return {
             success: true,
+            user: {
+                ...user,
+                pfp,
+            },
         };
     });

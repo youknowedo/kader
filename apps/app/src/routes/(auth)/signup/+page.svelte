@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto, invalidateAll } from '$app/navigation';
 	import { base } from '$app/paths';
+	import { user } from '$lib/stores';
 	import { trpc } from '$lib/trpc';
 	import { Button, Card, Input, Label } from '@kader/ui/components';
 
@@ -9,15 +10,18 @@
 			currentTarget: EventTarget & HTMLFormElement;
 		}
 	) => {
-		e.preventDefault();
-
 		const formData = new FormData(e.currentTarget);
 
-		const { success, error } = await trpc.auth.signup.mutate({
+		const {
+			success,
+			error,
+			user: u
+		} = await trpc.auth.signup.mutate({
 			username: formData.get('username') as string,
 			email: formData.get('email') as string,
 			password: formData.get('password') as string
 		});
+		user.set(u);
 
 		if (!success) {
 			alert(error);
@@ -25,6 +29,7 @@
 		}
 
 		invalidateAll();
+		goto('/');
 	};
 </script>
 

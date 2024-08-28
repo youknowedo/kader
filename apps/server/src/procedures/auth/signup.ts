@@ -1,10 +1,11 @@
 import { hash } from "argon2";
-import { generateIdFromEntropySize } from "lucia";
+import { generateIdFromEntropySize, type User } from "lucia";
 import crypto from "node:crypto";
 import { z } from "zod";
 import { lucia } from "../../lib/auth.js";
 import { db } from "../../lib/db/index.js";
 import { userTable } from "../../lib/db/schema.js";
+import { minio } from "../../lib/storage.js";
 import { sendVerificationCode } from "../../lib/utils.js";
 import { procedure } from "../../server.js";
 import type { ResponseData } from "../../types.js";
@@ -17,7 +18,7 @@ export const signup = procedure
             password: z.string().min(6),
         })
     )
-    .mutation(async ({ ctx, input }): Promise<ResponseData> => {
+    .mutation(async ({ ctx, input }): Promise<ResponseData<{ user: User }>> => {
         const { username, email, password } = input;
 
         const passwordHash = await hash(password, {
@@ -54,8 +55,22 @@ export const signup = procedure
             sendVerificationCode(userId);
 
             ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
+            ctx.res.setHeader("Location", "/");
+
             return {
                 success: true,
+                user: {
+                    id: userId,
+                    email,
+                    email_verified: false,
+                    username,
+                    completed_profile: false,
+                    full_name: null,
+                    role: "user",
+                    vendor_id: null,
+                    pfp: null,
+                    hex_qr_id,
+                },
             };
         } catch {
             // db error, email taken, etc

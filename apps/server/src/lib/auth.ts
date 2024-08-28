@@ -32,7 +32,7 @@ declare module "lucia" {
             username: string;
             completed_profile: boolean;
             full_name: string | null;
-            role: "admin" | "vendor" | "member" | "user";
+            role: "admin" | "vendor" | "member" | "user" | "rejected";
             vendor_id: string | null;
             pfp: string | null;
         };
