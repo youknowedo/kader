@@ -7,8 +7,7 @@
 
 	const logout = async () => {
 		await trpc.auth.logout.mutate();
-
-		invalidateAll();
+		user.set(null);
 	};
 </script>
 

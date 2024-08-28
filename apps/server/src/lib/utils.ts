@@ -6,6 +6,17 @@ import { alphabet, generateRandomString } from "oslo/crypto";
 import { db } from "./db/index.js";
 import { userTable, verificationCodesTable } from "./db/schema.js";
 
+export const createMailTransporter = () =>
+    nodemailer.createTransport({
+        host: process.env.MAIL_HOST ?? "",
+        port: +(process.env.MAIL_PORT ?? 587),
+        secure: false,
+        auth: {
+            user: process.env.MAIL_USER ?? "",
+            pass: process.env.MAIL_PASS ?? "",
+        },
+    });
+
 export const sendVerificationCode = async (userId: string) => {
     const code = generateRandomString(8, alphabet("0-9"));
 

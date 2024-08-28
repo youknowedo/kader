@@ -1,27 +1,19 @@
 <script lang="ts">
 	import { goto, invalidateAll } from '$app/navigation';
-	import { base } from '$app/paths';
 	import { user } from '$lib/stores';
 	import { trpc } from '$lib/trpc';
 	import { Button, Card, Input, Label } from '@kader/ui/components';
 
-	const signup = async (
+	const reset = async (
 		e: SubmitEvent & {
 			currentTarget: EventTarget & HTMLFormElement;
 		}
 	) => {
 		const formData = new FormData(e.currentTarget);
 
-		const {
-			success,
-			error,
-			user: u
-		} = await trpc.auth.signup.mutate({
-			username: formData.get('username') as string,
-			email: formData.get('email') as string,
-			password: formData.get('password') as string
-		});
-		user.set(u);
+		const { success, error } = await trpc.auth.reset.send.mutate(
+			formData.get('username') as string
+		);
 
 		if (!success) {
 			alert(error);
@@ -35,25 +27,19 @@
 
 <Card.Root class="max-w-sm mx-auto">
 	<Card.Header>
-		<Card.Title class="text-xl">Sign Up</Card.Title>
-		<Card.Description>Enter your information to create an account</Card.Description>
+		<Card.Title class="text-xl">I forgot my password</Card.Title>
+		<Card.Description>
+			No worries! Enter your email below and we'll get you back into your account in no time.
+		</Card.Description>
 	</Card.Header>
 	<Card.Content>
-		<form on:submit={signup}>
+		<form on:submit={reset}>
 			<div class="grid gap-4">
-				<div class="grid gap-2">
-					<Label for="username">Username</Label>
-					<Input id="username" name="username" placeholder="moot" required />
-				</div>
 				<div class="grid gap-2">
 					<Label for="email">Email</Label>
 					<Input id="email" name="email" type="email" placeholder="m@example.com" required />
 				</div>
-				<div class="grid gap-2">
-					<Label for="password">Password</Label>
-					<Input id="password" name="password" type="password" />
-				</div>
-				<Button type="submit" class="w-full">Create an account</Button>
+				<Button type="submit" class="w-full">Send reset link</Button>
 			</div>
 			<div class="mt-4 text-sm text-center">
 				Already have an account?

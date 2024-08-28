@@ -21,6 +21,7 @@ export const logout = procedure.mutation(
                 .replace(/^http?:\/\//, "");
 
         ctx.res.setHeader("Set-Cookie", sessionCookie.serialize());
+        ctx.res.setHeader("Location", "/login");
 
         return {
             success: true,
