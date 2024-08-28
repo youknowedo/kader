@@ -4,11 +4,11 @@ import { createDate } from "oslo";
 import { sha256 } from "oslo/crypto";
 import { encodeHex } from "oslo/encoding";
 import { z } from "zod";
-import { db } from "../../lib/db";
-import { resetPasswordTable, userTable } from "../../lib/db/schema";
-import { createMailTransporter } from "../../lib/utils";
-import { procedure, router } from "../../server";
-import type { ResponseData } from "../../types";
+import { db } from "../../lib/db/index.js";
+import { resetPasswordTable, userTable } from "../../lib/db/schema.js";
+import { createMailTransporter } from "../../lib/utils.js";
+import { procedure, router } from "../../server.js";
+import type { ResponseData } from "../../types.js";
 
 export const reset = router({
     send: procedure
