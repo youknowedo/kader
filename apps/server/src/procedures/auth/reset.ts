@@ -5,6 +5,7 @@ import { createDate, isWithinExpirationDate } from "oslo";
 import { sha256 } from "oslo/crypto";
 import { encodeHex } from "oslo/encoding";
 import { z } from "zod";
+import { lucia } from "../../lib/auth.js";
 import { db } from "../../lib/db/index.js";
 import { resetPasswordTable, userTable } from "../../lib/db/schema.js";
 import { createMailTransporter } from "../../lib/utils.js";
