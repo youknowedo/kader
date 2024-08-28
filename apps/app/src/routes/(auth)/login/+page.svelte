@@ -45,7 +45,7 @@
 				<div class="grid gap-2">
 					<div class="flex items-center">
 						<Label for="password">Password</Label>
-						<a href="{base}/login" class="inline-block ml-auto text-sm underline">
+						<a href="{base}/reset" class="inline-block ml-auto text-sm underline">
 							Forgot your password?
 						</a>
 					</div>
