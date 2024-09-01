@@ -1,6 +1,12 @@
+Made for Hack Club Arcade with GitHub Copilot as an assistant
+
 # Kader
 
 Offline first membership identification app. Enables vendors to identify real members and what benefits they are entitled to.
+
+## Confessions
+
+Used GitHub Copilot as an assistant and followed [lucia auth](https://lucia-auth.com/guides/email-and-password/) guides for some functionalities.
 
 ### Apps and Packages
 
