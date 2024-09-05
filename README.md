@@ -1,3 +1,5 @@
+# ⚠️Moved to [youknowedo/apps](https://github.com/youknowedo/apps/tree/main/projects/kader)
+
 Made for Hack Club Arcade with GitHub Copilot as an assistant
 
 # Kader
